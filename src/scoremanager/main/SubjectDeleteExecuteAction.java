@@ -1,4 +1,4 @@
-//仮段階 プッシュまだ
+//仮段階
 package scoremanager.main;
 
 import javax.security.auth.Subject;
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import dao.SubjectDao;
 import tool.Action;
 
-public class SubjectUpdateExecuteAction extends Action {
+public class SubjectDeleteExecuteAction extends Action {
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
     	String cd = "";
@@ -24,9 +24,9 @@ public class SubjectUpdateExecuteAction extends Action {
         subject.setCd(cd);
         subject.setName(name);
 
-        subjectDao.save(subject);
+        subjectDao.delete(subject);
 
-        req.getRequestDispatcher("subject_update_done.jsp").forward(req, res);
+        req.getRequestDispatcher("subject_delete_done.jsp").forward(req, res);
 
     }
 }

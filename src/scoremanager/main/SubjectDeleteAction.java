@@ -1,4 +1,4 @@
-//仮段階 プッシュまだ
+//仮段階
 package scoremanager.main;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import bean.Teacher;
 import dao.SubjectDao;
 import tool.Action;
 
-public class SubjectUpdateAction extends Action {
+public class SubjectDeleteAction extends Action {
 
 	@Override
 	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -35,7 +35,7 @@ public class SubjectUpdateAction extends Action {
 		req.setAttribute("subject", subject);
 		req.setAttribute("list", list);
 
-		//指定されたJSPページ("subject_update.jsp")へフォワード
-		req.getRequestDispatcher("subject_update.jsp").forward(req, res);
+		//指定されたJSPページ("subject_delete.jsp")へフォワード
+		req.getRequestDispatcher("subject_delete.jsp").forward(req, res);
 	}
 }
