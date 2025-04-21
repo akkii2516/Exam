@@ -1,8 +1,6 @@
 //仮段階
 package scoremanager.main;
 
-import java.util.List;
-
 import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,12 +26,8 @@ public class SubjectDeleteAction extends Action {
 		//科目コード、学校コードをもとに科目の詳細データを取得
 		Subject subject = SubjectDao.get(cd,teacher.getSchool());
 
-		//ログインユーザーの学校コードをもとに現在の科目名を取得
-		List<String> list = SubjectDao.filter(subject);
-
 		//リクエストにデータをセット
 		req.setAttribute("subject", subject);
-		req.setAttribute("list", list);
 
 		//指定されたJSPページ("subject_delete.jsp")へフォワード
 		req.getRequestDispatcher("subject_delete.jsp").forward(req, res);
