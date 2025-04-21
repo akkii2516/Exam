@@ -108,7 +108,7 @@ public class StudentDao extends Dao {
 		PreparedStatement statement = null;
 		//リザルトセット
 		ResultSet rSet = null;
-		//AQL文の条件
+		//SQL文の条件
 		String condition = "and ent_year=? and class_num=?";
 		//SQL文のソート
 		String order = "order by no asc";
