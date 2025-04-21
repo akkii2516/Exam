@@ -201,12 +201,9 @@ public class SubjectDao extends Dao {
 					Subject old = get(subject.getCd());
 
 						statement = connection
-								.prepareStatement("update subject set cd=?, name=?, where cd=?");
-						//プリペアードステートメントに値をバインド
-						statement.setString(1, subject.getCd());
-						statement.setInt(2, subject.getName());
-
-
+								.prepareStatement("delete from subject where cd=?");
+					//プリペアードステートメントに値をバインド
+					statement.setString(1, subject.getCd());
 					//プリペアードステートメントを実行
 					count = statement.executeUpdate();
 
@@ -231,13 +228,6 @@ public class SubjectDao extends Dao {
 					}
 				}
 
-				if (count > 0) {
-					//実行件数が1件以上ある場合
-					return true;
-				} else {
-					//実行件数が0件の場合
-					return false;
-				}
 
 	}
 }
