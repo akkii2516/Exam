@@ -89,6 +89,20 @@ public class SubjectDao extends Dao {
 			statement.setString(1, school.getCd());
 			//プリペアードステートメントを実行
 			rSet = statement.executeQuery();
+			while (rSet.next()) {
+				//学生インスタンスを初期化
+				Subject subject = new Subject();
+				//学生インスタンスに検索結果をセット
+				subject.setCd(rSet.getString("cd"));
+				subject.setName(rSet.getString("name"));
+				subject.setSchool(rSet.getString("school"));
+
+
+
+				student.setSchool(school);
+				//リストに追加
+				list.add(student);
+			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -139,6 +153,7 @@ public class SubjectDao extends Dao {
 				//プリペアードステートメントに値をバインド
 				statement.setString(1, subject.getCd());
 				statement.setInt(2, subject.getName());
+				statement.setString(3, subject.getSchool());
 			}
 
 			//プリペアードステートメントを実行
@@ -174,7 +189,56 @@ public class SubjectDao extends Dao {
 		}
 	}
 	public boolean delete(Subject subject) throws Exception {
-		return false;
+		//コネクションを確立
+				Connection connection = getConnection();
+				//プリペアードステートメント
+				PreparedStatement statement = null;
+				//実行件数
+				int count = 0;
+
+				try {
+					//データベースから科目を取得
+					Subject old = get(subject.getCd());
+
+						statement = connection
+								.prepareStatement("update subject set cd=?, name=?, where cd=?");
+						//プリペアードステートメントに値をバインド
+						statement.setString(1, subject.getCd());
+						statement.setInt(2, subject.getName());
+
+
+					//プリペアードステートメントを実行
+					count = statement.executeUpdate();
+
+				} catch (Exception e) {
+					throw e;
+				} finally {
+					//プリペアードステートメントを閉じる
+					if (statement != null) {
+						try {
+							statement.close();
+						} catch (SQLException sqle) {
+							throw sqle;
+						}
+					}
+					//コネクションを閉じる
+					if (connection != null) {
+						try {
+							connection.close();
+						} catch (SQLException sqle) {
+							throw sqle;
+						}
+					}
+				}
+
+				if (count > 0) {
+					//実行件数が1件以上ある場合
+					return true;
+				} else {
+					//実行件数が0件の場合
+					return false;
+				}
+
 	}
 }
 
