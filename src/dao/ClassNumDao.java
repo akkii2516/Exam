@@ -69,7 +69,7 @@ public class ClassNumDao extends Dao {
 		Connection connection = getConnection();
 		//プリペアードステートメント
 		PreparedStatement statement = null;
-		
+
 		try {
 			//プリペアードステートメントにSQL文をセット
 			statement = connection
@@ -78,7 +78,7 @@ public class ClassNumDao extends Dao {
 			statement.setString(1, school.getCd());
 			//プリペアードステートメントを実行
 			ResultSet rSet = statement.executeQuery();
-			
+
 			//リザルトセットを全件捜査
 			while (rSet.next()) {
 				//リストにクラス番号を追加
@@ -109,10 +109,10 @@ public class ClassNumDao extends Dao {
 	}
 
 	public boolean save(ClassNum classNum) throws Exception {
-
+		return false;
 	}
 
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception {
-
+		return false;
 	}
 }
