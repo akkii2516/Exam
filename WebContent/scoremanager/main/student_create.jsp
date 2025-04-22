@@ -51,6 +51,6 @@
 					</div>
 				</div>
 			</form>
-		</session>
+		</section>
 	</c:param>
 </c:import>
