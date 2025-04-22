@@ -79,13 +79,8 @@ public class TestDao extends Dao {
 				//テストインスタンスを初期化
 				Test test = new Test();
 				//テストインスタンスに検索結果をセット
-				test.setStudent(rSet.getString("student"));
+				test.setTest(rSet.getString("student"));
 				test.setClassNum(rSet.getString("classNum"));
-				test.setSubject(rSet.getInt("subject"));
-				test.setSchool(rSet.getString("school"));
-				test.setNo(rSet.getInt("no"));
-				test.setSchool(school);
-				test.setSubject(subject);
 				//リストに追加
 				list.add(test);
 			}
@@ -113,7 +108,7 @@ public class TestDao extends Dao {
 
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement(baseSql + condition + conditionIsAttend + order);
+			statement = connection.prepareStatement(baseSql + condition +order);
 			//プリペアードステートメントに学校コードをバインド
 			statement.setString(1,  school.getCd());
 			//プリペアードステートメントに入学年度をバインド
@@ -150,7 +145,7 @@ public class TestDao extends Dao {
 
 
 
-	public boolean save(Student student) throws Exception {
+	public boolean save(Test test) throws Exception {
 		//コネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
@@ -169,10 +164,6 @@ public class TestDao extends Dao {
 				//プリペアードステートメントに値をバインド
 				statement.setString(1, student.getNo());
 				statement.setString(2, student.getName());
-				statement.setInt(3, student.getEntYear());
-				statement.setString(4, student.getClassNum());
-				statement.setBoolean(5, student.isAttend());
-				statement.setString(6, student.getSchool().getCd());
 			} else {
 				//学生が存在した場合
 				//プリペアードステートメントにUPDATE文をセット
