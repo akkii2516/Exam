@@ -1,10 +1,10 @@
 //仮段階 プッシュまだ
 package scoremanager.main;
 
-import javax.security.auth.Subject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import bean.Subject;
 import dao.SubjectDao;
 import tool.Action;
 
