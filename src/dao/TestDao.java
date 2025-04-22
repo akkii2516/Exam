@@ -10,6 +10,7 @@ import java.util.List;
 import bean.School;
 import bean.Student;
 import bean.Subject;
+import bean.Test;
 
 public class TestDao extends Dao {
 
