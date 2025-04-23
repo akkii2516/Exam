@@ -21,5 +21,6 @@
 				<a href = "StudentList.action">科目一覧</a>
 			</div>
 		</div>
+		</div>
 	</c:param>
 </c:import>

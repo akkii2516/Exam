@@ -6,7 +6,7 @@
 	<c:param name="title">得点管理システム</c:param>
 	<c:param name="scripts"></c:param>
 	<c:param name="content">
-		<section class="me-4">
+
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報変更</h2>
 			<div class="my-2 text-end px-4">
 			<a href="logout.jsp">ログアウト</a>
@@ -16,7 +16,7 @@
 					<div class="mb-3">
 						<label for="subject-cd" class="form-label">科目コード</label>
 						<div class="form-control bg-light" style="width: 800px;">${cd}</div>
-						<input type="hidden" name="cd" value="${cd}">
+
 						<div class="mt-2 text-warning">${errors.get("2") }</div>
 					</div>
 
@@ -34,6 +34,5 @@
 						<a href="StudentList.action">戻る</a>
 					</div>
 			</form>
-		</session>
 	</c:param>
 </c:import>
