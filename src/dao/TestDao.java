@@ -28,13 +28,13 @@ public class TestDao extends Dao {
 			//プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement("select * from test where school_cd=?");
 			//プリペアードステートメントに番号をバインド
-			statement.setInt(1, no);
-			System.out.println(no);
+			statement.setString(1, school.getCd());
+			statement.setInt(2, no);
 			//プリペアードステートメントを実行
 			ResultSet rSet = statement.executeQuery();
 
 			//学校Daoを初期化
-			SchoolDao schoolDao = new SchoolDao();
+			TestDao testDao = new TestDao();
 
 			if (rSet.next()) {
 				//リザルトセットが存在する場合
@@ -79,7 +79,7 @@ public class TestDao extends Dao {
 				//テストインスタンスを初期化
 				Test test = new Test();
 				//テストインスタンスに検索結果をセット
-				test.setTest(rSet.getString("student"));
+				test.setTest(rSet.getString("cd"));
 				test.setClassNum(rSet.getString("classNum"));
 				//リストに追加
 				list.add(test);
