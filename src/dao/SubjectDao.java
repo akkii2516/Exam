@@ -11,7 +11,7 @@ import bean.School;
 import bean.Subject;
 
 public class SubjectDao extends Dao {
-	private String baseSql = "select* from subject where school=?";
+	private String baseSql = "select* from subject where school_cd=?";
 
 	public Subject get(String cd,School school) throws Exception {
 		//学生インスタンスを初期化
