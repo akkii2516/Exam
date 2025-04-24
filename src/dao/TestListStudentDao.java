@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.School;
 import bean.Student;
 import bean.Subject;
 import bean.Test;
@@ -17,20 +18,26 @@ public class TestListStudentDao extends Dao {
 	//学生番号から成績を出せばいいと思う
 	private String baseSql = "select* from test where student_no=?";
 
-	private postFilter
+	private List<TestListStudent> postFilter(ResultSet rSet, School school) throws Exception {
+		//リストを初期化
+		List<TestListStudent> testlistStudent = new ArrayList<>();
+		try {
+			//リザルトセットを全権捜査
+			while (rSet.next()) {
+				//学生インスタンスを初期化
+				Student student = new Student();
+				//学生インスタンスに検索結果をセット
+				student.setNo(rSet.getString("no"));
+				student.setName(rSet.getString("name"));
+				//リストに追加
+				testlistStudent.add(student);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
 
-
-
-
-
-
-
-
-
-
-
-
-
+		return testlistStudent;
+	}
 
 	public List<TestListStudent> filter(Student student)throws Exception{
 		//リストを初期化
