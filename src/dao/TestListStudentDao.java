@@ -9,7 +9,6 @@ import java.util.List;
 
 import bean.School;
 import bean.Student;
-import bean.Subject;
 import bean.TestListStudent;
 
 public class TestListStudentDao extends Dao {
@@ -22,11 +21,12 @@ public class TestListStudentDao extends Dao {
 		try {
 			//リザルトセットを全権捜査
 			while (rSet.next()) {
-				//学生インスタンスを初期化
+				//テストリストのインスタンスを初期化
 				TestListStudent student = new TestListStudent();
-				//学生インスタンスに検索結果をセット
+				//テスト結果の検索結果をセット
 				student.setStudentNo(rSet.getString("STUDENT_NO"));
-				student.setSubjectCd(rSet.getString("name"));
+				student.setStudentName(rSet.getString("STUDENT_NAME"));
+				student.setClassNum(rSet.getString("CLASS_NUM"));
 				//リストに追加
 				testlistStudent.add(student);
 			}
@@ -37,45 +37,25 @@ public class TestListStudentDao extends Dao {
 		return testlistStudent;
 	}
 
-	public List<TestListStudent> filter(Student student)throws Exception{
-		//リストを初期化
+	//メモ
+	public List<TestListStudent> filter(Student student) throws Exception {
 		List<TestListStudent> list = new ArrayList<>();
-		//コネクションを確立
 		Connection connection = getConnection();
-		//プリペアードステートメント
 		PreparedStatement statement = null;
-		//リザルトセット
 		ResultSet rSet = null;
 
-		//SQL文のソート
-		String order = " order by cd asc";
+		String order = " order by subject_cd asc";
 		try {
 			statement = connection.prepareStatement(baseSql + order);
 			statement.setString(1, student.getNo());
 			rSet = statement.executeQuery();
 
-			while (rSet.next()) {
-				// 教科情報（Subject）を作成
-				Subject subject = new Subject();
-				subject.setCd(rSet.getString("cd"));
-
-				// テスト成績データ（TestListStudent）を作成
-				TestListStudent testListStudent = new TestListStudent();
-				testListStudent.setStudentNo(rSet.getString("cd"));
-				testListStudent.setSubjectCd(rSet.getString("cd"));
-				test.setPoint(rSet.getInt("point"));
-				list.add(testListStudent);
-			}
-
-
-
-
-//  	SUBJECT_CD  	SCHOOL_CD  	NO  	POINT  	CLASS_NUM
+			// 結果セットをリストに変換
+			list = postFilter(rSet, null);
 
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			//プリペアードステートメントを閉じる
 			if (statement != null) {
 				try {
 					statement.close();
@@ -83,7 +63,6 @@ public class TestListStudentDao extends Dao {
 					throw sqle;
 				}
 			}
-			//コネクションを閉じる
 			if (connection != null) {
 				try {
 					connection.close();
@@ -93,8 +72,6 @@ public class TestListStudentDao extends Dao {
 			}
 		}
 		return list;
-
 	}
-}
-
+	}
 
