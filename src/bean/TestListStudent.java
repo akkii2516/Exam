@@ -15,7 +15,7 @@ public class TestListStudent {
 	public String getStudentNo() {
 		return studentNo;
 	}
-	public void setStudentNo(String setStudentNo) {
+	public void setStudentNo(String studentNo) {
 		this.studentNo = studentNo;
 	}
 	public String getStudentName() {
