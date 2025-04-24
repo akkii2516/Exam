@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.School;
 import bean.Student;
 import bean.Subject;
 import bean.TestListStudent;
@@ -14,6 +15,27 @@ import bean.TestListStudent;
 public class TestListStudentDao extends Dao {
 	//学生番号から成績を出せばいいと思う
 	private String baseSql = "select* from test where student_no=?";
+
+	private List<TestListStudent> postFilter(ResultSet rSet, School school) throws Exception {
+		//リストを初期化
+		List<TestListStudent> testlistStudent = new ArrayList<>();
+		try {
+			//リザルトセットを全権捜査
+			while (rSet.next()) {
+				//学生インスタンスを初期化
+				TestListStudent student = new TestListStudent();
+				//学生インスタンスに検索結果をセット
+				student.setStudentNo(rSet.getString("STUDENT_NO"));
+				student.setSubjectCd(rSet.getString("name"));
+				//リストに追加
+				testlistStudent.add(student);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
+
+		return testlistStudent;
+	}
 
 	public List<TestListStudent> filter(Student student)throws Exception{
 		//リストを初期化
@@ -39,11 +61,17 @@ public class TestListStudentDao extends Dao {
 
 				// テスト成績データ（TestListStudent）を作成
 				TestListStudent testListStudent = new TestListStudent();
-				testListStudent.setStudent(student);
-				testListStudent.setSubject(subject);
-				testListStudent.setPoint(rSet.getInt("point"));
+				testListStudent.setStudentNo(rSet.getString("cd"));
+				testListStudent.setSubjectCd(rSet.getString("cd"));
+				test.setPoint(rSet.getInt("point"));
 				list.add(testListStudent);
 			}
+
+
+
+
+//  	SUBJECT_CD  	SCHOOL_CD  	NO  	POINT  	CLASS_NUM
+
 		} catch (Exception e) {
 			throw e;
 		} finally {

@@ -1,35 +1,44 @@
 package bean;
-
+import java.util.Map;
 public class TestListStudent {
-
-	private String SubjectName;
-	private String SubjectCd;
-	private int num;
-	private int point;
-
-	public String getSubjectName() {
-		return SubjectName;
+	private int entYear;
+	private String studentNo;
+	private String studentName;
+	private String classNum;
+	private Map<Integer, Integer> points;
+	public int getEntYear() {
+		return entYear;
 	}
-	public void setSubjectName(String subjectName) {
-		this.SubjectName = subjectName;
+	public void setEntYear(int entYear) {
+		this.entYear = entYear;
 	}
-	public String getSubjectCd() {
-		return SubjectName;
+	public String getStudentNo() {
+		return studentNo;
 	}
-	public void setSubjectCd(String subjectCd){
-		this.SubjectCd = subjectCd;
+	public void setStudentNo(String studentNo) {
+		this.studentNo = studentNo;
 	}
-	public int getNum() {
-		return num;
+	public String getStudentName() {
+		return studentName;
 	}
-	public void setNum(int num){
-		this.num = num;
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
-	public int getPoint() {
-		return point;
+	public String getClassNum() {
+		return classNum;
 	}
-	public void setPoint(int point) {
-		this.point = point;
+	public void setClassNum(String classNum) {
+		this.classNum = classNum;
 	}
-
+	public Map<Integer, Integer> getPoints() {
+        return points;
+	}
+	public void setMap(Map<Integer, Integer> points) {
+        this.points = points;
+	}
+    public String getPoint(int key){
+    	return null;
+    }
+    public void putPoint(int key,int value){
+    }
 }

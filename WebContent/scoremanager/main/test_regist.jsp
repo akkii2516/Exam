@@ -90,4 +90,66 @@
 			</c:choose>
 		</section>
 	</c:param>
+<c:choose>
+<c:when test="${not empty tests}">
+  <div>検索結果：${tests.size()}件</div>
+
+  <form action="TestRegistUpdateExecute.action" method="get">
+    <div class="d-flex" style="margin: 30px 0 20px 15px; gap: 30px;" id="filter">
+
+      <!-- 入学年度 -->
+      <div class="d-flex flex-column">
+        <label class="form-label" for="student-ent_year">入学年度</label>
+        <input type="text" id="student-ent_year" name="ent_year"
+               value="${test.entYear}"
+               style="border: none;" readonly>
+      </div>
+
+      <!-- クラス -->
+      <div class="d-flex flex-column">
+        <label class="form-label" for="test-class">クラス</label>
+        <input type="text" id="test-class" name="class"
+               value="${test.classNum}"
+               style="border: none;" readonly>
+      </div>
+
+      <!-- 学生番号 -->
+      <div class="d-flex flex-column">
+        <label class="form-label" for="test-no">学生番号</label>
+        <input type="text" id="test-no" name="no"
+               value="${test.no}"
+               style="border: none;" readonly>
+      </div>
+
+      <!-- 氏名 -->
+      <div class="d-flex flex-column">
+        <label class="form-label" for="test-name">氏名</label>
+        <input type="text" id="test-name" name="name"
+               value="${test.name}"
+               style="border: none;" readonly>
+      </div>
+		<!-- 点数入力 -->
+		<div class="d-flex flex-column">
+		  <label class="form-label" for="test-point">点数</label>
+		  <input type="number" id="test-point" name="point"
+		         value="${test.point}" min="0" max="100"
+		         style="margin-bottom: 20px;">
+		</div>
+
+    </div>
+		<div class="col-2 text^center">
+			<button class="btn btn-secondary" id="filter-button">登録して終了</button>
+		</div>
+  </form>
+
+  <table>
+    <!-- 表の内容 -->
+  </table>
+</c:when>
+
+  <c:otherwise>
+    <div>検索結果がありません。</div>
+  </c:otherwise>
+</c:choose>
+
 </c:import>
