@@ -9,11 +9,28 @@ import java.util.List;
 
 import bean.Student;
 import bean.Subject;
+import bean.Test;
 import bean.TestListStudent;
+import bean.TestListSubject;
 
 public class TestListStudentDao extends Dao {
 	//学生番号から成績を出せばいいと思う
 	private String baseSql = "select* from test where student_no=?";
+
+	private postFilter
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public List<TestListStudent> filter(Student student)throws Exception{
 		//リストを初期化
@@ -39,9 +56,11 @@ public class TestListStudentDao extends Dao {
 
 				// テスト成績データ（TestListStudent）を作成
 				TestListStudent testListStudent = new TestListStudent();
-				testListStudent.setStudent(student);
-				testListStudent.setSubject(subject);
-				testListStudent.setPoint(rSet.getInt("point"));
+				TestListSubject testListSubject = new TestListSubject();
+				Test test = new Test();
+				testListStudent.setStudentNo(student);
+				testListSubject.setSubjectCd(subject);
+				test.setPoint(rSet.getInt("point"));
 				list.add(testListStudent);
 			}
 		} catch (Exception e) {
