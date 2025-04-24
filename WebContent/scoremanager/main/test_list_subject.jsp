@@ -13,25 +13,32 @@
 <form action="SearchSubjectServlet" method="get">
 <div class="label-column">科目情報</div>
 <div class="form-section">
-<label>入学年度</label>
-<select name="year">
-<option value="2021">2021</option>
-<option value="2022">2022</option>
-<option value="2023">2023</option>
-</select>
+<label class="form-label" for="student-f1-select">入学年度</label>
+						<select class="fotm-select" if="student-f1-select" name="f1">
+							<option value="0">--------</option>
+							<c:forEach var="year" items="${ent_year_set }">
+							<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
+							<option value="${year }" <c:if test="${year==f1 }">selected</c:if>>${year }</option>
+							</c:forEach>
+						</select>
 
-            <label>クラス</label>
-<select name="class">
-<option value="201">201</option>
-<option value="202">202</option>
-<option value="203">203</option>
-</select>
+            <label class="form-label" for="student-f2-select">クラス</label>
+						<select class="form-select" id="student-f2-select" name="f2">
+							<option value="0">--------</option>
+							<c:forEach var="num" items="${class_num_set }">
+								<%-- 現在のnumと選択されていたf2が一致していた場合selectedを追記 --%>
+								<option value="${num }" <c:if test="${num==f2 }">selected</c:if>>${num }</option>
+							</c:forEach>
+						</select>
 
-            <label>科目</label>
-<select name="subject">
-<option value="情報処理基礎知識Ⅰ">情報処理基礎知識Ⅰ</option>
-<option value="情報処理基礎知識Ⅱ">情報処理基礎知識Ⅱ</option>
-</select>
+            <label class="form-label" for="student-f2-select">科目</label>
+						<select class="form-select" id="student-f2-select" name="f3">
+							<option value="0">--------</option>
+							<c:forEach var="subject" items="${list }">
+								<%-- 現在のsubject.cdと選択されていたf3が一致していた場合selectedを追記 --%>
+								<option value="${subject.cd }" <c:if test="${subject.cd==f3 }">selected</c:if>>${subject.name }</option>
+							</c:forEach>
+						</select>
 
             <button type="submit" class="search-button">検索</button>
 </div>
