@@ -8,19 +8,20 @@
 <c:param name="content">
 <section class="me-4">
 <!-- ① タイトル -->
-<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績一覧(学生))</h2>
+<h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績一覧(学生)</h2>
 
 <form action="SearchSubjectServlet" method="get">
 <div class="label-column">科目情報</div>
 <div class="form-section">
 <label class="form-label" for="student-f1-select">入学年度</label>
-						<select class="fotm-select" if="student-f1-select" name="f1">
+						<select class="fotm-select" id="student-f1-select" name="f1">
 							<option value="0">--------</option>
 							<c:forEach var="year" items="${ent_year_set }">
 							<%-- 現在のyearと選択されていたf1が一致していた場合selectedを追記 --%>
 							<option value="${year }" <c:if test="${year==f1 }">selected</c:if>>${year }</option>
 							</c:forEach>
 						</select>
+						<p></p>
 
             <label class="form-label" for="student-f2-select">クラス</label>
 						<select class="form-select" id="student-f2-select" name="f2">
