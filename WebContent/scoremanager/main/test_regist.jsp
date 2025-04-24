@@ -90,4 +90,14 @@
 			</c:choose>
 		</section>
 	</c:param>
+<c:choose>
+  <c:when test="${not empty tests}">
+    <div>検索結果：${tests.size()}件</div>
+    <table>......</table>
+  </c:when>
+  <c:otherwise>
+    <div>検索結果がありません。</div>
+  </c:otherwise>
+</c:choose>
+
 </c:import>
