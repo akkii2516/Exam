@@ -10,9 +10,7 @@ import java.util.List;
 import bean.School;
 import bean.Student;
 import bean.Subject;
-import bean.Test;
 import bean.TestListStudent;
-import bean.TestListSubject;
 
 public class TestListStudentDao extends Dao {
 	//学生番号から成績を出せばいいと思う
@@ -25,10 +23,10 @@ public class TestListStudentDao extends Dao {
 			//リザルトセットを全権捜査
 			while (rSet.next()) {
 				//学生インスタンスを初期化
-				Student student = new Student();
+				TestListStudent student = new TestListStudent();
 				//学生インスタンスに検索結果をセット
-				student.setNo(rSet.getString("no"));
-				student.setName(rSet.getString("name"));
+				student.setStudentNo(rSet.getString("STUDENT_NO"));
+				student.setSubjectCd(rSet.getString("name"));
 				//リストに追加
 				testlistStudent.add(student);
 			}
@@ -63,13 +61,17 @@ public class TestListStudentDao extends Dao {
 
 				// テスト成績データ（TestListStudent）を作成
 				TestListStudent testListStudent = new TestListStudent();
-				TestListSubject testListSubject = new TestListSubject();
-				Test test = new Test();
-				testListStudent.setStudentNo(student);
-				testListSubject.setSubjectCd(subject);
+				testListStudent.setStudentNo(rSet.getString("cd"));
+				testListStudent.setSubjectCd(rSet.getString("cd"));
 				test.setPoint(rSet.getInt("point"));
 				list.add(testListStudent);
 			}
+
+
+
+
+//  	SUBJECT_CD  	SCHOOL_CD  	NO  	POINT  	CLASS_NUM
+
 		} catch (Exception e) {
 			throw e;
 		} finally {
