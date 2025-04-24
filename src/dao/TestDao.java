@@ -16,31 +16,40 @@ public class TestDao extends Dao {
 
 	private String baseSql = "select* from test where school_cd=?";
 
-	public Test get(int no,Student student,Subject subject,School school) throws Exception {
+	public Test get(Student student, Subject subject, School school, int no) throws Exception {
 		//学生インスタンスを初期化
 		Test test = new Test();
 		//データベースへのコネクションを確立
 		Connection connection = getConnection();
 		//プリペアードステートメント
 		PreparedStatement statement = null;
-
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("select * from test where school_cd=?");
+			statement = connection.prepareStatement("SELECT * FROM TEST where subject_cd=? and school_cd=? and class_num=? and no=?");
 			//プリペアードステートメントに番号をバインド
-			statement.setString(1, school.getCd());
-			statement.setInt(2, no);
+			statement.setString(1,subject.getCd());
+			statement.setString(2, school.getCd());
+			statement.setString(3, student.getClassNum());
+			statement.setInt(4, no);
 			//プリペアードステートメントを実行
 			ResultSet rSet = statement.executeQuery();
 
-			//学校Daoを初期化
-			TestDao testDao = new TestDao();
+			//学生Daoを初期化
+			StudentDao studentDao = new StudentDao();
+			//科目Daoを初期化
+			SubjectDao subjectDao = new SubjectDao();
+			//学校Danを初期化
+			SchoolDao schoolDao = new SchoolDao();
 
 			if (rSet.next()) {
 				//リザルトセットが存在する場合
 				//学生インスタンスに検索結果をセット
+				test.setStudent(studentDao.get(rSet.getString("student_no")));
+				test.setSubject(subjectDao.get(rSet.getString("subject_cd"), school));
+				test.setSchool(schoolDao.get(rSet.getString("school_cd")));
 				test.setNo(rSet.getInt("no"));
-
+				test.setPoint(rSet.getInt("point"));
+				test.setClassNum(rSet.getString("class_num"));
 			} else {
 				//リザルトセットが存在しない場合
 				//学生インスタンスにnullをセット
