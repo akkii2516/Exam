@@ -12,9 +12,9 @@ import bean.School;
 import bean.Student;
 import bean.TestListStudent;
 
-public class TestListStudentDao extends Dao {
-	//学生番号から成績を出せばいいと思う
-	private String baseSql = "select* from test where student_no=?";
+public class TestListSubjectDao extends Dao {
+	//科目番号から成績を出せばいいと思う
+	private String baseSql = "select* from test where subject_cd=?";
 
 	private List<TestListStudent> postFilter(ResultSet rSet, School school) throws Exception {
 		//リストを初期化
