@@ -42,6 +42,6 @@ public class TestListAction extends Action {
         req.setAttribute("f4", f4);
 
         // JSPにフォワード
-        req.getRequestDispatcher("test_list.jsp").forward(req, res);
+        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 }
