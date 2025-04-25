@@ -78,7 +78,7 @@ public class TestDao extends Dao {
 		return test;
 	}
 
-	//ポストフィルターあってるか分からない
+	//多分間違ってる
 	private List<Test> postFilter(ResultSet rSet, School school) throws Exception {
 		//リストを初期化
 		List<Test> list = new ArrayList<>();
@@ -110,6 +110,7 @@ public class TestDao extends Dao {
 		return list;
 	}
 
+	//恐らく間違えてる
 	public List<Test> filter(int entYear, String classNum, Subject subject ,int num,School school) throws Exception {
 		//リストを初期化
 		List<Test> list = new ArrayList<>();
@@ -166,6 +167,7 @@ public class TestDao extends Dao {
 
 
 
+	//絶対間違えてる
 	public boolean save(List<Test> list) throws Exception {
 		//コネクションを確立
 		Connection connection = getConnection();
@@ -182,21 +184,21 @@ public class TestDao extends Dao {
 				if (old == null) {
 	                // INSERT処理
 	                statement = connection.prepareStatement(
-	                    "insert into test(ent_year, class_num, no, name, point) values(?, ?, ?, ?, ?)");
-	                statement.setInt(1, test.getStudent().getEntYear());
-	                statement.setString(2, test.getStudent().getClassNum());
-	                statement.setString(3, test.getStudent().getNo());
-	                statement.setString(4, test.getStudent().getName());
+	                    "insert into test(student_no, subject_cd, school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)");
+	                statement.setString(1, test.getStudent().getNo());
+	                statement.setString(2, test.getsubject().getCd());
+	                statement.setString(3, test.getSchool().getCd());
+	                statement.setInt(4, test.getNo());
 	                statement.setInt(5, test.getPoint());
+	                statement.setString(6, test.getClassNum());
 				}else {
 	                // UPDATE処理
 	                statement = connection.prepareStatement(
-	                    "update test set ent_year=?, class_num=?, no=?, name=?, point=? where no=?");
-	                statement.setInt(1, test.getStudent().getEntYear());
-	                statement.setString(2, test.getStudent().getClassNum());
-	                statement.setString(3, test.getStudent().getNo());
-	                statement.setString(4, test.getStudent().getName());
-	                statement.setInt(5, test.getPoint());
+	                    "update test set point=? where student_no=? and subject_cd=? and school_cd=? and no=?");
+	                statement.setString(1, test.getStudent().getNo());
+	                statement.setString(2, test.getsubject().getCd());
+	                statement.setString(3, test.getSchool().getCd());
+	                statement.setInt(4, test.getNo());
 	            }
 
 				//プリペアードステートメントを実行
@@ -232,7 +234,8 @@ public class TestDao extends Dao {
 		}
 	}
 
-	private boolean save(Test test, Coonection coonection) throws Exception {
+	private boolean save(Test test, Connection connection) throws Exception {
+		return true;
 
 	}
 }
