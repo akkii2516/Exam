@@ -23,7 +23,7 @@ public class SubjectListAction extends Action {
         List<Subject> list = subjectDao.filter(teacher.getSchool());
 
         // 科目リストをリクエストスコープにセット
-        req.setAttribute("subject_list", list);
+        req.setAttribute("subjects", list);
 
         // subject_list.jsp にフォワード
         req.getRequestDispatcher("subject_list.jsp").forward(req, res);
