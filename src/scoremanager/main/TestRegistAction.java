@@ -8,7 +8,6 @@ import javax.servlet.http.HttpSession;
 
 import bean.Subject;
 import bean.Teacher;
-import bean.Test;
 import dao.ClassNumDao;
 import dao.SubjectDao;
 import tool.Action;
@@ -28,17 +27,9 @@ public class TestRegistAction extends Action {
         SubjectDao subjectDao = new SubjectDao();
         List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
 
-
-
-//        String entYear = req.getParameter("entYear");
-
-//     StudentDao studentDao = new StudentDao();
-     Test test = new Test();
-     test.getStudent().getEntYear();
-
         // リクエストスコープにセット
         req.setAttribute("classlist", classList);
-        req.setAttribute("subjectlist", subjectList);;
+        req.setAttribute("subjectlist", subjectList);
 
         // フォワード先（JSP）へ遷移
         req.getRequestDispatcher("test_regist.jsp").forward(req, res);
