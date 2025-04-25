@@ -1,5 +1,4 @@
-//できたのかもしれないしできてないかもしれないわかりません
-//うごかなかったらまたかえればいい
+//2025-04-25
 package scoremanager.main;
 
 import java.util.List;
@@ -12,7 +11,7 @@ import bean.Teacher;
 import dao.StudentDao;
 import tool.Action;
 
-public class TestListStudentExecuteAction extends Action {
+public class TestListSubjectExecuteAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         // セッションから教員情報を取得
