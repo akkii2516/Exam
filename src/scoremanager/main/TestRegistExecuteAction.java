@@ -34,6 +34,7 @@ public class TestRegistExecuteAction extends Action {
         //TestDaoの初期化
         TestDao testDao = new TestDao();
 
+        List<Test> tests = new ArrayList<>();
         // 点数が0よりも小さいまたは、100よりも大きい場合
         if (0 < point || 100 < point) {
             errors.put("1", "0～100の範囲で入力してください");//jsp側では${errors.get("1") }のように()の中に1を指定してあげる
@@ -52,7 +53,6 @@ public class TestRegistExecuteAction extends Action {
                 test.setNo(count);//回数
                 test.setPoint(point);//得点
                 test.setClassNum(class_num);//科目コード
-                List<Test> tests = new ArrayList<>();
                 tests.add(test);
         }
     	// 成績の情報をデータベースに保存
