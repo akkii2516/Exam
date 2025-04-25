@@ -2,6 +2,7 @@
 package scoremanager.main;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.Student;
+import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
 import dao.StudentDao;
+import dao.SubjectDao;
 import tool.Action;
 
 public class TestListAction extends Action {
@@ -34,12 +37,16 @@ public class TestListAction extends Action {
 		int year = todaysDate.getYear();//現在の年を取得
 		StudentDao sDao = new StudentDao();//学生Dao
 		ClassNumDao cNumDao = new ClassNumDao();//クラス番号Daoを初期化
+		SubjectDao subjectDao = new SubjectDao();
 		Map<String, String> errors = new HashMap<>();//エラーメッセージ
 
 		//リクエストパラメーターの取得 2
 		entYearStr = req.getParameter("f1");
 		classNum = req.getParameter("f2");
 		isAttendStr = req.getParameter("f3");
+		//DBからデータ取得3
+				List<String>cNumlist = cNumDao.filter(teacher.getSchool()); //クラス情報
+				List<Subject>list = subjectDao.filter(teacher.getSchool()); //科目情報
 
 		//在学フラグが送信されていた場合
 		if (isAttendStr != null) {
@@ -54,27 +61,27 @@ public class TestListAction extends Action {
 //			//数値に変換
 //			entYear = Integer.parseInt(entYearStr);
 //		}
-//		//リストを初期化
-//		List<Integer> entYearSet = new ArrayList<>();
-//		//10年前から1年後まで年をリストに追加
-//		for (int i = year - 10; i < year + 1; i++) {
-//			entYearSet.add(i);
-//		}
+		//リストを初期化
+		List<Integer> entYearSet = new ArrayList<>();
+		//10年前から1年後まで年をリストに追加
+		for (int i = year - 10; i < year + 1; i++) {
+			entYearSet.add(i);
+		}
 
 
 		//レスポンス値をセット6
 		//リクエストに入学年度をセット
 //		req.setAttribute("f1", entYear);
 		//リクエストにクラス番号をセット
-		req.setAttribute("f2", classNum);
-		//リクエストに学生リストをセット
-		req.setAttribute("students", students);
+		req.setAttribute("f2", cNumlist);
+		req.setAttribute("f3", list);
+		req.setAttribute("f1", entYearSet);
 		//リクエストにデータをセット
 //		req.setAttribute("class_num_set", list);
 //		req.setAttribute("ent_year_set", entYearSet);
 
 		//JSPへフォワード 7
-		req.getRequestDispatcher("student_list.jsp").forward(req, res);
+		req.getRequestDispatcher("test_list.jsp").forward(req, res);
     }
 }
 //=======
