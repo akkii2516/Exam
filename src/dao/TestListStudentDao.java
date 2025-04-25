@@ -27,6 +27,7 @@ public class TestListStudentDao extends Dao {
 				student.setStudentNo(rSet.getString("STUDENT_NO"));
 				student.setStudentName(rSet.getString("STUDENT_NAME"));
 				student.setClassNum(rSet.getString("CLASS_NUM"));
+
 				//リストに追加
 				testlistStudent.add(student);
 			}
@@ -37,7 +38,6 @@ public class TestListStudentDao extends Dao {
 		return testlistStudent;
 	}
 
-	//メモ
 	public List<TestListStudent> filter(Student student) throws Exception {
 		List<TestListStudent> list = new ArrayList<>();
 		Connection connection = getConnection();
