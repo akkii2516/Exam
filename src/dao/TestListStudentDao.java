@@ -9,10 +9,7 @@ import java.util.List;
 
 import bean.School;
 import bean.Student;
-import bean.Subject;
-import bean.Test;
 import bean.TestListStudent;
-import bean.TestListSubject;
 
 public class TestListStudentDao extends Dao {
 	//学生番号から成績を出せばいいと思う
@@ -24,11 +21,12 @@ public class TestListStudentDao extends Dao {
 		try {
 			//リザルトセットを全権捜査
 			while (rSet.next()) {
-				//学生インスタンスを初期化
-				Student student = new Student();
-				//学生インスタンスに検索結果をセット
-				student.setNo(rSet.getString("no"));
-				student.setName(rSet.getString("name"));
+				//テストリストのインスタンスを初期化
+				TestListStudent student = new TestListStudent();
+				//テスト結果の検索結果をセット
+				student.setStudentNo(rSet.getString("STUDENT_NO"));
+				student.setStudentName(rSet.getString("STUDENT_NAME"));
+				student.setClassNum(rSet.getString("CLASS_NUM"));
 				//リストに追加
 				testlistStudent.add(student);
 			}
@@ -39,41 +37,25 @@ public class TestListStudentDao extends Dao {
 		return testlistStudent;
 	}
 
-	public List<TestListStudent> filter(Student student)throws Exception{
-		//リストを初期化
+	//メモ
+	public List<TestListStudent> filter(Student student) throws Exception {
 		List<TestListStudent> list = new ArrayList<>();
-		//コネクションを確立
 		Connection connection = getConnection();
-		//プリペアードステートメント
 		PreparedStatement statement = null;
-		//リザルトセット
 		ResultSet rSet = null;
 
-		//SQL文のソート
-		String order = " order by cd asc";
+		String order = " order by subject_cd asc";
 		try {
 			statement = connection.prepareStatement(baseSql + order);
 			statement.setString(1, student.getNo());
 			rSet = statement.executeQuery();
 
-			while (rSet.next()) {
-				// 教科情報（Subject）を作成
-				Subject subject = new Subject();
-				subject.setCd(rSet.getString("cd"));
+			// 結果セットをリストに変換
+			list = postFilter(rSet, null);
 
-				// テスト成績データ（TestListStudent）を作成
-				TestListStudent testListStudent = new TestListStudent();
-				TestListSubject testListSubject = new TestListSubject();
-				Test test = new Test();
-				testListStudent.setStudentNo(student);
-				testListSubject.setSubjectCd(subject);
-				test.setPoint(rSet.getInt("point"));
-				list.add(testListStudent);
-			}
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			//プリペアードステートメントを閉じる
 			if (statement != null) {
 				try {
 					statement.close();
@@ -81,7 +63,6 @@ public class TestListStudentDao extends Dao {
 					throw sqle;
 				}
 			}
-			//コネクションを閉じる
 			if (connection != null) {
 				try {
 					connection.close();
@@ -91,8 +72,6 @@ public class TestListStudentDao extends Dao {
 			}
 		}
 		return list;
-
 	}
-}
-
+	}
 

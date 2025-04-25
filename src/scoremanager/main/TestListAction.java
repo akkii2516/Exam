@@ -1,3 +1,4 @@
+
 package scoremanager.main;
 
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class TestListAction extends Action {
 		String classNum = "";//入力されたクラス番号
 		String isAttendStr="";//入力された在学生フラグ
 //		int entYear = 0;//入学年度
-//		boolean isAttend = false;//在学生フラグ
+		boolean isAttend = false;//在学生フラグ
 		List<Student> students = null;//学生リスト
 		LocalDate todaysDate = LocalDate.now();//LocalDateインスタンスを取得
 		int year = todaysDate.getYear();//現在の年を取得
@@ -63,16 +64,65 @@ public class TestListAction extends Action {
 
 		//レスポンス値をセット6
 		//リクエストに入学年度をセット
-		req.setAttribute("f1", entYear);
+//		req.setAttribute("f1", entYear);
 		//リクエストにクラス番号をセット
 		req.setAttribute("f2", classNum);
 		//リクエストに学生リストをセット
 		req.setAttribute("students", students);
 		//リクエストにデータをセット
-		req.setAttribute("class_num_set", list);
-		req.setAttribute("ent_year_set", entYearSet);
+//		req.setAttribute("class_num_set", list);
+//		req.setAttribute("ent_year_set", entYearSet);
 
 		//JSPへフォワード 7
 		req.getRequestDispatcher("student_list.jsp").forward(req, res);
     }
 }
+//=======
+//package scoremanager.main;
+//
+//import java.util.List;
+//
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
+//import javax.servlet.http.HttpSession;
+//
+//import bean.Subject;
+//import bean.Teacher;
+//import bean.Test;
+//import dao.SubjectDao;
+//import dao.TestDao;
+//import tool.Action;
+//
+//public class TestListAction extends Action {
+//    @Override
+//    public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+//        // セッションからログイン中の教員情報を取得
+//        HttpSession session = req.getSession();
+//        Teacher teacher = (Teacher) session.getAttribute("user");
+//
+//        // パラメータ取得
+//        String f1 = req.getParameter("f1"); // 入学年度
+//        String f2 = req.getParameter("f2"); // クラス
+//        String f3 = req.getParameter("f3"); // 科目コード
+//        String f4 = req.getParameter("f4"); // 回数
+//
+//        // 各種リストの取得
+//        SubjectDao subjectDao = new SubjectDao();
+//        List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
+//
+//        TestDao testDao = new TestDao();
+//        List<Test> testList = testDao.search(f1, f2, f3, f4, teacher.getSchool());
+//
+//        // リクエストスコープにセット
+//        req.setAttribute("subject_list", subjectList);
+//        req.setAttribute("tests", testList);
+//        req.setAttribute("f1", f1);
+//        req.setAttribute("f2", f2);
+//        req.setAttribute("f3", f3);
+//        req.setAttribute("f4", f4);
+//
+//        // JSPにフォワード
+//        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
+//    }
+//}
+//>>>>>>> branch 'master' of https://github.com/akkii2516/Exam.git

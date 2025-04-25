@@ -1,0 +1,37 @@
+//メモ
+public List<TestListStudent> filter(Student student) throws Exception {
+	List<TestListStudent> list = new ArrayList<>();
+	Connection connection = getConnection();
+	PreparedStatement statement = null;
+	ResultSet rSet = null;
+
+	// 正しいソートカラム名に変更（必要に応じて）
+	String order = " order by subject_cd asc";
+	try {
+		statement = connection.prepareStatement(baseSql + order);
+		statement.setString(1, student.getNo());
+		rSet = statement.executeQuery();
+
+		// 結果セットをリストに変換
+		list = postFilter(rSet, null);
+
+	} catch (Exception e) {
+		throw e;
+	} finally {
+		if (statement != null) {
+			try {
+				statement.close();
+			} catch (SQLException sqle) {
+				throw sqle;
+			}
+		}
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException sqle) {
+				throw sqle;
+			}
+		}
+	}
+	return list;
+}
