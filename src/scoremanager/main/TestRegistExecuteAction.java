@@ -25,7 +25,7 @@ public class TestRegistExecuteAction extends Action {
         // フォームからの入力データを取得
         String subject_cd = req.getParameter("subject");
         int count = Integer.parseInt(req.getParameter("count"));
-        String class_num = req.getParameter("classNum");
+        String class_num = req.getParameter("cls");
         String[] student_no = req.getParameterValues("regist");
 		for (String item : student_no) {
 			int point = Integer.parseInt(req.getParameter("point")); // 得点（test_regist.jsp上では点数）

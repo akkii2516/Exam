@@ -26,8 +26,8 @@
 						<label class="form-label" for="select-class">クラス</label>
 						<select class="form-select" id="select-class" name="f2">
 							<option value="0">--------</option>
-							<c:forEach var="cls" items="${class_list}">
-								<option value="${class}" <c:if test="${class == f2}">selected</c:if>>${class}</option>
+							<c:forEach var="cls" items="${cls}">
+								<option value="${cls}" <c:if test="${cls == f2}">selected</c:if>>${cls}</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -47,11 +47,11 @@
 
 				<div class="row border mx-3 mb-3 py-2 align-items-center rounded">
 					<div class="col-4">
-						<label class="form-label" for="select-times">回数</label>
-						<select class="form-select" id="select-times" name="f4">
+						<label class="form-label" for="select-count">回数</label>
+						<select class="form-select" id="select-count" name="f4">
 							<option value="0">--------</option>
-							<c:forEach var="times" items="${times_list}">
-								<option value="${times}" <c:if test="${times == f4}">selected</c:if>>${times}</option>
+							<c:forEach var="count" items="${count_list}">
+								<option value="${count}" <c:if test="${count == f4}">selected</c:if>>${count}</option>
 							</c:forEach>
 						</select>
 					</div>
