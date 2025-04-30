@@ -17,33 +17,49 @@ import tool.Action;
 public class TestRegistAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-    	HttpSession session = req.getSession();//セッション
-        Teacher teacher = (Teacher)session.getAttribute("user");
+        // セッションから教員情報を取得
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("user");
 
-			ClassNumDao cNumDao = new ClassNumDao();//クラス番号Daoを初期化
-			SubjectDao subjectDao = new SubjectDao();//科目Daoの初期化
+        // DAOの初期化
+        ClassNumDao cNumDao = new ClassNumDao();
+        SubjectDao subjectDao = new SubjectDao();
 
-			//DBからデータ取得3
-                List<String>cNumlist = cNumDao.filter(teacher.getSchool()); //クラス情報
-                List<Subject>list = subjectDao.filter(teacher.getSchool()); //科目情報
+        // クラス番号と科目を学校ごとに取得
+        List<String> cNumlist = cNumDao.filter(teacher.getSchool());
+        List<Subject> list = subjectDao.filter(teacher.getSchool());
 
-                LocalDate todaysDate = LocalDate.now();//LocalDateインスタンスを取得
+        // 現在の年を取得し、入学年度リストを作成（10年前〜今年）
+        LocalDate todaysDate = LocalDate.now();
+        int year = todaysDate.getYear();
+        List<Integer> entYearSet = new ArrayList<>();
+        for (int i = year - 10; i <= year; i++) {
+            entYearSet.add(i);
+        }
 
-        		int year = todaysDate.getYear();//現在の年を取得
+        // 【追加】回数リスト（例：1〜10回）
+        List<Integer> countList = new ArrayList<>();
+        for (int i = 1; i <= 10; i++) {
+            countList.add(i);
+        }
 
-			//リストを初期化
-			        List<Integer> entYearSet = new ArrayList<>();
-			        //10年前から1年後まで年をリストに追加
-			        for (int i = year - 10; i < year + 1; i++) {
-			            entYearSet.add(i);
-			        }
+        // リクエストパラメータから検索条件を取得
+        String f1 = req.getParameter("f1");  // 入学年度
+        String f2 = req.getParameter("f2");  // クラス
+        String f3 = req.getParameter("f3");  // 科目
+        String f4 = req.getParameter("f4");  // 回数
 
-			//リクエストにクラス番号をセット
-			        req.setAttribute("f1", entYearSet);
-			        req.setAttribute("f2", cNumlist);
-			        req.setAttribute("f3", list);
+        // リクエストスコープにセット（フィルタリングなしで、すべてのデータを渡す）
+        req.setAttribute("f1", entYearSet);          // 入学年度
+        req.setAttribute("f2", cNumlist);            // クラス
+        req.setAttribute("f3", list);                // 科目
+        req.setAttribute("f4", countList);           // 回数
+        req.setAttribute("selectedF1", f1);          // 選択された入学年度
+        req.setAttribute("selectedF2", f2);          // 選択されたクラス
+        req.setAttribute("selectedF3", f3);          // 選択された科目
+        req.setAttribute("selectedF4", f4);          // 選択された回数
 
-			        //JSPへフォワード 7
-			        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
+        // JSPにフォワード
+        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 }
