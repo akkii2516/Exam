@@ -1,54 +1,49 @@
 package scoremanager.main;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import dao.ClassNumDao;
-import dao.StudentDao;
 import dao.SubjectDao;
 import tool.Action;
 
 public class TestRegistAction extends Action {
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // セッションから教員情報を取得
-        HttpSession session = req.getSession();
-        Teacher teacher = (Teacher) session.getAttribute("user");
+    	HttpSession session = req.getSession();//セッション
+        Teacher teacher = (Teacher)session.getAttribute("user");
 
-        // 所属学校に対応するクラス一覧を取得
-        ClassNumDao classnumDao = new ClassNumDao();
-        List<String> classList = classnumDao.filter(teacher.getSchool());
+			ClassNumDao cNumDao = new ClassNumDao();//クラス番号Daoを初期化
+			SubjectDao subjectDao = new SubjectDao();//科目Daoの初期化
 
-        // 所属学校に対応する科目一覧を取得
-        SubjectDao subjectDao = new SubjectDao();
-        List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
+			//DBからデータ取得3
+                List<String>cNumlist = cNumDao.filter(teacher.getSchool()); //クラス情報
+                List<Subject>list = subjectDao.filter(teacher.getSchool()); //科目情報
 
-        // 所属学校の学生データから入学年度一覧を取得
-        StudentDao studentDao = new StudentDao();
-        List<Student> students = studentDao.filter(teacher.getSchool(), true); // 在学中の学生のみ
-        Set<Integer> entYearSet = new HashSet<>();
-        for (Student s : students) {
-            entYearSet.add(s.getEntYear());
-        }
-        List<Integer> entYearList = new ArrayList<>(entYearSet);
-        Collections.sort(entYearList, Collections.reverseOrder()); // 必要に応じて降順
+                LocalDate todaysDate = LocalDate.now();//LocalDateインスタンスを取得
 
-        // リクエストスコープにセット
-        req.setAttribute("classlist", classList);
-        req.setAttribute("subjectlist", subjectList);
-        req.setAttribute("entyearlist", entYearList);
+        		int year = todaysDate.getYear();//現在の年を取得
 
-        // フォワード先（JSP）へ遷移
-        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
+			//リストを初期化
+			        List<Integer> entYearSet = new ArrayList<>();
+			        //10年前から1年後まで年をリストに追加
+			        for (int i = year - 10; i < year + 1; i++) {
+			            entYearSet.add(i);
+			        }
+
+			//リクエストにクラス番号をセット
+			        req.setAttribute("f1", entYearSet);
+			        req.setAttribute("f2", cNumlist);
+			        req.setAttribute("f3", list);
+
+			        //JSPへフォワード 7
+			        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 }
