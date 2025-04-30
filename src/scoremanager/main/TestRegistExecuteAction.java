@@ -17,6 +17,7 @@ import dao.TestDao;
 import tool.Action;
 
 public class TestRegistExecuteAction extends Action {
+	@Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");  // セッションから教師情報を取得
