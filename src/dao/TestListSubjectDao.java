@@ -7,44 +7,50 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import bean.School;
+import bean.Subject;
 import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
-	// 科目番号から成績を取得
-	private String baseSql = "SELECT * FROM test WHERE subject_cd=?";
+	//検索をする
+	private String baseSql = "SELECT * FROM test WHERE ent_year=? AND class_num=? AND subject_cd=? AND school_cd=?";
 
 	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
-		List<TestListSubject> testlistSubject = new ArrayList<>();
+		List<TestListSubject> testList = new ArrayList<>();
 		try {
 			while (rSet.next()) {
 				TestListSubject subject = new TestListSubject();
 
-				// test テーブルに含まれる必要あり
+				//取得する
 				subject.setSubjectCd(rSet.getString("SUBJECT_CD"));
 				subject.setSubjectName(rSet.getString("SUBJECT_NAME"));
 				subject.setNum(rSet.getInt("NUM"));
 				subject.setPoint(rSet.getInt("POINT"));
 
-				testlistSubject.add(subject);
+				testList.add(subject);
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
-
-		return testlistSubject;
+		return testList;
 	}
 
-	// 科目番号で検索するメソッド
-	public List<TestListSubject> filter(String subjectCd) throws Exception {
+	public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
 		List<TestListSubject> list = new ArrayList<>();
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 		ResultSet rSet = null;
 
-		String order = " ORDER BY student_no ASC";  // 学生番号で並び替え（必要に応じて変更）
+		String order = " ORDER BY student_no ASC";
+
 		try {
 			statement = connection.prepareStatement(baseSql + order);
-			statement.setString(1, subjectCd);
+			statement.setInt(1, entYear);
+			statement.setString(2, classNum);
+			statement.setString(3, subject.getCd());
+			statement.setString(4, school.getCd());
+
+			// クエリ実行・結果取得
 			rSet = statement.executeQuery();
 
 			list = postFilter(rSet);
@@ -55,6 +61,7 @@ public class TestListSubjectDao extends Dao {
 			if (statement != null) try { statement.close(); } catch (SQLException e) { throw e; }
 			if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
 		}
+
 		return list;
 	}
 }
