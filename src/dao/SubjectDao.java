@@ -23,7 +23,7 @@ public class SubjectDao extends Dao {
 
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT * FROM subject WHERE cd = ? AND school = ?;");
+			statement = connection.prepareStatement("SELECT * FROM subject WHERE cd = ? AND school_cd = ?;");
 			//プリペアードステートメントに科目番号をバインド
 			statement.setString(1, cd);
 			statement.setString(2, school.getCd());
@@ -199,7 +199,7 @@ public class SubjectDao extends Dao {
 
 
 						statement = connection
-								.prepareStatement("delete from subject where cd=? and school");
+								.prepareStatement("delete from subject where cd=? and school_cd");
 					//プリペアードステートメントに値をバインド
 					statement.setString(1, subject.getCd());
 					statement.setString(2, subject.getSchool().getCd());
