@@ -199,7 +199,7 @@ public class SubjectDao extends Dao {
 
 
 						statement = connection
-								.prepareStatement("delete from subject where cd=? and school_cd");
+								.prepareStatement("delete from subject where cd=? and school_cd=?");
 					//プリペアードステートメントに値をバインド
 					statement.setString(1, subject.getCd());
 					statement.setString(2, subject.getSchool().getCd());
