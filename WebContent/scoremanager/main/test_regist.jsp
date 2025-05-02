@@ -6,12 +6,14 @@
   <c:param name="scripts"></c:param>
   <c:param name="content">
     <section class="me-4">
-      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">学生管理</h2>
+      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">テスト登録</h2>
 
-      <div class="my-2 text-end px-4">
-        <a href="StudentCreate.action">新規登録</a>
-      </div>
+      <!-- エラーメッセージ表示 -->
+      <c:if test="${not empty error}">
+        <div class="alert alert-danger mx-4">${error}</div>
+      </c:if>
 
+      <!-- 検索フォーム -->
       <form method="get">
         <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 
@@ -43,7 +45,9 @@
             <select class="form-select" id="student-f3-select" name="f3">
               <option value="0">--------</option>
               <c:forEach var="subject" items="${f3}">
-                <option value="${subject}" <c:if test="${subject == selectedF3}">selected</c:if>>${subject}</option>
+                <option value="${subject.cd}" <c:if test="${subject.cd == selectedF3}">selected</c:if>>
+                  ${subject.name}
+                </option>
               </c:forEach>
             </select>
           </div>
@@ -66,45 +70,48 @@
 
         </div>
       </form>
-		<c:choose>
-		  <c:when test="${not empty tests}">
-		    <div>検索結果：${tests.size()}件</div>
 
-		    <form action="TestSave.action" method="post">
-		      <table class="table table-hover">
-		        <thead>
-		          <tr>
-		            <th>入学年度</th>
-		            <th>クラス</th>
-		            <th>学生番号</th>
-		            <th>氏名</th>
-		            <th>点数</th>
-		          </tr>
-		        </thead>
-		        <tbody>
-				<c:forEach var="test" items="${tests}">
-				  <tr>
-				    <td>${test.entYearSet}</td>
-				    <td>${test.cNumlist}</td>
-				    <td>${test.list}</td>
-				    <td>${test.countList}</td>
-				    <td><input name="point" value="${test.point}"></td>
-				  </tr>
+      <!-- 検索結果表示 -->
+      <c:choose>
+        <c:when test="${not empty tests}">
+          <div class="mx-4 mb-3">検索結果：${tests.size()}件</div>
 
-		              <td>		          </c:forEach>
-		        </tbody>
-		      </table>
-		      <div class="text-end">
-		        <button type="submit" class="btn btn-primary">登録</button>
-		      </div>
-		    </form>
+          <form action="TestSave.action" method="post">
+            <table class="table table-hover mx-4">
+              <thead>
+                <tr>
+                  <th>入学年度</th>
+                  <th>クラス</th>
+                  <th>学生番号</th>
+                  <th>氏名</th>
+                  <th>点数</th>
+                </tr>
+              </thead>
+              <tbody>
+                <c:forEach var="test" items="${tests}">
+                  <tr>
+                    <td>${test.student.entYear}</td>
+                    <td>${test.classNum}</td>
+                    <td>${test.student.no}</td>
+                    <td>${test.student.name}</td>
+                    <td>
+                      <input type="hidden" name="studentNoList" value="${test.student.no}" />
+                      <input type="number" name="pointList" value="${test.point}" min="0" max="100" required />
+                    </td>
+                  </tr>
+                </c:forEach>
+              </tbody>
+            </table>
+            <div class="text-end me-4">
+              <button type="submit" class="btn btn-primary">登録</button>
+            </div>
+          </form>
+        </c:when>
 
-		  </c:when>
-		  <c:otherwise>
-		    <div>学生情報が存在しませんでした。</div>
-		  </c:otherwise>
-		</c:choose>
-
+        <c:otherwise>
+          <div class="mx-4">検索条件に一致する学生が見つかりませんでした。</div>
+        </c:otherwise>
+      </c:choose>
     </section>
   </c:param>
 </c:import>

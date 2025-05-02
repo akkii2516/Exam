@@ -18,67 +18,82 @@ import dao.TestDao;
 import tool.Action;
 
 public class TestRegistAction extends Action {
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
         // セッションから教員情報を取得
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");
+        School school = teacher.getSchool();
 
-        // DAOの初期化
+        // DAO初期化
         ClassNumDao cNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
 
-        // クラス番号と科目を学校ごとに取得
-        List<String> cNumlist = cNumDao.filter(teacher.getSchool());
-        List<Subject> list = subjectDao.filter(teacher.getSchool());
+        // 学校ごとのクラス・科目・年度・回数リストを準備
+        List<String> cNumlist = cNumDao.filter(school);
+        List<Subject> subjectList = subjectDao.filter(school);
 
-        // 現在の年を取得し、入学年度リストを作成（10年前〜今年）
-        LocalDate todaysDate = LocalDate.now();
-        int year = todaysDate.getYear();
-        List<Integer> entYearSet = new ArrayList<>();
-        for (int i = year - 10; i <= year; i++) {
-            entYearSet.add(i);
+        LocalDate now = LocalDate.now();
+        int currentYear = now.getYear();
+
+        List<Integer> entYearList = new ArrayList<>();
+        for (int i = currentYear - 10; i <= currentYear; i++) {
+            entYearList.add(i);
         }
 
-        // 【追加】回数リスト（例：1〜10回）
         List<Integer> countList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
             countList.add(i);
         }
 
-        // リクエストパラメータから検索条件を取得
-        String f1 = req.getParameter("f1");  // 入学年度
-        String f2 = req.getParameter("f2");  // クラス
-        String f3 = req.getParameter("f3");  // 科目
-        String f4 = req.getParameter("f4");  // 回数        // リクエストスコープにセット（フィルタリングなしで、すべてのデータを渡す）
-        req.setAttribute("f1", entYearSet);          // 入学年度
-        req.setAttribute("f2", cNumlist);            // クラス
-        req.setAttribute("f3", list);                // 科目
-        req.setAttribute("f4", countList);           // 回数
-        req.setAttribute("selectedF1", f1);          // 選択された入学年度
-        req.setAttribute("selectedF2", f2);          // 選択されたクラス
-        req.setAttribute("selectedF3", f3);          // 選択された科目
-        req.setAttribute("selectedF4", f4);          // 選択された回数
+        // パラメータ取得
+        String f1 = req.getParameter("f1"); // 入学年度
+        String f2 = req.getParameter("f2"); // クラス
+        String f3 = req.getParameter("f3"); // 科目コード
+        String f4 = req.getParameter("f4"); // 回数
 
-        // JSPにフォワード
-     // 検索条件が全て揃っていれば検索実行
-        if (f1 != null && f2 != null && f3 != null && f4 != null &&
-            !f1.equals("0") && !f2.equals("0") && !f3.equals("0") && !f4.equals("0")) {
+        // セレクトボックスの表示用データセット
+        req.setAttribute("f1", entYearList);
+        req.setAttribute("f2", cNumlist);
+        req.setAttribute("f3", subjectList);
+        req.setAttribute("f4", countList);
+        req.setAttribute("selectedF1", f1);
+        req.setAttribute("selectedF2", f2);
+        req.setAttribute("selectedF3", f3);
+        req.setAttribute("selectedF4", f4);
 
+        // 検索条件がすべて正しく入力されていれば検索を実行
+        if (isValid(f1) && isValid(f2) && isValid(f3) && isValid(f4)) {
             int entYear = Integer.parseInt(f1);
             String classNum = f2;
             String subjectCd = f3;
             int testNo = Integer.parseInt(f4);
 
-            School school = teacher.getSchool();
             Subject subject = subjectDao.get(subjectCd, school);
-
             TestDao testDao = new TestDao();
             List<Test> tests = testDao.filter(entYear, classNum, subject, testNo, school);
 
-            req.setAttribute("tests", tests); // ← JSP でループされる
+            req.setAttribute("tests", tests);
+        } else if (anyNotNull(f1, f2, f3, f4)) {
+            // 一部のみ選択されている場合はエラー表示
+            req.setAttribute("error", "すべての検索条件を選択してください。");
         }
 
+        // JSPへフォワード
         req.getRequestDispatcher("test_regist.jsp").forward(req, res);
+    }
+
+    // 有効な値か判定（nullでなく"0"でない）
+    private boolean isValid(String value) {
+        return value != null && !value.equals("0");
+    }
+
+    // 1つでも何かしら値が入っているか判定
+    private boolean anyNotNull(String... values) {
+        for (String v : values) {
+            if (v != null && !v.equals("0")) return true;
+        }
+        return false;
     }
 }
