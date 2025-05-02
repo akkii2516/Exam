@@ -26,12 +26,13 @@
 					</div>
 
 
-					<div class="d-flex gap-2 mb-3">
-						<button type="submit" class="btn btn-secondary">登録</button>
-					</div>
+					<button class="btn btn-secondary" name="end" id="filter-button"
+						style="writing-mode: horizontal-tb; white-space: nowrap; background-color: #007BFF; color: white;">
+						登録
+					</button>
 
 					<div class="col-4" style="margin-top:10px">
-						<a href="StudentList.action">戻る</a>
+						<a href="SubjectList.action">戻る</a>
 					</div>
 			</form>
 	</c:param>
