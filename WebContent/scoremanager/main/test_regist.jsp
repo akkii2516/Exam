@@ -66,15 +66,44 @@
 
         </div>
       </form>
+		<c:choose>
+		  <c:when test="${not empty tests}">
+		    <div>検索結果：${tests.size()}件</div>
 
-      <!-- 選択された値を表示 -->
-      <div class="mt-4">
-        <h5>選択された検索条件:</h5>
-        <p>入学年度: ${selectedF1}</p>
-        <p>クラス: ${selectedF2}</p>
-        <p>科目: ${selectedF3}</p>
-        <p>回数: ${selectedF4}</p>
-      </div>
+		    <form action="TestSave.action" method="post">
+		      <table class="table table-hover">
+		        <thead>
+		          <tr>
+		            <th>入学年度</th>
+		            <th>クラス</th>
+		            <th>学生番号</th>
+		            <th>氏名</th>
+		            <th>点数</th>
+		          </tr>
+		        </thead>
+		        <tbody>
+				<c:forEach var="test" items="${tests}">
+				  <tr>
+				    <td>${test.entYearSet}</td>
+				    <td>${test.cNumlist}</td>
+				    <td>${test.list}</td>
+				    <td>${test.countList}</td>
+				    <td><input name="point" value="${test.point}"></td>
+				  </tr>
+
+		              <td>		          </c:forEach>
+		        </tbody>
+		      </table>
+		      <div class="text-end">
+		        <button type="submit" class="btn btn-primary">登録</button>
+		      </div>
+		    </form>
+
+		  </c:when>
+		  <c:otherwise>
+		    <div>学生情報が存在しませんでした。</div>
+		  </c:otherwise>
+		</c:choose>
 
     </section>
   </c:param>

@@ -8,10 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import bean.School;
 import bean.Subject;
 import bean.Teacher;
+import bean.Test;
 import dao.ClassNumDao;
 import dao.SubjectDao;
+import dao.TestDao;
 import tool.Action;
 
 public class TestRegistAction extends Action {
@@ -47,9 +50,7 @@ public class TestRegistAction extends Action {
         String f1 = req.getParameter("f1");  // 入学年度
         String f2 = req.getParameter("f2");  // クラス
         String f3 = req.getParameter("f3");  // 科目
-        String f4 = req.getParameter("f4");  // 回数
-
-        // リクエストスコープにセット（フィルタリングなしで、すべてのデータを渡す）
+        String f4 = req.getParameter("f4");  // 回数        // リクエストスコープにセット（フィルタリングなしで、すべてのデータを渡す）
         req.setAttribute("f1", entYearSet);          // 入学年度
         req.setAttribute("f2", cNumlist);            // クラス
         req.setAttribute("f3", list);                // 科目
@@ -60,6 +61,24 @@ public class TestRegistAction extends Action {
         req.setAttribute("selectedF4", f4);          // 選択された回数
 
         // JSPにフォワード
+     // 検索条件が全て揃っていれば検索実行
+        if (f1 != null && f2 != null && f3 != null && f4 != null &&
+            !f1.equals("0") && !f2.equals("0") && !f3.equals("0") && !f4.equals("0")) {
+
+            int entYear = Integer.parseInt(f1);
+            String classNum = f2;
+            String subjectCd = f3;
+            int testNo = Integer.parseInt(f4);
+
+            School school = teacher.getSchool();
+            Subject subject = subjectDao.get(subjectCd, school);
+
+            TestDao testDao = new TestDao();
+            List<Test> tests = testDao.filter(entYear, classNum, subject, testNo, school);
+
+            req.setAttribute("tests", tests); // ← JSP でループされる
+        }
+
         req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 }
