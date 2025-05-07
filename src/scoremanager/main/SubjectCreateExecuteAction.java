@@ -34,18 +34,14 @@ public class SubjectCreateExecuteAction extends Action {
 
         // バリデーションチェック
         if (cd == null || cd.length() != 3) {
-            errors.put("cd", "科目コードは3文字で入力してください");
-        }
-
-        if (name == null || name.trim().isEmpty()) {
-            errors.put("name", "科目名を入力してください");
+            errors.put("er1", "科目コードは3文字で入力してください");
         }
 
         SubjectDao dao = new SubjectDao();
 
         // 科目コードの重複チェック（同じ学校内で）
         if (dao.get(cd, teacher.getSchool()) != null) {
-            errors.put("cd", "この科目コードはすでに登録されています");
+            errors.put("er2", "科目コードが重複しています");
         }
 
         // エラーがある場合は、入力ページに戻す
