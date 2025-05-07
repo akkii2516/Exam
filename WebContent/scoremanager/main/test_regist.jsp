@@ -6,7 +6,7 @@
   <c:param name="scripts"></c:param>
   <c:param name="content">
     <section class="me-4">
-      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">テスト登録</h2>
+      <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
 
       <!-- エラーメッセージ表示 -->
       <c:if test="${not empty error}">
