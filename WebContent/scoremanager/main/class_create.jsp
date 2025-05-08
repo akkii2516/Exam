@@ -13,8 +13,8 @@
 				<div class="col-4" style="margin-left: 15px; margin-top: 30px" id="filter">
 
             <div class="mb-3">
-			<label for="student-no" class="form-label">クラス</label>
-			<input type="text" class="form-control" id="student-no" name="no" value="${no}" placeholder="クラス名を入力してください" style="width: 800px;" required>
+			<label for="class-no" class="form-label">クラス</label>
+			<input type="text" class="form-control" id="class-no" name="class-no" value="${class-no}" placeholder="クラス名を入力してください" style="width: 800px;" required>
 			<div class="mt-2 text-warning">${errors.get("2") }</div>
 			</div>
 					<div class="d-flex gap-2 mb-3">
