@@ -16,9 +16,9 @@
 </div>
 
       <!-- ③ 一覧表示 -->
-<div class="px-4">
-<table class="table table-bordered">
-<thead class="table-light">
+<div>
+<table class="table no-border">
+<thead class="no-bg-border">
 <tr>
 <th>科目コード</th>
 <th>科目名</th>
