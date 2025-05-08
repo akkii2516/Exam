@@ -19,7 +19,7 @@
 <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 
           <!-- 入学年度 -->
-<div class="col-3">
+<div class="col-2">
 <label class="form-label" for="student-f1-select">入学年度</label>
 <select class="form-select" id="student-f1-select" name="f1">
 <option value="0">--------</option>
@@ -30,7 +30,7 @@
 </div>
 
           <!-- クラス -->
-<div class="col-3">
+<div class="col-2">
 <label class="form-label" for="student-f2-select">クラス</label>
 <select class="form-select" id="student-f2-select" name="f2">
 <option value="0">--------</option>
@@ -41,7 +41,7 @@
 </div>
 
           <!-- 科目 -->
-<div class="col-3">
+<div class="col-4">
 <label class="form-label" for="student-f3-select">科目</label>
 <select class="form-select" id="student-f3-select" name="f3">
 <option value="0">--------</option>
@@ -64,16 +64,20 @@
 </select>
 </div>
 
-          <!-- 検索ボタン -->
-<div class="col-1 text-center">
-<button class="btn btn-secondary mt-4" id="filter-button">検索</button>
-</div>
+
+    <!-- 検索ボタン (右上に配置、少し左に) -->
+    <div class="col-2 d-flex justify-content-end" style="margin-left: -50px;">
+      <label class="form-label d-block invisible">検索</label>
+      <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+    </div>
+
 
         </div>
 </form>
-
+<div class="mx-4 mb-3">検索結果：${tests.size()}件</div>
       <!-- 検索結果表示 -->
 <c:choose>
+
 <c:when test="${not empty tests}">
 <div class="mx-4 mb-3">検索結果：${tests.size()}件</div>
 
@@ -104,7 +108,7 @@
 </tbody>
 </table>
 <div class="text-end me-4">
-<button type="submit" class="btn btn-primary">登録</button>
+<button type="submit" class="btn btn-primary">登録して終了</button>
 </div>
 </form>
 </c:when>

@@ -14,7 +14,7 @@ import bean.Test;
 
 public class TestDao extends Dao {
 
-	private String baseSql = "SELECT STUDENT.ENT_YEAR, STUDENT.CLASS_NUM, STUDENT.NO, STUDENT.NAME, TEST.POINT FROM STUDENT JOIN TEST ON STUDENT.NO = TEST.STUDENT_NO AND STUDENT.SCHOOL_CD = TEST.SCHOOL_CD WHERE STUDENT.ENT_YEAR = ? AND STUDENT.CLASS_NUM = ? AND TEST.SUBJECT_CD = ? AND TEST.NO = ? AND STUDENT.SCHOOL_CD = ?";
+	private String baseSql = "SELECT STUDENT.ENT_YEAR, STUDENT.CLASS_NUM, STUDENT.NO, STUDENT.NAME, TEST.POINT FROM STUDENT left JOIN (select * from TEST where TEST.SUBJECT_CD = ? AND TEST.NO = ? ) as TEST ON STUDENT.NO = TEST.STUDENT_NO AND STUDENT.SCHOOL_CD = TEST.SCHOOL_CD WHERE STUDENT.ENT_YEAR = ? AND STUDENT.CLASS_NUM = ? AND STUDENT.SCHOOL_CD = ?";
 	public Test get(Student student, Subject subject, School school, int no) throws Exception {
 		//得点インスタンスを初期化
 		Test test = new Test();
@@ -127,14 +127,14 @@ public class TestDao extends Dao {
 		try {
 			//プリペアードステートメントにSQL文をセット
 			statement = connection.prepareStatement(baseSql + order);
-			//プリペアードステートメントに入学年度をバインド
-			statement.setInt(1, entYear);
-			//プリペアードステートメントにクラス番号をバインド
-			statement.setString(2, classNum);
 			//プリペアードステートメントに科目をバインド
-			statement.setString(3, subject.getCd());
+			statement.setString(1, subject.getCd());
 			//プリペアードステートメントにnumをバインド
-			statement.setInt(4, num);
+			statement.setInt(2, num);
+			//プリペアードステートメントにクラス番号をバインド
+			statement.setString(3, classNum);
+			//プリペアードステートメントに入学年度をバインド
+			statement.setInt(4, entYear);
 			//プリペアードステートメントに学校コードをバインド
 			statement.setString(5,  school.getCd());
 			//プリペアードステートメントを実行
