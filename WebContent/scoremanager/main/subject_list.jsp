@@ -32,7 +32,7 @@
 <td>${subject.cd}</td>
 <td>${subject.name}</td>
 <td><a href="SubjectUpdate.action?cd=${subject.cd}">変更</a></td>
-<td><a href="SubjectDelete.action?cd=${subject.cd}" onclick="return confirm('削除してもよろしいですか？');">削除</a></td>
+<td><a href="SubjectDelete.action?cd=${subject.cd}&name=${subject.name}">削除</a></td>
 </tr>
 </c:forEach>
 </tbody>
