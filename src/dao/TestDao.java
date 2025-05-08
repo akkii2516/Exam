@@ -166,7 +166,6 @@ public class TestDao extends Dao {
 	}
 
 
-
 	//絶対間違えてる
 	public boolean save(List<Test> list) throws Exception {
 		//コネクションを確立
