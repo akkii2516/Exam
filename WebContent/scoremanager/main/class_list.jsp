@@ -12,7 +12,7 @@
 
       <!-- ② 新規登録リンク -->
 <div class="my-2 text-end px-4">
-<a href="ClassCreate.action">新規登録</a>
+<!-- <a href="ClassCreate.action">新規登録</a> -->
 </div>
 
       <!-- ③ 一覧表示 -->
@@ -24,10 +24,9 @@
 </tr>
 </thead>
 <tbody>
-<c:forEach var="subject" items="${subjects}">
+<c:forEach var="classNum" items="${classNum}">
 <tr>
-<td>${subject.cd}</td>
-<td>${subject.name}</td>
+<td>${classNum.class_num}</td>
 <td><a href="SubjectUpdate.action?cd=${subject.cd}">変更</a></td>
 <td><a href="SubjectDelete.action?cd=${subject.cd}" onclick="return confirm('削除してもよろしいですか？');">削除</a></td>
 </tr>
