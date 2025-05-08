@@ -38,6 +38,7 @@ public class SubjectDao extends Dao {
 				//リザルトセットが存在する場合
 				//科目インスタンスに検索結果をセット
 				subject.setCd(rSet.getString("cd"));
+				subject.setName(rSet.getString("name"));
 
 			} else {
 				//リザルトセットが存在しない場合

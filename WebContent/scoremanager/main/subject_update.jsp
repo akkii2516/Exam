@@ -13,13 +13,13 @@
 					<div class="mb-3">
 						<label for="subject-cd" class="form-label">科目コード</label>
 						<input type="text" class="form-control" id="subject-cd" name="cd" value="${subject.cd}" style="border: none;width: 800px;" readonly>
-
-						<div class="mt-2 text-warning">${errors.get("2") }</div>
+						<div class="mt-2 text-warning">${errors.get("f1") }</div>
+						<c:remove var="errors" scope="session"/>
 					</div>
 
 					<div class="mb-3">
 						<label for="subject-name" class="form-label">科目名</label>
-						<input type="text" class="form-control" id="name" name="name" value="${name}" placeholder="科目名を入力してください" style="width: 800px;" required>
+						<input type="text" class="form-control" id="name" name="name" value="${subject.name}" placeholder="科目名を入力してください" style="width: 800px;" required>
 					</div>
 
 

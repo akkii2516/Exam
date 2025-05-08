@@ -10,9 +10,8 @@
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">科目情報削除</h2>
 
 			<form action="SubjectDeleteExecute.action" method="get">
-				<div class="col-4" style="margin-left: 15px; margin-top: 30px" id="filter">
-
-					<p>"${subject_name}""${subject_cd}"</p>
+				<div class="col-5" style="margin-left: 15px; margin-top: 30px" id="filter">
+					<p>「${subject.name}(${subject.cd})」を削除してもよろしいですか</p>
 
 					<div class="d-flex gap-2 mb-3">
 						<button type="submit" class="btn btn-secondary">削除</button>

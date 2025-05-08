@@ -19,7 +19,7 @@ public class SubjectDeleteAction extends Action {
 		Teacher teacher = (Teacher)session.getAttribute("user");
 
 		//subject_list.jspから変更を押した科目コードを取得
-		String cd = req.getParameter("CD");
+		String cd = req.getParameter("cd");
 
 		//科目Daoを初期化
 		SubjectDao SubjectDao = new SubjectDao();
