@@ -18,9 +18,9 @@ public class ClassListAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         ClassNumDao classNumDao = new ClassNumDao();
-        List<String> classNums = classNumDao.filter(teacher.getSchool());
+        List<String> classNum = classNumDao.filter(teacher.getSchool());
 
-        req.setAttribute("classNums", classNums);
+        req.setAttribute("classNum", classNum);
         req.getRequestDispatcher("class_list.jsp").forward(req, res);
     }
 }
