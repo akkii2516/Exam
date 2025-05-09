@@ -109,8 +109,65 @@ public class ClassNumDao extends Dao {
 	}
 
 	public boolean save(ClassNum classNum) throws Exception {
-		return true;
-	}
+		//コネクションを確立
+				Connection connection = getConnection();
+				//プリペアードステートメント
+				PreparedStatement statement = null;
+				//実行件数
+				int count = 0;
+
+				try {
+					//データベースからクラスを取得
+					ClassNum old = get(classNum.getClass_num(), classNum.getSchool());
+					if (old == null) {
+						//クラスが存在しなかった場合
+						//プリペアードステートメントにINSERT文をセット
+						statement = connection.prepareStatement(
+								"insert into class_num(school_cd,class_num) values(?,?)");
+						//プリペアードステートメントに値をバインド
+						statement.setString(1, classNum.getSchool().getCd());
+						statement.setString(2, classNum.getClass_num());
+					} else {
+						//クラスが存在した場合
+						//プリペアードステートメントにUPDATE文をセット
+						statement = connection
+								.prepareStatement("update class_num set class_num=?");
+						//プリペアードステートメントに値をバインド
+						statement.setString(1, classNum.getClass_num());
+					}
+
+					//プリペアードステートメントを実行
+					count = statement.executeUpdate();
+
+				} catch (Exception e) {
+					throw e;
+				} finally {
+					//プリペアードステートメントを閉じる
+					if (statement != null) {
+						try {
+							statement.close();
+						} catch (SQLException sqle) {
+							throw sqle;
+						}
+					}
+					//コネクションを閉じる
+					if (connection != null) {
+						try {
+							connection.close();
+						} catch (SQLException sqle) {
+							throw sqle;
+						}
+					}
+				}
+
+				if (count > 0) {
+					//実行件数が1件以上ある場合
+					return true;
+				} else {
+					//実行件数が0件の場合
+					return false;
+				}
+			}
 
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception {
 		return false;
