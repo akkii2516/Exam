@@ -11,18 +11,22 @@
 
 			<form action="SubjectDeleteExecute.action" method="get">
 				<div class="col-5" style="margin-left: 15px; margin-top: 30px" id="filter">
-					<p>「${subject.name}(${subject.cd})」を削除してもよろしいですか</p>
-
-					<div class="d-flex gap-2 mb-3">
-						<button type="submit" class="btn btn-secondary">削除</button>
+					<div class="d-flex gap-2 mb-3" style="margin-top:40px">
+						<p>「${subject.name}(${subject.cd})」を削除してもよろしいですか</p>
 					</div>
 
-					<div class="col-4" style="margin-top:10px">
+					<div class="d-flex gap-2 mb-3" style="margin-top:-15px">
+    					<button type="submit" class="btn btn-danger">削除</button>
+					</div>
+
+
+					<div class="col-4" style="margin-top:80px">
 						<a href="SubjectList.action">戻る</a>
 					</div>
+
 					<div>
-					<input type="hidden" name="subject_cd" value="${subject_cd }" />
-					<input type="hidden" name="subject_name" value="${subject_name }" />
+					<input type="hidden" name="subject_cd" value="${subject.cd }" />
+					<input type="hidden" name="subject_name" value="${subject.name }" />
 				</div>
 				</div>
 			</form>
