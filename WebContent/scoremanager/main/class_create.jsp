@@ -9,13 +9,13 @@
 		<section class="me=4">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス登録</h2>
 
-			<form action="ClassCreateExecute.action" method="get">
+			<form action="ClassCreateExecute.action" method="post">
 				<div class="col-4" style="margin-left: 15px; margin-top: 30px" id="filter">
 
             <div class="mb-3">
 			<label for="class-no" class="form-label">クラス</label>
 			<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="クラス名を入力してください" style="width: 800px;" required>
-			<div class="mt-2 text-warning">${errors.get("2") }</div>
+			<div class="mt-2 text-warning">${errors.get("er2") }</div>
 			</div>
 					<div class="d-flex gap-2 mb-3">
 						<button type="submit" class="btn btn-secondary">登録して終了</button>

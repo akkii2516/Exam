@@ -50,7 +50,7 @@ public class ClassCreateExecuteAction extends Action {
             session.setAttribute("ClassNum", classnum);
             session.setAttribute("class_list", list);
             session.setAttribute("errorMessage", "入力内容に誤りがあります");
-            res.sendRedirect("class_create.jsp");
+            res.sendRedirect("ClassCreate.action");
             return;
         }
 
