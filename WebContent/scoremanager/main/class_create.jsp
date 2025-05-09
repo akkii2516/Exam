@@ -14,7 +14,7 @@
 
             <div class="mb-3">
 			<label for="class-no" class="form-label">クラス</label>
-			<input type="text" class="form-control" id="class-no" name="class-no" value="${class-no}" placeholder="クラス名を入力してください" style="width: 800px;" required>
+			<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="クラス名を入力してください" style="width: 800px;" required>
 			<div class="mt-2 text-warning">${errors.get("2") }</div>
 			</div>
 					<div class="d-flex gap-2 mb-3">
