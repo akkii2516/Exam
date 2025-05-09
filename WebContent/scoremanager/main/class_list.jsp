@@ -12,7 +12,7 @@
 
       <!-- ② 新規登録リンク -->
 <div class="my-2 text-end px-4">
-<!-- <a href="ClassCreate.action">新規登録</a> -->
+<a href="ClassCreate.action">新規登録</a>
 </div>
 
       <!-- ③ 一覧表示 -->
