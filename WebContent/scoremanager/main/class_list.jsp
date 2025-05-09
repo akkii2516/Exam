@@ -27,6 +27,8 @@
 <c:forEach var="classNum" items="${classNum}">
 <tr>
 <td>${classNum}</td>
+<td><a href="ClassUpdate.action?classNum=${classNum}">変更</a></td>
+<td><a href="ClassDelete.action?classNum=${classNum}">削除</a></td>
 </tr>
 </c:forEach>
 </tbody>

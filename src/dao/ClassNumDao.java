@@ -170,6 +170,6 @@ public class ClassNumDao extends Dao {
 			}
 
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception {
-		return false;
+		return true;
 	}
 }

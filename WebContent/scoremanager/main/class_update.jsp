@@ -8,11 +8,11 @@
 <c:param name="content">
 
 <h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">クラス情報変更</h2>
-<form action="SubjectUpdateExecute.action" method="get">
+<form action="ClassUpdateExecute.action" method="get">
 
 <div class="mb-3">
 <label for="subject-name" class="form-label">クラス名</label>
-<input type="text" class="form-control" id="name" name="name" value="${subject.name}" placeholder="科目名を入力してください" style="width: 800px;" required>
+<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="クラス名を入力してください" style="width: 800px;" required>
 </div>
 
 
@@ -24,7 +24,7 @@
 </div>
 
 <div class="col-4" style="margin-top:10px">
-<a href="SubjectList.action">戻る</a>
+<a href="ClassList.action">戻る</a>
 </div>
 </form>
 </c:param>
