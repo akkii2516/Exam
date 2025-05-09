@@ -74,14 +74,19 @@
 
         </div>
 </form>
-<div class="mx-4 mb-3">検索結果：${tests.size()}件</div>
+<c:if test="${not empty tests}">
+  <div class="mx-4 mb-3">
+    科目：${tests[0].subject.name}（${tests[0].no}回）
+  </div>
+</c:if>
+
       <!-- 検索結果表示 -->
 <c:choose>
 
 <c:when test="${not empty tests}">
 <div class="mx-4 mb-3">検索結果：${tests.size()}件</div>
 
-          <form action="TestSave.action" method="post">
+<form action = "TestRegistExecute.action" method="post">
 <table class="table table-hover mx-4">
 <thead>
 <tr>
@@ -101,6 +106,8 @@
 <td>${test.student.name}</td>
 <td>
 <input type="hidden" name="studentNoList" value="${test.student.no}" />
+<input type="hidden" name="count" value="${selectedF4}" />
+<input type="hidden" name="subject" value="${selectedF3}" />
 <input type="number" name="pointList" value="${test.point}" min="0" max="100" required />
 </td>
 </tr>

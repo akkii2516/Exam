@@ -14,7 +14,7 @@ import bean.Test;
 
 public class TestDao extends Dao {
 
-	private String baseSql = "SELECT STUDENT.ENT_YEAR, STUDENT.CLASS_NUM, STUDENT.NO, STUDENT.NAME, TEST.POINT FROM STUDENT left JOIN (select * from TEST where TEST.SUBJECT_CD = ? AND TEST.NO = ? ) as TEST ON STUDENT.NO = TEST.STUDENT_NO AND STUDENT.SCHOOL_CD = TEST.SCHOOL_CD WHERE STUDENT.ENT_YEAR = ? AND STUDENT.CLASS_NUM = ? AND STUDENT.SCHOOL_CD = ?";
+	private String baseSql = "SELECT STUDENT.ENT_YEAR, STUDENT.CLASS_NUM, STUDENT.NO AS STUDENT_no, STUDENT.NAME, TEST.POINT,TEST.SUBJECT_cd FROM STUDENT left JOIN (select * from TEST where TEST.SUBJECT_CD = ? AND TEST.NO = ? ) as TEST ON STUDENT.NO = TEST.STUDENT_NO AND STUDENT.SCHOOL_CD = TEST.SCHOOL_CD WHERE STUDENT.ENT_YEAR = ? AND STUDENT.CLASS_NUM = ? AND STUDENT.SCHOOL_CD = ?";
 	public Test get(Student student, Subject subject, School school, int no) throws Exception {
 		//得点インスタンスを初期化
 		Test test = new Test();
@@ -121,7 +121,7 @@ public class TestDao extends Dao {
 		//リザルトセット
 		ResultSet rSet = null;
 		//SQL文の条件
-		String order = "order by no asc";
+		String order = "order by student_no asc";
 
 
 		try {
@@ -132,9 +132,10 @@ public class TestDao extends Dao {
 			//プリペアードステートメントにnumをバインド
 			statement.setInt(2, num);
 			//プリペアードステートメントにクラス番号をバインド
-			statement.setString(3, classNum);
+			statement.setInt(3, entYear);
+
 			//プリペアードステートメントに入学年度をバインド
-			statement.setInt(4, entYear);
+			statement.setString(4, classNum);
 			//プリペアードステートメントに学校コードをバインド
 			statement.setString(5,  school.getCd());
 			//プリペアードステートメントを実行
