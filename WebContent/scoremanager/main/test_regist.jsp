@@ -109,12 +109,15 @@
 <input type="hidden" name="count" value="${selectedF4}" />
 <input type="hidden" name="subject" value="${selectedF3}" />
 <input type="number" name="pointList" value="${test.point}" min="0" max="100" required />
+
 </td>
 </tr>
 </c:forEach>
 </tbody>
 </table>
 <div class="text-end me-4">
+<input type="hidden" name="classNum" value="${selectedF2}" />
+
 <button type="submit" class="btn btn-primary">登録して終了</button>
 </div>
 </form>
