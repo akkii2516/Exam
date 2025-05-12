@@ -12,7 +12,7 @@
 
 <div class="mb-3">
 <label for="subject-name" class="form-label">クラス名</label>
-<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="クラス名を入力してください" style="width: 800px;" required>
+<input type="text" class="form-control" id="ClassNum" name="ClassNum" value="${ClassNum}" placeholder="クラス名を入力してください" style="width: 800px;" required>
 </div>
 
 
