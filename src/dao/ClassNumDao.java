@@ -131,9 +131,10 @@ public class ClassNumDao extends Dao {
 						//クラスが存在した場合
 						//プリペアードステートメントにUPDATE文をセット
 						statement = connection
-								.prepareStatement("update class_num set class_num=?");
+								.prepareStatement("update class_num set class_num=? where class_num = ?");
 						//プリペアードステートメントに値をバインド
 						statement.setString(1, classNum.getClass_num());
+						statement.setString(2, classNum.getClass_num());
 					}
 
 					//プリペアードステートメントを実行
