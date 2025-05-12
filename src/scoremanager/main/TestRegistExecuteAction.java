@@ -25,7 +25,7 @@ public class TestRegistExecuteAction extends Action {
 
         // フォームからの入力データを取得
         String subject_cd = req.getParameter("subject");
-        int count = Integer.parseInt(req.getParameter("count"));
+        int count = Integer.parseInt(req.getParameter("f4"));
         String class_num = req.getParameter("classNum");
         String[] student_no = req.getParameterValues("regist");
 		for (String item : student_no) {
@@ -55,6 +55,7 @@ public class TestRegistExecuteAction extends Action {
                 test.setPoint(point);//得点
                 test.setClassNum(class_num);//科目コード
                 tests.add(test);
+
         }
     	// 成績の情報をデータベースに保存
         boolean isSaved = testDao.save(tests);
