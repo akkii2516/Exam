@@ -170,61 +170,6 @@ public class ClassNumDao extends Dao {
 			}
 
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception {
-		/**
-
-		* クラス番号を更新する
-
-		* @param classNum 現在のクラス情報（旧クラス番号と学校情報を含む）
-
-		* @param newClassNum 新しいクラス番号
-
-		* @return 更新成功ならtrue、対象が存在しないか失敗した場合はfalse
-
-		*/
-
-			Connection connection = getConnection();
-
-			PreparedStatement statement = null;
-
-			int count = 0;
-
-			try {
-
-				// 旧クラスが存在するか確認
-
-				ClassNum old = get(classNum.getClass_num(), classNum.getSchool());
-
-				if (old != null) {
-
-					// 存在する場合、クラス番号を更新
-
-					statement = connection.prepareStatement(
-
-						"UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?"
-
-					);
-
-					statement.setString(1, newClassNum);
-
-					statement.setString(2, classNum.getClass_num());
-
-					statement.setString(3, classNum.getSchool().getCd());
-
-					count = statement.executeUpdate();
-
-				}
-
-			} finally {
-
-				if (statement != null) try { statement.close(); } catch (SQLException e) { throw e; }
-
-				if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
-
-			}
-
-			return count > 0;
-
-		}
-
-
+		return true;
 	}
+}
