@@ -66,9 +66,9 @@
 
 
     <!-- 検索ボタン (右上に配置、少し左に) -->
-    <div class="col-2 d-flex justify-content-end" style="margin-left: -50px;">
+    <div class="col-2 d-flex justify-content-end" style="margin-left: -35px;">
       <label class="form-label d-block invisible">検索</label>
-      <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+      <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
     </div>
 
 
@@ -122,10 +122,6 @@
 </div>
 </form>
 </c:when>
-
-        <c:otherwise>
-          <div class="mx-4">検索条件に一致する学生が見つかりませんでした。</div>
-        </c:otherwise>
       </c:choose>
     </section>
   </c:param>
