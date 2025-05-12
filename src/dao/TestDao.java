@@ -24,12 +24,13 @@ public class TestDao extends Dao {
 		PreparedStatement statement = null;
 		try {
 			//プリペアードステートメントにSQL文をセット
-			statement = connection.prepareStatement("SELECT * FROM TEST where subject_cd=? and school_cd=? and class_num=? and no=?");
-			//プリペアードステートメントに番号をバインド
-			statement.setString(1,subject.getCd());
-			statement.setString(2, school.getCd());
-			statement.setString(3, student.getClassNum());
-			statement.setInt(4, no);
+			statement = connection.prepareStatement(
+				    "SELECT * FROM TEST WHERE student_no=? AND subject_cd=? AND school_cd=? AND no=?");
+				statement.setString(1, student.getNo());
+				statement.setString(2, subject.getCd());
+				statement.setString(3, school.getCd());
+				statement.setInt(4, no);
+
 			//プリペアードステートメントを実行
 			ResultSet rSet = statement.executeQuery();
 
@@ -169,70 +170,60 @@ public class TestDao extends Dao {
 
 	//絶対間違えてる
 	public boolean save(List<Test> list) throws Exception {
-		//コネクションを確立
-		Connection connection = getConnection();
-		//プリペアードステートメント
-		PreparedStatement statement = null;
-		//実行件数
-		int count = 0;
+	    Connection connection = getConnection();
+	    int count = 0;
 
-		try {
-			//データベースから得点を取得
-			for (Test test : list) {
-				Test old = get(test.getStudent(),test.getsubject(),test.getSchool(),test.getNo());
+	    try {
+	        connection.setAutoCommit(false); // トランザクション開始
 
-				if (old == null) {
-	                // INSERT処理
+	        for (Test test : list) {
+	            Test old = get(test.getStudent(), test.getsubject(), test.getSchool(), test.getNo());
+
+	            PreparedStatement statement;
+	            if (old == null) {
+	                // INSERT
 	                statement = connection.prepareStatement(
-	                    "insert into test(student_no, subject_cd, school_cd, no, point, class_num) values(?, ?, ?, ?, ?, ?)");
+	                    "INSERT INTO test (student_no, subject_cd, school_cd, no, point, class_num) VALUES (?, ?, ?, ?, ?, ?)");
 	                statement.setString(1, test.getStudent().getNo());
 	                statement.setString(2, test.getsubject().getCd());
 	                statement.setString(3, test.getSchool().getCd());
 	                statement.setInt(4, test.getNo());
 	                statement.setInt(5, test.getPoint());
 	                statement.setString(6, test.getClassNum());
-				}else {
-	                // UPDATE処理
+	            } else {
+	                // UPDATE
 	                statement = connection.prepareStatement(
-	                    "update test set point=? where student_no=? and subject_cd=? and school_cd=? and no=?");
-	                statement.setString(1, test.getStudent().getNo());
-	                statement.setString(2, test.getsubject().getCd());
-	                statement.setString(3, test.getSchool().getCd());
-	                statement.setInt(4, test.getNo());
+	                    "UPDATE test SET point = ?, class_num = ? WHERE student_no = ? AND subject_cd = ? AND school_cd = ? AND no = ?");
+	                statement.setInt(1, test.getPoint());
+	                statement.setString(2, test.getClassNum());
+	                statement.setString(3, test.getStudent().getNo());
+	                statement.setString(4, test.getsubject().getCd());
+	                statement.setString(5, test.getSchool().getCd());
+	                statement.setInt(6, test.getNo());
 	            }
 
-				//プリペアードステートメントを実行
-				count = statement.executeUpdate();
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			//プリペアードステートメントを閉じる
-			if (statement != null) {
-				try {
-					statement.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-			//コネクションを閉じる
-			if (connection != null) {
-				try {
-					connection.close();
-				} catch (SQLException sqle) {
-					throw sqle;
-				}
-			}
-		}
+	            count += statement.executeUpdate();
+	            statement.close(); // 各ループで確実にクローズ
+	        }
 
-		if (count > 0) {
-			//実行件数が1件以上ある場合
-			return true;
-		} else {
-			//実行件数が0件の場合
-			return false;
-		}
+	        connection.commit(); // トランザクションコミット
+	    } catch (Exception e) {
+	        connection.rollback(); // 失敗時はロールバック
+	        throw e;
+	    } finally {
+	        if (connection != null) {
+	            try {
+	                connection.setAutoCommit(true);
+	                connection.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	    }
+
+	    return count > 0;
 	}
+
 
 	private boolean save(Test test, Connection connection) throws Exception {
 		return true;

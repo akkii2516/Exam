@@ -12,7 +12,6 @@
 	<c:param name="content">
 		<div id="wrap_box">
 		<div class="my-2 text-end px-4">
-			<a href="logout.jsp">ログアウト</a>
 			</div>
 			<div id="wrap_box">
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2">成績管理</h2>

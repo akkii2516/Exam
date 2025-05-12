@@ -80,7 +80,7 @@ public class TestListAction extends Action {
 //		req.setAttribute("ent_year_set", entYearSet);
 
 		//JSPへフォワード 7
-		req.getRequestDispatcher("test_regist.jsp").forward(req, res);
+		req.getRequestDispatcher("test_list.jsp").forward(req, res);
     }
 }
 //=======
