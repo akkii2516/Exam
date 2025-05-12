@@ -43,11 +43,9 @@ public class TestRegistAction extends Action {
         }
 
         List<Integer> countList = new ArrayList<>();
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= 10; i++) {
             countList.add(i);
         }
-        // 結果: [1, 2]
-
 
         // パラメータ取得
         String f1 = req.getParameter("f1"); // 入学年度
@@ -86,10 +84,10 @@ public class TestRegistAction extends Action {
         req.getRequestDispatcher("test_regist.jsp").forward(req, res);
     }
 
+    // 有効な値か判定（nullでなく"0"でない）
     private boolean isValid(String value) {
-        return value != null && !value.isEmpty() && !value.equals("0");
+        return value != null && !value.equals("0");
     }
-
 
     // 1つでも何かしら値が入っているか判定
     private boolean anyNotNull(String... values) {
