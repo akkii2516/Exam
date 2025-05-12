@@ -20,6 +20,7 @@ public class ClassUpdateExecuteAction extends Action {
 
         String classnum = req.getParameter("ClassNum");
 
+        System.out.println(classnum);
         // エラーメッセージ格納用
         Map<String, String> errors = new HashMap<>();
 
@@ -27,9 +28,9 @@ public class ClassUpdateExecuteAction extends Action {
         // ① クラスの存在チェック
         ClassNum existingClassNum = classNumDao.get(classnum, teacher.getSchool());
 
-        if (existingClassNum == null) {
-            // ② 存在しない場合はエラーメッセージを設定してJSPに戻す
-            errors.put("f1", "クラスが存在していません");
+        if (existingClassNum != null) {
+            // ② 存在してたら場合はエラーメッセージを設定してJSPに戻す
+            errors.put("f1", "重複しています");
             session.setAttribute("errors", errors);
 
             // フォーム再表示用に subject を設定
