@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
+import bean.School;
 import bean.Teacher;
 
 public class TeacherDao extends Dao {
@@ -91,4 +94,73 @@ public class TeacherDao extends Dao {
 		}
 		return teacher;
 	}
-}
+	public List<Teacher> filter(School school) throws Exception {
+		List<Teacher> list = new ArrayList<>();
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+
+		try {
+			statement = connection.prepareStatement(
+				"SELECT * FROM teacher WHERE school_cd = ? ORDER BY name"
+			);
+			statement.setString(1, school.getCd());
+			ResultSet resultSet = statement.executeQuery();
+
+			SchoolDao schoolDao = new SchoolDao();
+
+			while (resultSet.next()) {
+				Teacher teacher = new Teacher();
+				teacher.setId(resultSet.getString("id"));
+				teacher.setPassword(resultSet.getString("password"));
+				teacher.setName(resultSet.getString("name"));
+				teacher.setSchool(schoolDao.get(resultSet.getString("school_cd")));
+				list.add(teacher);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (statement != null) statement.close();
+			if (connection != null) connection.close();
+		}
+
+		return list;
+	}
+
+	public List<Teacher> findBySchool(School school) throws Exception {
+		List<Teacher> list = new ArrayList<>();
+		Connection connection = getConnection();
+		PreparedStatement statement = null;
+
+		try {
+			statement = connection.prepareStatement(
+				"SELECT * FROM teacher WHERE school_cd = ? ORDER BY name"
+			);
+			statement.setString(1, school.getCd());
+			ResultSet resultSet = statement.executeQuery();
+
+			SchoolDao schoolDao = new SchoolDao();
+
+			while (resultSet.next()) {
+				Teacher teacher = new Teacher();
+				teacher.setId(resultSet.getString("id"));
+				teacher.setPassword(resultSet.getString("password"));
+				teacher.setName(resultSet.getString("name"));
+				// 将来のadmin_flag対応に備えて安全にセット（あれば）
+//				try {
+//					teacher.setAdmin(resultSet.getInt("admin_flag") == 1);
+//				} catch (Exception e) {
+//					// admin_flag がない場合はスキップ
+//				}
+				teacher.setSchool(schoolDao.get(resultSet.getString("school_cd")));
+				list.add(teacher);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (statement != null) statement.close();
+			if (connection != null) connection.close();
+		}
+
+		return list;
+	}
+	}
