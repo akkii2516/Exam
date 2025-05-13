@@ -163,4 +163,40 @@ public class TeacherDao extends Dao {
 
 		return list;
 	}
+
+	public void insert(Teacher teacher) throws Exception {
+
+	    Connection connection = getConnection();
+
+	    PreparedStatement statement = null;
+
+	    try {
+
+	        statement = connection.prepareStatement(
+
+	            "INSERT INTO teacher (id, name, password, school_cd) VALUES (?, ?, ?, ?)"
+
+	        );
+
+	        statement.setString(1, teacher.getId());
+
+	        statement.setString(2, teacher.getName());
+
+	        statement.setString(3, teacher.getPassword());
+
+	        statement.setString(4, teacher.getSchool().getCd());
+
+	        statement.executeUpdate();
+
+	    } finally {
+
+	        if (statement != null) statement.close();
+
+	        if (connection != null) connection.close();
+
+	    }
+
+	}
+
+
 	}

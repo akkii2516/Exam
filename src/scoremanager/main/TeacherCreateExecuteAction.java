@@ -9,33 +9,35 @@ import bean.Teacher;
 import dao.TeacherDao;
 import tool.Action;
 
-public class TeacherCreateAction extends Action {
+public class TeacherCreateExecuteAction extends Action {
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+        // 文字エンコーディングを設定（日本語対応）
         req.setCharacterEncoding("UTF-8");
 
-        // セッションからログインユーザー取得（所属校用）
+        // セッションからログインユーザーを取得し、所属校を特定
         HttpSession session = req.getSession();
         Teacher loginUser = (Teacher) session.getAttribute("user");
         School school = loginUser.getSchool();
 
-        // 入力値取得
+        // フォームから送信されたデータを取得
         String id = req.getParameter("id");
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
-        // 教員オブジェクト作成
-        Teacher teacher = new Teacher();
-        teacher.setId(id);
-        teacher.setName(name);
-        teacher.setPassword(password);
-        teacher.setSchool(school);
+        // 教員インスタンスを作成し、値を設定
+        Teacher newTeacher = new Teacher();
+        newTeacher.setId(id);
+        newTeacher.setName(name);
+        newTeacher.setPassword(password);
+        newTeacher.setSchool(school);
 
-        // 登録処理
+        // 教員情報をデータベースに登録
         TeacherDao teacherDao = new TeacherDao();
-        teacherDao.insert(teacher); // ※次に insert() メソッドも作成します
+        teacherDao.insert(newTeacher);
 
-        // 教員一覧にリダイレクト（またはフォワード）
+        // 登録完了後、教員一覧画面にリダイレクト
         res.sendRedirect("TeacherList.action");
     }
 }

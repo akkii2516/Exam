@@ -15,19 +15,25 @@
 
 			 <div class="mb-3">
 			<label for="class-no" class="form-label">ID</label>
-			<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="IDを入力してください" style="width: 800px;" required>
+			<input type="text" class="form-control" id="id" name="id" value="${ClassNum.class_num}" placeholder="IDを入力してください" style="width: 800px;" required>
 			<div class="mt-2 text-warning">${errors.get("er2") }</div>
 			</div>
 
 			 <div class="mb-3">
 			<label for="class-no" class="form-label">パスワード</label>
-			<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="パスワードを入力してください" style="width: 800px;" required>
+			<input type="text" class="form-control" id="password" name="password" value="${ClassNum.class_num}" placeholder="パスワードを入力してください" style="width: 800px;" required>
 			<div class="mt-2 text-warning">${errors.get("er2") }</div>
 			</div>
 
             <div class="mb-3">
 			<label for="class-no" class="form-label">ユーザー</label>
-			<input type="text" class="form-control" id="class-num" name="class-num" value="${ClassNum.class_num}" placeholder="ユーザー名を入力してください" style="width: 800px;" required>
+			<input type="text" class="form-control" id="name" name="name" value="${ClassNum.class_num}" placeholder="ユーザー名を入力してください" style="width: 800px;" required>
+			<div class="mt-2 text-warning">${errors.get("er2") }</div>
+			</div>
+			
+			<div class="mb-3">
+			<label for="class-no" class="form-label">学校名</label>
+			<input type="text" class="form-control" id="school" name="school" value="${ClassNum.class_num}" placeholder="学校名を入力してください" style="width: 800px;" required>
 			<div class="mt-2 text-warning">${errors.get("er2") }</div>
 			</div>
 					<div class="d-flex gap-2 mb-3">
