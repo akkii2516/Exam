@@ -249,13 +249,15 @@ public class ClassNumDao extends Dao {
 						statement.setString(2, classNum.getClass_num());
 
 						statement.setString(3, classNum.getSchool().getCd());
+						//プリペアードステートメントを実行
+						count = statement.executeUpdate();
 
 
 					}
 
-					//プリペアードステートメントを実行
 
-					count = statement.executeUpdate();
+
+
 
 				} catch (Exception e) {
 
