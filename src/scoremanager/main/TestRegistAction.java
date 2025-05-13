@@ -26,6 +26,13 @@ public class TestRegistAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
         School school = teacher.getSchool();
 
+        if (session.getAttribute("errors") == null){
+        	session.removeAttribute("tests");
+        	session.removeAttribute("selectedF1");
+        	session.removeAttribute("selectedF2");
+        	session.removeAttribute("selectedF3");
+        	session.removeAttribute("selectedF4");
+        }
         // DAO初期化
         ClassNumDao cNumDao = new ClassNumDao();
         SubjectDao subjectDao = new SubjectDao();
@@ -43,7 +50,7 @@ public class TestRegistAction extends Action {
         }
 
         List<Integer> countList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 2; i++) {
             countList.add(i);
         }
 

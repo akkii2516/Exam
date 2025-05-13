@@ -13,6 +13,8 @@ import bean.Student;
 import bean.Subject;
 import bean.Teacher;
 import bean.Test;
+import dao.StudentDao;
+import dao.SubjectDao;
 import dao.TestDao;
 import tool.Action;
 
@@ -30,6 +32,7 @@ public class TestRegistExecuteAction extends Action {
         System.out.println(class_num);
         int count = Integer.parseInt(req.getParameter("count"));
 
+        // エラーメッセージ格納用
         Map<String, String> errors = new HashMap<>();
         List<Test> tests = new ArrayList<>();
 
@@ -43,34 +46,44 @@ public class TestRegistExecuteAction extends Action {
                 point = Integer.parseInt(pointStr);
                 if (point < 0 || point > 100) {
                     errors.put(no, "0～100の範囲で入力してください");
-                    continue;
                 }
             } catch (NumberFormatException e) {
-                errors.put(no, "数値で入力してください");
-                continue;
+                errors.put(no, "数字を入力してください");
             }
+
 
             // 成績データ作成
             Test test = new Test();
             Student student = new Student();
+            StudentDao studentDao = new StudentDao();
+            SubjectDao subjectDao = new SubjectDao();
             student.setNo(no);
+            student.setEntYear(studentDao.get(no).getEntYear());
+            student.setName(studentDao.get(no).getName());
             test.setStudent(student);
 
             Subject subject = new Subject();
             subject.setCd(subject_cd);
+            subject.setName(subjectDao.get(subject_cd, teacher.getSchool()).getName());
+
             test.setSubject(subject);
 
             test.setSchool(teacher.getSchool());
             test.setNo(count);
             test.setPoint(point);
             test.setClassNum(class_num);
-
             tests.add(test);
-        }
 
-        // エラーがあればセッションに保存してフォームへリダイレクト
+            session.setAttribute("selectedF4", count);
+            session.setAttribute("selectedF1", studentDao.get(no).getEntYear());
+            session.setAttribute("selectedF2",class_num);
+            session.setAttribute("selectedF3", subject_cd);
+
+        }
+        // エラーがある場合は、入力ページに戻す
         if (!errors.isEmpty()) {
             session.setAttribute("errors", errors);
+            session.setAttribute("tests", tests); // エラーがあっても再表示のため保持
             res.sendRedirect("TestRegist.action");
             return;
         }
@@ -78,7 +91,8 @@ public class TestRegistExecuteAction extends Action {
         // 保存処理
         TestDao testDao = new TestDao();
         boolean isSaved = testDao.save(tests);
-
+        session.removeAttribute("errors");
+        session.removeAttribute("tests");
         if (isSaved) {
             res.sendRedirect("test_regist_done.jsp");
         } else {
