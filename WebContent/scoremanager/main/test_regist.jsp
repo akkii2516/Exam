@@ -1,18 +1,14 @@
-
+<%@ page session="true" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
+<c:set var="errors" value="${sessionScope.errors}" />
+<c:remove var="errors" scope="session" />
 <c:import url="/common/base.jsp">
 <c:param name="title">得点管理システム</c:param>
 <c:param name="scripts"></c:param>
 <c:param name="content">
 <section class="me-4">
 <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績管理</h2>
-
-      <!-- エラーメッセージ表示 -->
-<c:if test="${not empty error}">
-<div class="alert alert-danger mx-4">${error}</div>
-</c:if>
 
       <!-- 検索フォーム -->
 <form method="get">
@@ -72,11 +68,11 @@
     </div>
 
 
-        </div>
+</div>
 </form>
 <c:if test="${not empty tests}">
-  <div class="mx-4 mb-3">
-    科目：${tests[0].subject.name}（${tests[0].no}回）
+  <div class="mb-3 text-start">
+  科目：${tests[0].subject.name}（${selectedF4}回）
   </div>
 </c:if>
 
@@ -84,10 +80,9 @@
 <c:choose>
 
 <c:when test="${not empty tests}">
-<div class="mx-4 mb-3">検索結果：${tests.size()}件</div>
 
 <form action = "TestRegistExecute.action" method="post">
-<table class="table table-hover mx-4">
+<table class="table table-hover">
 <thead>
 <tr>
 <th>入学年度</th>
@@ -108,17 +103,18 @@
 <input type="hidden" name="studentNoList" value="${test.student.no}" />
 <input type="hidden" name="count" value="${selectedF4}" />
 <input type="hidden" name="subject" value="${selectedF3}" />
-<input type="number" name="pointList" value="${test.point}" min="0" max="100" required />
-
+<input type="number" name="pointList" value="${test.point}" min="0">
+<c:if test="${not empty errors[test.student.no]}">
+  <div class="mt-2 text-warning">${errors[test.student.no]}</div>
+</c:if>
 </td>
 </tr>
 </c:forEach>
 </tbody>
 </table>
-<div class="text-end me-4">
 <input type="hidden" name="classNum" value="${selectedF2}" />
-
-<button type="submit" class="btn btn-primary">登録して終了</button>
+<div class="text-start">
+  <button type="submit" class="btn btn-secondary">登録して終了</button>
 </div>
 </form>
 </c:when>
