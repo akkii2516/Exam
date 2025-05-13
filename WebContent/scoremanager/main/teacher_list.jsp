@@ -20,13 +20,17 @@
 <table class="table table-bordered">
 <thead class="table-light">
 <tr>
+<th>ID</th>
 <th>ユーザー名</th>
+<th>学校名</th>
 </tr>
 </thead>
 <tbody>
-<c:forEach var="classNum" items="${classNum}">
+<c:forEach var="teacher" items="${teachers}">
 <tr>
-<td>${classNum}</td>
+<td>${teacher.id}</td>
+<td>${teacher.name}</td>
+<td>${teacher.school.name}</td>
 <td><a href="ClassUpdate.action?classNum=${classNum}">変更</a></td>
 <td><a href="ClassUpdate.action?classNum=${classNum}">削除</a></td>
 </tr>
