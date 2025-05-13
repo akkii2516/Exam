@@ -1,4 +1,3 @@
-//仮段階
 package scoremanager.main;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,24 +10,35 @@ import tool.Action;
 
 public class TeacherDeleteAction extends Action {
 
-	@Override
-	public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
+    @Override
 
-		HttpSession session = req.getSession();//セッション
-		Teacher teacher = (Teacher)session.getAttribute("user");
+    public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
-		//teacher_list.jspから変更を押したユーザーコードを取得
-		String id = req.getParameter("id");
+        HttpSession session = req.getSession(); // セッション
 
-		//科目Daoを初期化
-		TeacherDao teacherDao = new TeacherDao();
-		//科目コード、学校コードをもとに科目の詳細データを取得
-		Teacher teacherget = TeacherDao.get(id);
+        Teacher teacher = (Teacher)session.getAttribute("user");
 
-		//リクエストにデータをセット
-		req.setAttribute("subject", subject);
+        // teacher_list.jspから変更を押したユーザーコードを取得
 
-		//指定されたJSPページ("subject_delete.jsp")へフォワード
-		req.getRequestDispatcher("teacher_delete.jsp").forward(req, res);
-	}
+        String id = req.getParameter("id");
+
+        // TeacherDaoを初期化
+
+        TeacherDao teacherDao = new TeacherDao();
+
+        // インスタンスメソッドget()を呼び出す
+
+        Teacher teacherget = teacherDao.get(id); // ここを修正
+
+        // リクエストにデータをセット
+
+        req.setAttribute("teacher", teacherget);  // 'subject' → 'teacher' に修正
+
+        // 指定されたJSPページ("teacher_delete.jsp")へフォワード
+
+        req.getRequestDispatcher("teacher_delete.jsp").forward(req, res);
+
+    }
+
 }
+

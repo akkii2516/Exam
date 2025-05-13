@@ -25,8 +25,7 @@
 					</div>
 
 					<div>
-					<input type="hidden" name="subject_cd" value="${subject.cd }" />
-					<input type="hidden" name="subject_name" value="${subject.name }" />
+					<input type="hidden" name="id" value="${teacher.id }" />
 				</div>
 				</div>
 			</form>

@@ -197,6 +197,35 @@ public class TeacherDao extends Dao {
 	    }
 
 	}
+	// 教員削除処理
+
+	public int delete(String id) throws Exception {
+
+	    int result = 0;
+	 
+	    // データベース接続
+
+	    try (Connection con = getConnection()) {
+
+	        String sql = "DELETE FROM teacher WHERE id = ?";
+
+	        PreparedStatement st = con.prepareStatement(sql);
+
+	        st.setString(1, id);
+	 
+	        result = st.executeUpdate();
+
+	    } catch (Exception e) {
+
+	        throw e;
+
+	    }
+	 
+	    return result;
+
+	}
+
+	 
 
 
 	}
