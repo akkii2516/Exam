@@ -42,16 +42,16 @@
 
 
 package scoremanager.main;
- 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import bean.Teacher;
 import tool.Action;
- 
+
 public class TeacherCreateAction extends Action {
- 
+
     @Override
 
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
@@ -61,21 +61,23 @@ public class TeacherCreateAction extends Action {
         HttpSession session = req.getSession();
 
         Teacher loginUser = (Teacher) session.getAttribute("user");
- 
+
         // 空の Teacher オブジェクトを作成（フォームの初期値として利用）
 
         Teacher teacher = new Teacher();
- 
+
         // JSPで使用するためリクエストスコープにセット
 
         req.setAttribute("teacher", teacher);
- 
+
         // 登録フォーム画面にフォワード
 
         req.getRequestDispatcher("teacher_create.jsp").forward(req, res);
+
+
+
 
     }
 
 }
 
- 
