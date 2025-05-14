@@ -10,6 +10,7 @@
 			<h2 class="h3 mb-3 fw-norma bg-secondary bg-opacity-10 py-2 px-4">ユーザー情報変更</h2>
 			<form action="TeacherUpdateExecute.action" method="post">
 
+			<input type="hidden" name="original_id" value="${id}" />
 
 
 
