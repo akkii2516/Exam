@@ -2,133 +2,102 @@ package scoremanager.main;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import bean.Student;
+import bean.School;
 import bean.Subject;
 import bean.Teacher;
+import bean.Test;
 import dao.ClassNumDao;
-import dao.StudentDao;
 import dao.SubjectDao;
+import dao.TestDao;
 import tool.Action;
 
 public class TestListAction extends Action {
+
     @Override
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // セッションからログインユーザー（教員）情報を取得
+        // セッションから教員情報を取得
+        HttpSession session = req.getSession();
+        Teacher teacher = (Teacher) session.getAttribute("user");
+        School school = teacher.getSchool();
 
-    	HttpSession session = req.getSession();//セッション
-		Teacher teacher = (Teacher)session.getAttribute("user");
+        // DAO初期化
+        ClassNumDao cNumDao = new ClassNumDao();
+        SubjectDao subjectDao = new SubjectDao();
 
-		String entYearStr="";//入力された入学年度
-		String classNum = "";//入力されたクラス番号
-		String isAttendStr="";//入力された在学生フラグ
-//		int entYear = 0;//入学年度
-		boolean isAttend = false;//在学生フラグ
-		List<Student> students = null;//学生リスト
-		LocalDate todaysDate = LocalDate.now();//LocalDateインスタンスを取得
-		int year = todaysDate.getYear();//現在の年を取得
-		StudentDao sDao = new StudentDao();//学生Dao
-		ClassNumDao cNumDao = new ClassNumDao();//クラス番号Daoを初期化
-		SubjectDao subjectDao = new SubjectDao();
-		Map<String, String> errors = new HashMap<>();//エラーメッセージ
-
-		//リクエストパラメーターの取得 2
-		entYearStr = req.getParameter("f1");
-		classNum = req.getParameter("f2");
-		isAttendStr = req.getParameter("f3");
-		//DBからデータ取得3
-				List<String>cNumlist = cNumDao.filter(teacher.getSchool()); //クラス情報
-				List<Subject>list = subjectDao.filter(teacher.getSchool()); //科目情報
-
-		//在学フラグが送信されていた場合
-		if (isAttendStr != null) {
-			//在学フラグを立てる
-			isAttend = true;
-			//リクエストに在学フラグをセット
-			req.setAttribute("f3", isAttendStr);
-		}
-
-//		//ビジネスロック 4
-//		if (entYearStr != null) {
-//			//数値に変換
-//			entYear = Integer.parseInt(entYearStr);
-//		}
-		//リストを初期化
-		List<Integer> entYearSet = new ArrayList<>();
-		//10年前から1年後まで年をリストに追加
-		for (int i = year - 10; i < year + 1; i++) {
-			entYearSet.add(i);
-		}
+        // 学校ごとのクラス・科目・年度・回数リストを準備
+        List<String> cNumlist = cNumDao.filter(school);
+        List<Subject> subjectList = subjectDao.filter(school);
 
 
-		//レスポンス値をセット6
-		//リクエストに入学年度をセット
-//		req.setAttribute("f1", entYear);
-		//リクエストにクラス番号をセット
-		req.setAttribute("f2", cNumlist);
-		req.setAttribute("f3", list);
-		req.setAttribute("f1", entYearSet);
-		//リクエストにデータをセット
-//		req.setAttribute("class_num_set", list);
-//		req.setAttribute("ent_year_set", entYearSet);
+        LocalDate now = LocalDate.now();
+        int currentYear = now.getYear();
 
-		//JSPへフォワード 7
-		req.getRequestDispatcher("test_list.jsp").forward(req, res);
+        List<Integer> entYearList = new ArrayList<>();
+        for (int i = currentYear - 10; i <= currentYear; i++) {
+            entYearList.add(i);
+        }
+
+        List<Integer> countList = new ArrayList<>();
+        for (int i = 1; i <= 2; i++) {
+            countList.add(i);
+        }
+        // 結果: [1, 2]
+
+
+        // パラメータ取得
+        String f1 = req.getParameter("f1"); // 入学年度
+        String f2 = req.getParameter("f2"); // クラス
+        String f3 = req.getParameter("f3"); // 科目コード
+        String f4 = req.getParameter("f4"); // 回数
+
+        // セレクトボックスの表示用データセット
+        req.setAttribute("f1", entYearList);
+        req.setAttribute("f2", cNumlist);
+        req.setAttribute("f3", subjectList);
+        req.setAttribute("f4", countList);
+        req.setAttribute("selectedF1", f1);
+        req.setAttribute("selectedF2", f2);
+        req.setAttribute("selectedF3", f3);
+        req.setAttribute("selectedF4", f4);
+
+
+        // 検索条件がすべて正しく入力されていれば検索を実行
+        if (isValid(f1) && isValid(f2) && isValid(f3) && isValid(f4)) {
+            int entYear = Integer.parseInt(f1);
+            String classNum = f2;
+            String subjectCd = f3;
+            int testNo = Integer.parseInt(f4);
+
+            Subject subject = subjectDao.get(subjectCd, school);
+            TestDao testDao = new TestDao();
+            List<Test> tests = testDao.filter(entYear, classNum, subject, testNo, school);
+
+            req.setAttribute("tests", tests);
+        } else if (anyNotNull(f1, f2, f3, f4)) {
+            // 一部のみ選択されている場合はエラー表示
+            req.setAttribute("error", "すべての検索条件を選択してください。");
+        }
+
+        // JSPへフォワード
+        req.getRequestDispatcher("test_list.jsp").forward(req, res);
+    }
+
+    private boolean isValid(String value) {
+        return value != null && !value.isEmpty() && !value.equals("0");
+    }
+
+
+    // 1つでも何かしら値が入っているか判定
+    private boolean anyNotNull(String... values) {
+        for (String v : values) {
+            if (v != null && !v.equals("0")) return true;
+        }
+        return false;
     }
 }
-//=======
-//package scoremanager.main;
-//
-//import java.util.List;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//import javax.servlet.http.HttpSession;
-//
-//import bean.Subject;
-//import bean.Teacher;
-//import bean.Test;
-//import dao.SubjectDao;
-//import dao.TestDao;
-//import tool.Action;
-//
-//public class TestListAction extends Action {
-//    @Override
-//    public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-//        // セッションからログイン中の教員情報を取得
-//        HttpSession session = req.getSession();
-//        Teacher teacher = (Teacher) session.getAttribute("user");
-//
-//        // パラメータ取得
-//        String f1 = req.getParameter("f1"); // 入学年度
-//        String f2 = req.getParameter("f2"); // クラス
-//        String f3 = req.getParameter("f3"); // 科目コード
-//        String f4 = req.getParameter("f4"); // 回数
-//
-//        // 各種リストの取得
-//        SubjectDao subjectDao = new SubjectDao();
-//        List<Subject> subjectList = subjectDao.filter(teacher.getSchool());
-//
-//        TestDao testDao = new TestDao();
-//        List<Test> testList = testDao.search(f1, f2, f3, f4, teacher.getSchool());
-//
-//        // リクエストスコープにセット
-//        req.setAttribute("subject_list", subjectList);
-//        req.setAttribute("tests", testList);
-//        req.setAttribute("f1", f1);
-//        req.setAttribute("f2", f2);
-//        req.setAttribute("f3", f3);
-//        req.setAttribute("f4", f4);
-//
-//        // JSPにフォワード
-//        req.getRequestDispatcher("test_regist.jsp").forward(req, res);
-//    }
-//}
-//>>>>>>> branch 'master' of https://github.com/akkii2516/Exam.git

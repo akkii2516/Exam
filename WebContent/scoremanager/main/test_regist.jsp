@@ -66,10 +66,15 @@
       <label class="form-label d-block invisible">検索</label>
       <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
     </div>
-
-
 </div>
 </form>
+
+<c:if test="${not empty error}">
+  <div class="mt-2 text-warning" style = "margin-left:15px">
+    ${error}
+  </div>
+</c:if>
+
 <c:if test="${not empty tests}">
   <div class="mb-3 text-start">
   科目：${tests[0].subject.name}（${selectedF4}回）
