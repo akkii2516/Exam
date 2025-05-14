@@ -31,7 +31,7 @@
 <td>${teacher.id}</td>
 <td>${teacher.name}</td>
 <td>${teacher.school.name}</td>
-<td><a href="ClassUpdate.action?classNum=${classNum}">変更</a></td>
+<td><a href="TeacherUpdate.action?id=${teacher.id}">変更</a></td>
 <td><a href="TeacherDelete.action?id=${teacher.id}">削除</a></td>
 </tr>
 </c:forEach>

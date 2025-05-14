@@ -202,7 +202,7 @@ public class TeacherDao extends Dao {
 	public int delete(String id) throws Exception {
 
 	    int result = 0;
-	 
+
 	    // データベース接続
 
 	    try (Connection con = getConnection()) {
@@ -212,7 +212,7 @@ public class TeacherDao extends Dao {
 	        PreparedStatement st = con.prepareStatement(sql);
 
 	        st.setString(1, id);
-	 
+
 	        result = st.executeUpdate();
 
 	    } catch (Exception e) {
@@ -220,12 +220,25 @@ public class TeacherDao extends Dao {
 	        throw e;
 
 	    }
-	 
+
 	    return result;
 
 	}
 
-	 
+	public void update(String originalId, Teacher teacher) throws Exception {
+	    Connection con = getConnection();
+
+	    String sql = "UPDATE teacher SET id=?, password=?, name=? WHERE id=?";
+	    PreparedStatement st = con.prepareStatement(sql);
+	    st.setString(1, teacher.getId());
+	    st.setString(2, teacher.getPassword());
+	    st.setString(3, teacher.getName());
+	    st.setString(4, originalId);
+	    st.executeUpdate();
+
+	    st.close();
+	    con.close();
+	}
 
 
 	}

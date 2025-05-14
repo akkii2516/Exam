@@ -30,9 +30,7 @@ public class TeacherDeleteExecuteAction extends Action {
 
         teacherDao.delete(id); // `delete()` メソッドを定義していることを前提とします。
 
-        // 削除後に教師一覧ページにリダイレクト
-
-        res.sendRedirect("TeacherList.action");
+        req.getRequestDispatcher("teacher_delete_done.jsp").forward(req, res);
 
     }
 
