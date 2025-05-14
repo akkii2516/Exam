@@ -25,6 +25,7 @@ public class TeacherCreateExecuteAction extends Action {
         String id = req.getParameter("id");
         String name = req.getParameter("name");
         String password = req.getParameter("password");
+        String schoolname = req.getParameter("schoolname");
 
         // 教員インスタンスを作成し、値を設定
         Teacher newTeacher = new Teacher();

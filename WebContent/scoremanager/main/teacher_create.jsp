@@ -32,12 +32,14 @@
 			</div>
 
 
+
+
 					<div class="d-flex gap-2 mb-3">
 						<button type="submit" class="btn btn-secondary">登録して終了</button>
 					</div>
 
 					<div class="col-4" style="margin-top:10px">
-						<a href="ClassList.action">戻る</a>
+						<a href="TeacherList.action">戻る</a>
 					</div>
 				</div>
 			</form>
