@@ -70,6 +70,10 @@ public class TestRegistAction extends Action {
         req.setAttribute("selectedF3", f3);
         req.setAttribute("selectedF4", f4);
 
+        // 検索ボタンが押された（何かパラメータが来ている）かチェック
+        boolean isSearched = req.getParameter("f1") != null || req.getParameter("f2") != null ||
+                              req.getParameter("f3") != null || req.getParameter("f4") != null;
+
         // 検索条件がすべて正しく入力されていれば検索を実行
         if (isValid(f1) && isValid(f2) && isValid(f3) && isValid(f4)) {
             int entYear = Integer.parseInt(f1);
@@ -82,9 +86,9 @@ public class TestRegistAction extends Action {
             List<Test> tests = testDao.filter(entYear, classNum, subject, testNo, school);
 
             req.setAttribute("tests", tests);
-        } else if (anyNotNull(f1, f2, f3, f4)) {
-            // 一部のみ選択されている場合はエラー表示
-            req.setAttribute("error", "すべての検索条件を選択してください。");
+        }  else if (isSearched) {
+            // 検索されたが、条件が不完全だった
+            req.setAttribute("error", "入学年度とクラスと科目と回数を選択してください");
         }
 
         // JSPへフォワード
