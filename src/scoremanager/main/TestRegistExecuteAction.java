@@ -94,6 +94,13 @@ public class TestRegistExecuteAction extends Action {
         session.removeAttribute("errors");
         session.removeAttribute("tests");
         if (isSaved) {
+            // セッション情報の削除（必要なキーのみ削除）
+            session.removeAttribute("selectedF1");
+            session.removeAttribute("selectedF2");
+            session.removeAttribute("selectedF3");
+            session.removeAttribute("selectedF4");
+            session.removeAttribute("errors");
+            session.removeAttribute("tests");
             res.sendRedirect("test_regist_done.jsp");
         } else {
             res.sendRedirect("TestRegist.action");
