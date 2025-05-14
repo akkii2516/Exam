@@ -222,15 +222,17 @@ public class ClassNumDao extends Dao {
 
 //						//プリペアードステートメントにINSERT文をセット
 //
-//						statement = connection.prepareStatement(
-//
-//								"insert into class_num(school_cd,class_num) values(?,?)");
+						statement = connection.prepareStatement(
+
+								"insert into class_num(school_cd,class_num) values(?,?)");
 //
 //						//プリペアードステートメントに値をバインド
 //
-//						statement.setString(1, classNum.getSchool().getCd());
-//
-//						statement.setString(2, classNum.getClass_num());
+						statement.setString(1, classNum.getSchool().getCd());
+
+						statement.setString(2, classNum.getClass_num());
+						count = statement.executeUpdate();
+
 
 					} else {
 
