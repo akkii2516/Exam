@@ -9,10 +9,11 @@
     <section class="me-4">
       <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
 
-      <!-- 検索フォーム -->
-      <form action = "TestListSubjectExecute.action" method = get>
-        <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
+      <!-- 検索枠 -->
+      <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
 
+        <!-- ▼科目情報フォーム▼ -->
+        <form action="TestListSubjectExecute.action" method="get" class="row align-items-center">
           <!-- 科目情報 -->
           <div class="col-2" style="margin-left:15px">
             <label class="form-label">科目情報</label>
@@ -54,10 +55,15 @@
           <!-- 検索ボタン -->
           <div class="col-2 d-flex justify-content-end" style="margin-left: -50px;">
             <label class="form-label d-block invisible">検索</label>
-            <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+            <button class="btn btn-secondary" type="submit" style="background-color: #6c757d; color: white;">検索</button>
           </div>
-          <hr class="mx-3 mb-4" style="margin-top:5px; width: 95%;" />
+        </form>
 
+        <!-- 水平線 -->
+        <hr class="mx-3 my-3" style="width: 95%;" />
+
+        <!-- ▼学生情報フォーム▼ -->
+        <form action="TestListStudentExecute.action" method="get" class="row align-items-center">
           <!-- 学生情報 -->
           <div class="col-2">
             <label class="form-label" style="margin-left:15px">学生情報</label>
@@ -77,13 +83,17 @@
           <!-- 検索ボタン -->
           <div class="col-2 d-flex justify-content-end" style="margin-left: -10px;">
             <label class="form-label d-block invisible">検索</label>
-            <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+            <button class="btn btn-secondary" type="submit" style="background-color: #6c757d; color: white;">検索</button>
           </div>
+        </form>
+      </div>
+
+              <!-- メッセージ -->
+        <div class="col-12 mt-2">
+          <p style="color:#33FFFF;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
         </div>
 
-        <p style="color:#33FFFF;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
-      </form>
-
+      <!-- ▼検索結果表示▼ -->
       <c:choose>
         <c:when test="${not empty tests}">
           <form action="TestRegistExecute.action" method="post">
