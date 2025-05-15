@@ -8,32 +8,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
+import bean.Student;
 import bean.Subject;
 import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
 	//検索をする
-	private String baseSql = "SELECT * FROM test WHERE ent_year=? AND class_num=? AND subject_cd=? AND school_cd=?";
+	private String baseSql =
+		    "SELECT t.*, s.ent_year, s.name " +
+		    "FROM test t " +
+		    "JOIN student s ON t.student_no = s.no " +
+		    "WHERE s.ent_year=? AND t.class_num=? AND t.subject_cd=? AND t.school_cd=?";
 
 	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
-		List<TestListSubject> testList = new ArrayList<>();
-		try {
-			while (rSet.next()) {
-				TestListSubject subject = new TestListSubject();
+	    List<TestListSubject> testList = new ArrayList<>();
+	    try {
+	        while (rSet.next()) {
+	            TestListSubject test = new TestListSubject();
 
-				//取得する
-				subject.setSubjectCd(rSet.getString("SUBJECT_CD"));
-				subject.setSubjectName(rSet.getString("SUBJECT_NAME"));
-				subject.setNum(rSet.getInt("NUM"));
-				subject.setPoint(rSet.getInt("POINT"));
+	            // Studentオブジェクト作成・セット
+	            Student student = new Student();
+	            student.setNo(rSet.getString("student_no"));
+	            student.setName(rSet.getString("name")); // 結合している場合
+	            student.setEntYear(rSet.getInt("ent_year"));
 
-				testList.add(subject);
-			}
-		} catch (SQLException | NullPointerException e) {
-			e.printStackTrace();
-		}
-		return testList;
+	            test.setStudent(student);
+	            test.setClassNum(rSet.getString("class_num"));
+	            test.setSubjectCd(rSet.getString("subject_cd"));
+	            test.setPoint(rSet.getInt("point"));
+	            test.setNum(rSet.getInt("no")); // 回数が「no」であると仮定
+
+	            testList.add(test);
+	        }
+	    } catch (SQLException | NullPointerException e) {
+	        e.printStackTrace();
+	    }
+	    return testList;
 	}
+
 
 	public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
 		List<TestListSubject> list = new ArrayList<>();
