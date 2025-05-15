@@ -320,6 +320,8 @@ public class ClassNumDao extends Dao {
 	    Connection connection = getConnection();
 
 	    PreparedStatement statement = null;
+	    PreparedStatement studentStmt = null;
+
 
 	    int count = 0;
 
@@ -335,7 +337,7 @@ public class ClassNumDao extends Dao {
 
 	            statement = connection.prepareStatement(
 
-	                "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+	                "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ? "
 
 	            );
 
@@ -344,8 +346,19 @@ public class ClassNumDao extends Dao {
 	            statement.setString(2, oldClassNum.getClass_num());
 
 	            statement.setString(3, oldClassNum.getSchool().getCd());
+	            studentStmt = connection.prepareStatement(
+	                    "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+	                );
+	                studentStmt.setString(1, newClassNum);
+	                studentStmt.setString(2, oldClassNum.getClass_num());
+	                studentStmt.setString(3, oldClassNum.getSchool().getCd());
 
+	                studentStmt.executeUpdate();
+
+	                connection.commit();
 	            count = statement.executeUpdate();
+
+
 
 	        }
 
@@ -364,8 +377,6 @@ public class ClassNumDao extends Dao {
 	    return count > 0;
 
 	}
-
-
 
 
 
