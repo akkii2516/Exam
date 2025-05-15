@@ -13,42 +13,74 @@ import dao.ClassNumDao;
 import tool.Action;
 
 public class ClassUpdateExecuteAction extends Action {
+
     public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
 
         HttpSession session = req.getSession();
+
         Teacher teacher = (Teacher) session.getAttribute("user");
 
-        String classnum = req.getParameter("ClassNum");
+        String oldClassNumStr = req.getParameter("oldClassNum");
 
-        System.out.println(classnum);
-        // エラーメッセージ格納用
+        String newClassNumStr = req.getParameter("newClassNum");
+
         Map<String, String> errors = new HashMap<>();
 
         ClassNumDao classNumDao = new ClassNumDao();
-        // ① クラスの存在チェック
-        ClassNum existingClassNum = classNumDao.get(classnum, teacher.getSchool());
 
-        if (existingClassNum != null) {
-            // ② 存在してたら場合はエラーメッセージを設定してJSPに戻す
-            errors.put("f1", "重複しています");
+        // 新しいクラス名が他に存在していないか確認（自分以外で）
+
+        ClassNum duplicate = classNumDao.get(newClassNumStr, teacher.getSchool());
+
+        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
+
+            errors.put("f1", "既に使用されているクラス名です");
+
             session.setAttribute("errors", errors);
 
-            // フォーム再表示用に subject を設定
+            // フォーム再表示用データ
+
             ClassNum classNum = new ClassNum();
-            classNum.setClass_num(classnum);
-            req.setAttribute("ClassNum", classnum);
+
+            classNum.setClass_num(oldClassNumStr);
+
+            classNum.setSchool(teacher.getSchool());
+
+            req.setAttribute("classNum", classNum);
 
             req.getRequestDispatcher("class_update.jsp").forward(req, res);
+
             return;
+
         }
 
-        // ③ クラスが存在すれば更新処理
-        ClassNum classNum = new ClassNum();
-        classNum.setClass_num(classnum);
-        classNum.setSchool(teacher.getSchool());
+        // 更新処理
 
-        classNumDao.update(classNum, classnum);
+        ClassNum oldClassNum = new ClassNum();
+
+        oldClassNum.setClass_num(oldClassNumStr);
+
+        oldClassNum.setSchool(teacher.getSchool());
+
+        boolean success = classNumDao.update(oldClassNum, newClassNumStr);
+
+        if (!success) {
+
+            errors.put("f2", "更新に失敗しました");
+
+            session.setAttribute("errors", errors);
+
+            req.setAttribute("classNum", oldClassNum);
+
+            req.getRequestDispatcher("class_update.jsp").forward(req, res);
+
+            return;
+
+        }
 
         req.getRequestDispatcher("class_update_done.jsp").forward(req, res);
+
     }
+
 }
+

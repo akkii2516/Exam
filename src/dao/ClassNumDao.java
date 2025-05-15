@@ -322,7 +322,7 @@ public class ClassNumDao extends Dao {
 	    PreparedStatement statement = null;
 
 	    int count = 0;
-	 
+
 	    try {
 
 	        // 対象のクラス番号が存在するか確認
@@ -344,7 +344,7 @@ public class ClassNumDao extends Dao {
 	            statement.setString(2, oldClassNum.getClass_num());
 
 	            statement.setString(3, oldClassNum.getSchool().getCd());
-	 
+
 	            count = statement.executeUpdate();
 
 	        }
@@ -360,12 +360,14 @@ public class ClassNumDao extends Dao {
 	        if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
 
 	    }
-	 
+
 	    return count > 0;
 
 	}
 
-	 
+
+
+
 
 
 	}
