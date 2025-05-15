@@ -20,7 +20,7 @@ public class ClassCreateExecuteAction extends Action {
         Teacher teacher = (Teacher) session.getAttribute("user");
 
         // フォームから送信されたパラメータを取得
-        String classno = req.getParameter("class-num");
+        String classno = req.getParameter("class_num");
 
         // 入力値をセットしたSubjectオブジェクトを作成
         ClassNum classnum = new ClassNum();
