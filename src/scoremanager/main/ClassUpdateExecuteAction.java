@@ -47,7 +47,7 @@ public class ClassUpdateExecuteAction extends Action {
         classNum.setClass_num(classnum);
         classNum.setSchool(teacher.getSchool());
 
-        classNumDao.save(classNum);
+        classNumDao.update(classNum, classnum);
 
         req.getRequestDispatcher("class_update_done.jsp").forward(req, res);
     }
