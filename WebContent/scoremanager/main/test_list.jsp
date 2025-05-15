@@ -54,9 +54,9 @@
           <!-- 検索ボタン -->
           <div class="col-2 d-flex justify-content-end" style="margin-left: -50px;">
             <label class="form-label d-block invisible">検索</label>
-            <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+            <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
           </div>
-          <hr class="mx-3 mb-4" style="margin-top:5px" />
+          <hr class="mx-3 mb-4" style="margin-top:5px; width: 95%;" />
 
           <!-- 学生情報 -->
           <div class="col-2">
@@ -75,9 +75,9 @@
           </div>
 
           <!-- 検索ボタン -->
-          <div class="col-2 d-flex justify-content-end" style="margin-left: -30px;">
+          <div class="col-2 d-flex justify-content-end" style="margin-left: -10px;">
             <label class="form-label d-block invisible">検索</label>
-            <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+            <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
           </div>
         </div>
 
