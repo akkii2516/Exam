@@ -1,6 +1,7 @@
 package scoremanager.main;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ public class TestListStudentExecuteAction extends Action {
         String entYearStr = req.getParameter("f1");
         String classNum = req.getParameter("f2");
         String isAttendStr = req.getParameter("f3");
+        String studentId = req.getParameter("studentId"); // 学生番号（任意）
 
         // 入学年度
         int entYear = 0;
@@ -33,14 +35,21 @@ public class TestListStudentExecuteAction extends Action {
             }
         }
 
-        // 在学フラグの変換
-        boolean isAttend = "1".equals(isAttendStr);
+        // 在学フラグの変換（nullの場合はtrueとする）
+        boolean isAttend = "1".equals(isAttendStr) || isAttendStr == null;
 
         // 学生情報の検索
         StudentDao sDao = new StudentDao();
         List<Student> students = sDao.filter(teacher.getSchool(), entYear, classNum, isAttend);
 
-        // 学生リストが空の場合
+        // 学生番号による絞り込み（空でなければ）
+        if (studentId != null && !studentId.trim().isEmpty()) {
+            students = students.stream()
+                    .filter(s -> s.getNo().equals(studentId))
+                    .collect(Collectors.toList());
+        }
+
+        // 学生リストが空の場合メッセージ表示
         if (students.isEmpty()) {
             req.setAttribute("message", "該当する学生は見つかりませんでした。");
         }
@@ -50,8 +59,9 @@ public class TestListStudentExecuteAction extends Action {
         req.setAttribute("f1", entYearStr);
         req.setAttribute("f2", classNum);
         req.setAttribute("f3", isAttendStr);
+        req.setAttribute("studentId", studentId);
 
-        // 結果表示用JSPへフォワード
+        // 表示用JSPにフォワード
         req.getRequestDispatcher("test_list.jsp").forward(req, res);
     }
 }
