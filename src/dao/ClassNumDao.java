@@ -196,127 +196,56 @@ public class ClassNumDao extends Dao {
 
 	public boolean save(ClassNum classNum) throws Exception {
 
-		//コネクションを確立
+	    Connection connection = getConnection();
+	    PreparedStatement statement = null;
+	    int count = 0;
 
-				Connection connection = getConnection();
+	    try {
+	        // 既存のクラス番号を取得
+	        ClassNum old = get(classNum.getClass_num(), classNum.getSchool());
 
-				//プリペアードステートメント
+	        if (old == null) {
+	            // クラスが存在しない場合、INSERT文を実行
+	            statement = connection.prepareStatement(
+	                    "INSERT INTO class_num(school_cd, class_num) VALUES(?, ?)");
+	            statement.setString(1, classNum.getSchool().getCd());
+	            statement.setString(2, classNum.getClass_num());
 
-				PreparedStatement statement = null;
+	            count = statement.executeUpdate();
+	        } else {
+	            // クラスが既に存在する場合、UPDATE文を実行
+	            statement = connection.prepareStatement(
+	                    "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?");
+	            statement.setString(1, classNum.getClass_num());
+	            statement.setString(2, classNum.getClass_num());
+	            statement.setString(3, classNum.getSchool().getCd());
 
-				//実行件数
+	            count = statement.executeUpdate();
+	        }
 
-				int count = 0;
+	    } catch (Exception e) {
+	        throw e;
 
-				try {
+	    } finally {
+	        if (statement != null) {
+	            try {
+	                statement.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	        if (connection != null) {
+	            try {
+	                connection.close();
+	            } catch (SQLException sqle) {
+	                throw sqle;
+	            }
+	        }
+	    }
 
-					//データベースからクラスを取得
-
-					ClassNum old = get(classNum.getClass_num(), classNum.getSchool());
-
-					if (old == null) {
-						System.out.println("あいうえお");
-
-
-						//クラスが存在しなかった場合
-
-//						//プリペアードステートメントにINSERT文をセット
-//
-						statement = connection.prepareStatement(
-
-								"insert into class_num(school_cd,class_num) values(?,?)");
-//
-//						//プリペアードステートメントに値をバインド
-//
-						statement.setString(1, classNum.getSchool().getCd());
-
-						statement.setString(2, classNum.getClass_num());
-						count = statement.executeUpdate();
-
-
-					} else {
-
-						//クラスが存在した場合
-
-						//プリペアードステートメントにUPDATE文をセット
-
-						statement = connection
-
-								.prepareStatement("update class_num set class_num=? where class_num = ? and school_cd = ?");
-
-						//プリペアードステートメントに値をバインド
-
-						statement.setString(1, classNum.getClass_num());
-
-						statement.setString(2, classNum.getClass_num());
-
-						statement.setString(3, classNum.getSchool().getCd());
-						//プリペアードステートメントを実行
-						count = statement.executeUpdate();
-
-
-					}
-
-
-
-
-
-				} catch (Exception e) {
-
-					throw e;
-
-				} finally {
-
-					//プリペアードステートメントを閉じる
-
-					if (statement != null) {
-
-						try {
-
-							statement.close();
-
-						} catch (SQLException sqle) {
-
-							throw sqle;
-
-						}
-
-					}
-
-					//コネクションを閉じる
-
-					if (connection != null) {
-
-						try {
-
-							connection.close();
-
-						} catch (SQLException sqle) {
-
-							throw sqle;
-
-						}
-
-					}
-
-				}
-
-				if (count > 0) {
-
-					//実行件数が1件以上ある場合
-
-					return true;
-
-				} else {
-
-					//実行件数が0件の場合
-
-					return false;
-
-				}
-
-			}
-
+	    // 実行件数が1件以上あれば成功
+	    return count > 0;
+	}
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception {
 
 		/**
@@ -374,6 +303,69 @@ public class ClassNumDao extends Dao {
 			return count > 0;
 
 		}
+	public boolean update(ClassNum oldClassNum, String newClassNum) throws Exception {
+
+	    /**
+
+	     * クラス番号を更新する
+
+	     * @param oldClassNum 現在のクラス情報（旧クラス番号と学校情報を含む）
+
+	     * @param newClassNum 新しいクラス番号
+
+	     * @return 更新成功ならtrue、対象が存在しないか失敗した場合はfalse
+
+	     */
+
+	    Connection connection = getConnection();
+
+	    PreparedStatement statement = null;
+
+	    int count = 0;
+	 
+	    try {
+
+	        // 対象のクラス番号が存在するか確認
+
+	        ClassNum existing = get(oldClassNum.getClass_num(), oldClassNum.getSchool());
+
+	        if (existing != null) {
+
+	            // 存在する場合、更新処理
+
+	            statement = connection.prepareStatement(
+
+	                "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+
+	            );
+
+	            statement.setString(1, newClassNum);
+
+	            statement.setString(2, oldClassNum.getClass_num());
+
+	            statement.setString(3, oldClassNum.getSchool().getCd());
+	 
+	            count = statement.executeUpdate();
+
+	        }
+
+	    } catch (Exception e) {
+
+	        throw e;
+
+	    } finally {
+
+	        if (statement != null) try { statement.close(); } catch (SQLException e) { throw e; }
+
+	        if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
+
+	    }
+	 
+	    return count > 0;
+
+	}
+
+	 
 
 
 	}
