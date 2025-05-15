@@ -46,6 +46,6 @@ public class TestListSubjectExecuteAction extends Action {
         req.setAttribute("f3", isAttendStr);
 
         // 結果表示用JSPへフォワード
-        req.getRequestDispatcher("test_list.jsp").forward(req, res);
+        req.getRequestDispatcher("test_list_subject.jsp").forward(req, res);
     }
 }

@@ -1,5 +1,3 @@
-//できたのかもしれないしできてないかもしれないわかりません
-//うごかなかったらまたかえればいい
 package scoremanager.main;
 
 import java.util.List;
@@ -29,6 +27,8 @@ public class TestListStudentExecuteAction extends Action {
             try {
                 entYear = Integer.parseInt(entYearStr);
             } catch (NumberFormatException e) {
+                req.setAttribute("error", "入学年度が無効です。");
+                req.getRequestDispatcher("error.jsp").forward(req, res);
                 return;
             }
         }
@@ -39,6 +39,11 @@ public class TestListStudentExecuteAction extends Action {
         // 学生情報の検索
         StudentDao sDao = new StudentDao();
         List<Student> students = sDao.filter(teacher.getSchool(), entYear, classNum, isAttend);
+
+        // 学生リストが空の場合
+        if (students.isEmpty()) {
+            req.setAttribute("message", "該当する学生は見つかりませんでした。");
+        }
 
         // 学生リストと検索条件をリクエストにセット
         req.setAttribute("students", students);
