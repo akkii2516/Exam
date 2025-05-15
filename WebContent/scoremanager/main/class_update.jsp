@@ -24,6 +24,10 @@
 </button>
 </div>
 
+<small><font face="Arial">クラス情報を変更すると学生情報も変更されます</font></small>
+
+
+
 <div class="col-4" style="margin-top:10px">
 <a href="ClassList.action">戻る</a>
 </div>

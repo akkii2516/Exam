@@ -335,17 +335,6 @@ public class ClassNumDao extends Dao {
 
 	            // 存在する場合、更新処理
 
-	            statement = connection.prepareStatement(
-
-	                "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ? "
-
-	            );
-
-	            statement.setString(1, newClassNum);
-
-	            statement.setString(2, oldClassNum.getClass_num());
-
-	            statement.setString(3, oldClassNum.getSchool().getCd());
 	            studentStmt = connection.prepareStatement(
 	                    "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
 	                );
@@ -376,6 +365,36 @@ public class ClassNumDao extends Dao {
 
 	    return count > 0;
 
+	}
+	public boolean updateStudentClassNumOnly(ClassNum oldClassNum, String newClassNum) throws Exception {
+	    Connection connection = getConnection();
+	    PreparedStatement studentStmt = null;
+	    int count = 0;
+
+	    try {
+	        // 旧クラスが存在するかを確認（なくても処理していいならこのチェックは省略可）
+	        ClassNum existing = get(oldClassNum.getClass_num(), oldClassNum.getSchool());
+	        if (existing != null) {
+	            // studentテーブルのclass_numを更新
+	            studentStmt = connection.prepareStatement(
+	                "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+	            );
+	            studentStmt.setString(1, newClassNum);
+	            studentStmt.setString(2, oldClassNum.getClass_num());
+	            studentStmt.setString(3, oldClassNum.getSchool().getCd());
+
+	            count = studentStmt.executeUpdate();
+
+	            connection.commit(); // 明示的にコミット（auto-commitがfalseの場合）
+	        }
+	    } catch (Exception e) {
+	        throw e;
+	    } finally {
+	        if (studentStmt != null) try { studentStmt.close(); } catch (SQLException e) { throw e; }
+	        if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
+	    }
+
+	    return count > 0;
 	}
 
 
