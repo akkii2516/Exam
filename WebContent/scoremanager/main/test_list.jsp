@@ -94,7 +94,7 @@
         </div>
 
       <!-- ▼検索結果表示▼ -->
-      <c:choose>
+      <!--<c:choose>
         <c:when test="${not empty tests}">
           <form action="TestRegistExecute.action" method="post">
             <table class="table table-hover">
@@ -136,7 +136,7 @@
         <c:otherwise>
           <p>検索結果がありません。</p>
         </c:otherwise>
-      </c:choose>
+      </c:choose>-->
 
     </section>
   </c:param>
