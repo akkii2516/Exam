@@ -8,68 +8,104 @@ import java.util.ArrayList;
 import java.util.List;
 
 import bean.School;
-import bean.Student;
 import bean.Subject;
-import bean.TestListStudent;
+import bean.TestListSubject;
 
 public class TestListSubjectDao extends Dao {
-	//検索をする
-	private String baseSql =
-		    "SELECT t.*, s.ent_year, s.name " +
-		    "FROM test t " +
-		    "JOIN student s ON t.student_no = s.no " +
-		    "WHERE s.ent_year=? AND t.class_num=? AND t.subject_cd=? AND t.school_cd=?";
 
-	private List<TestListStudent> postFilter(ResultSet rSet) throws Exception {
-	    List<TestListStudent> testList = new ArrayList<>();
-	    try {
-	        while (rSet.next()) {
-	            TestListStudent test = new TestListStudent();
+	private String baseSql = "select student.ent_year, student.no, student.name, student.class_num, a.no as no1, a.point as point1, b.no as no2, b.point as point2";
 
-	            // Studentオブジェクト作成・セット
-	            Student student = new Student();
-	            student.setNo(rSet.getString("student_no"));
-	            student.setName(rSet.getString("name")); // 結合している場合
-	            student.setEntYear(rSet.getInt("ent_year"));
+	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
 
-	            test.setSubjectCd(rSet.getString("subject_cd"));
-	            test.setPoint(rSet.getInt("point"));
-	            test.setNum(rSet.getInt("no")); // 回数が「no」であると仮定
+		// リストを初期化
+		List<TestListSubject> list = new ArrayList<>();
+		try {
+			// リザルトセットを全権走査
+			while (rSet.next()) {
+				// 科目別リストインスタンスを初期化
+				TestListSubject tls = new TestListSubject();
+				// 科目別リストインスタンスに検索結果をセット
+				tls.setEntYear(rSet.getInt("ent_year"));
+				tls.setStudentNo(rSet.getString("no"));
+				tls.setStudentName(rSet.getString("name"));
+				tls.setClassNum(rSet.getString("class_num"));
+				tls.putPoint(rSet.getInt("no1"), rSet.getInt("point1"));
+				if (rSet.getInt("no2") != 0) {
+					tls.putPoint(rSet.getInt("no2"), rSet.getInt("point2"));
+				} else {
+					tls.putPoint(2, -1);
+				}
 
-	            testList.add(test);
-	        }
-	    } catch (SQLException | NullPointerException e) {
-	        e.printStackTrace();
-	    }
-	    return testList;
+				// リストに追加
+				list.add(tls);
+			}
+		} catch (SQLException | NullPointerException e) {
+			e.printStackTrace();
+		}
+
+		return list;
 	}
 
+	public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
 
-	public List<TestListStudent> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
-		List<TestListStudent> list = new ArrayList<>();
+		// リストを初期化
+		List<TestListSubject> list = new ArrayList<>();
+		// コネクションを確立
 		Connection connection = getConnection();
+		// プリペアードステートメント
 		PreparedStatement statement = null;
+		// リザルトセット
 		ResultSet rSet = null;
-
-		String order = " ORDER BY student_no ASC";
+		// SQL文の参照テーブル
+		String from = " from (select test.student_no, test.subject_cd, test.school_cd, test.no, test.point, test.class_num from test join student on test.student_no = student.no where student.ent_year = ? and subject_cd = ? and test.class_num = ? and test.school_cd = ? and test.no = 1 order by test.student_no) as a";
+		// SQL文の結合
+		String join = " left join (select test.student_no, test.subject_cd, test.school_cd, test.no, test.point, test.class_num from test join student on test.student_no = student.no where student.ent_year = ? and subject_cd = ? and test.class_num = ? and test.school_cd = ? and test.no = 2 order by test.student_no) as b";
+		// SQL文の条件
+		String condition = " on a.student_no = b.student_no and a.subject_cd = b.subject_cd and a.class_num = b.class_num";
+		// SQL文の結合2
+		String join2 = " join student on a.student_no = student.no";
+		// SQL文のソート
+		String order = " order by a.student_no asc, a.no asc";
 
 		try {
-			statement = connection.prepareStatement(baseSql + order);
+			// プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement(baseSql + from + join + condition + join2 + order);
+			// プリペアードステートメントに入学年度をバインド
 			statement.setInt(1, entYear);
-			statement.setString(2, classNum);
-			statement.setString(3, subject.getCd());
+			// プリペアードステートメントに科目番号をバインド
+			statement.setString(2, subject.getCd());
+			// プリペアードステートメントにクラス番号をバインド
+			statement.setString(3, classNum);
+			// プリペアードステートメントに学校コードをバインド
 			statement.setString(4, school.getCd());
-
-			// クエリ実行・結果取得
+			// 同じ順番でバインド
+			statement.setInt(5, entYear);
+			statement.setString(6, subject.getCd());
+			statement.setString(7, classNum);
+			statement.setString(8, school.getCd());
+			// プリペアードステートメントを実行
 			rSet = statement.executeQuery();
-
+			// リストへの格納処理を実行
 			list = postFilter(rSet);
-
 		} catch (Exception e) {
 			throw e;
 		} finally {
-			if (statement != null) try { statement.close(); } catch (SQLException e) { throw e; }
-			if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
+			// プリペアードステートメントを閉じる
+			if (statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
+			// コネクションを閉じる
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException sqle) {
+					throw sqle;
+				}
+			}
 		}
 
 		return list;

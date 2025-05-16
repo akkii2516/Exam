@@ -7,55 +7,69 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bean.School;
 import bean.Student;
 import bean.TestListStudent;
 
 public class TestListStudentDao extends Dao {
-	//学生番号から成績を出せばいいと思う
-	private String baseSql = "select* from test where student_no=?";
 
-	private List<TestListStudent> postFilter(ResultSet rSet, School school) throws Exception {
-		//リストを初期化
-		List<TestListStudent> testlistStudent = new ArrayList<>();
+	private String baseSql = "select subject.name, test.subject_cd, test.no, test.point from test";
+
+	private List<TestListStudent> postFilter(ResultSet rSet) throws Exception {
+
+		// リストを初期化
+		List<TestListStudent> list = new ArrayList<>();
 		try {
-			//リザルトセットを全権捜査
+			// リザルトセットを全権走査
 			while (rSet.next()) {
-				//テストリストのインスタンスを初期化
-				TestListStudent student = new TestListStudent();
-				//テスト結果の検索結果をセット
-				student.setStudentNo(rSet.getString("STUDENT_NO"));
-				student.setStudentName(rSet.getString("STUDENT_NAME"));
-				student.setClassNum(rSet.getString("CLASS_NUM"));
-
-				//リストに追加
-				testlistStudent.add(student);
+				// 学生別リストインスタンスを初期化
+				TestListStudent tls = new TestListStudent();
+				// 学生別リストインスタンスに検索結果をセット
+				tls.setSubjectName(rSet.getString("name"));
+				tls.setSubjectCd(rSet.getString("subject_cd"));
+				tls.setNum(rSet.getInt("no"));
+				tls.setPoint(rSet.getInt("point"));
+				// リストに追加
+				list.add(tls);
 			}
 		} catch (SQLException | NullPointerException e) {
 			e.printStackTrace();
 		}
 
-		return testlistStudent;
+		return list;
 	}
 
 	public List<TestListStudent> filter(Student student) throws Exception {
+
+		// リストを初期化
 		List<TestListStudent> list = new ArrayList<>();
+		// コネクションを確立
 		Connection connection = getConnection();
+		// プリペアードステートメント
 		PreparedStatement statement = null;
+		// リザルトセット
 		ResultSet rSet = null;
+		// SQL文の結合
+		String join = " join subject on test.subject_cd = subject.cd";
+		// SQL文の条件
+		String condition = " where test.student_no = ? and test.school_cd = ?";
+		// SQL文のソート
+		String order = " order by subject_cd asc, no asc";
 
-		String order = " order by subject_cd asc";
 		try {
-			statement = connection.prepareStatement(baseSql + order);
+			// プリペアードステートメントにSQL文をセット
+			statement = connection.prepareStatement(baseSql + join + condition + order);
+			// プリペアードステートメントに学生番号をバインド
 			statement.setString(1, student.getNo());
+			// プリペアードステートメントに学校コードをバインド
+			statement.setString(2, student.getSchool().getCd());
+			// プリペアードステートメントを実行
 			rSet = statement.executeQuery();
-
-			// 結果セットをリストに変換
-			list = postFilter(rSet, null);
-
+			// リストへの格納処理を実行
+			list = postFilter(rSet);
 		} catch (Exception e) {
 			throw e;
 		} finally {
+			// プリペアードステートメントを閉じる
 			if (statement != null) {
 				try {
 					statement.close();
@@ -63,6 +77,7 @@ public class TestListStudentDao extends Dao {
 					throw sqle;
 				}
 			}
+			// コネクションを閉じる
 			if (connection != null) {
 				try {
 					connection.close();
@@ -71,7 +86,7 @@ public class TestListStudentDao extends Dao {
 				}
 			}
 		}
+
 		return list;
 	}
-	}
-
+}
