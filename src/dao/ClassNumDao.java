@@ -332,7 +332,31 @@ public class ClassNumDao extends Dao {
 
 	        ClassNum existing = get(newClassNum, oldClassNum.getSchool());
 
-	        if (existing != null) {}
+	        if (existing != null) {
+
+	            // 存在する場合STUDENTだけ更新処理
+
+	            studentStmt = connection.prepareStatement(
+	                    "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+	                );
+	                studentStmt.setString(1, newClassNum);
+	                studentStmt.setString(2, oldClassNum.getClass_num());
+	                studentStmt.setString(3, oldClassNum.getSchool().getCd());
+
+	                studentStmt.executeUpdate();
+
+	                connection.commit();
+
+//	            count = statement.executeUpdate();
+	            count = 1;
+
+
+	            count = statement.executeUpdate();
+	            connection.setAutoCommit(false);
+
+
+
+	        }
 
 	    } catch (Exception e) {
 
