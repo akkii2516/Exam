@@ -42,9 +42,10 @@ public class TestListSubjectExecuteAction extends Action {
         	List<TestListSubject> test_list = testlistsubjectDao.filter(entyearstr, classNum, subject, teacher.getSchool());
 
         	// 検索結果をリクエストに設定
+        	req.setAttribute("selectedSubject", subject);
         	req.setAttribute("test_list", test_list);
-        	if (test_list.equals(null)) {
-        		errors.put("error2", "学生情報が存在しませんでした");
+        	if (test_list == null || test_list.isEmpty()) {
+        	    errors.put("error2", "学生情報が存在しませんでした");
         	}
         } else {
         	errors.put("error1", "入学年度とクラスと科目を選択してください");

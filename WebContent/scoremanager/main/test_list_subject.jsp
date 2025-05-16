@@ -85,11 +85,9 @@
       <c:choose>
         <c:when test="${not empty test_list}">
         <c:forEach var="test" items="${test_list}" varStatus="status">
-  			<c:if test="${status.first}">
-    			<div class="mb-3 text-start">
-      				科目：${test.subject.name}
-    			</div>
-  			</c:if>
+  			<c:if test="${not empty selectedSubject}">
+  				<div>科目：${selectedSubject.name}</div>
+			</c:if>
 		</c:forEach>
             <table class="table table-hover">
               <thead>
@@ -105,17 +103,17 @@
               <tbody>
                 <c:forEach var="test" items="${test_list}">
                   <tr>
-                    <td>${test.student.entYear}</td>
+                    <td>${test.entYear}</td>
                     <td>${test.classNum}</td>
-                    <td>${test.student.no}</td>
-                    <td>${test.student.name}</td>
+                    <td>${test.studentNo}</td>
+                    <td>${test.studentName}</td>
 
                     <td>
-                      <input type="hidden" name="studentNoList" value="${test.student.no}" />
+                      <input type="hidden" name="studentNoList" value="${test.studentNo}" />
                       <input type="hidden" name="count" value="${selectedF4}" />
                       <input type="hidden" name="subject" value="${selectedF3}" />
-                      <input type="number" name="pointList" value="${test.point}" min="0">
-                      <input type="number" name="pointList" value="${test.point}" min="null">
+                      <input type="number" name="pointList" value="${test.points[1]}" min="0">
+					  <input type="number" name="pointList" value="${test.points[2]}" min="0">
 
                       <c:if test="${not empty errors[test.student.no]}">
                         <div class="mt-2 text-warning">${errors[test.student.no]}</div>
