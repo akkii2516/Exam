@@ -305,89 +305,75 @@ public class ClassNumDao extends Dao {
 		}
 	public boolean update(ClassNum oldClassNum, String newClassNum) throws Exception {
 
+	    /**
+
+	     * クラス番号を更新する
+
+	     * @param oldClassNum 現在のクラス情報（旧クラス番号と学校情報を含む）
+
+	     * @param newClassNum 新しいクラス番号
+
+	     * @return 更新成功ならtrue、対象が存在しないか失敗した場合はfalse
+
+	     */
+
 	    Connection connection = getConnection();
 
 	    PreparedStatement statement = null;
-
 	    PreparedStatement studentStmt = null;
 
-	    int count = 0;
 
+	    int count = 0;
+	    System.out.println(oldClassNum.getSchool().getCd());
+	    System.out.println(oldClassNum.getClass_num());
 	    try {
 
-	        // 新しいクラス番号がすでに存在するか確認
+	        // 対象のクラス番号が存在するか確認
 
-	        ClassNum existingNew = get(newClassNum, oldClassNum.getSchool());
+	        ClassNum existing = get(newClassNum, oldClassNum.getSchool());
 
-	        if (existingNew != null) {
+	        if (existing != null) {
 
-	            // 新しいクラス番号が既に存在する場合は更新不可
+	            // 存在する場合STUDENTだけ更新処理
 
-	            return false;  // または例外を投げる
+	            studentStmt = connection.prepareStatement(
+	                    "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+	                );
+	                studentStmt.setString(1, newClassNum);
+	                studentStmt.setString(2, oldClassNum.getClass_num());
+	                studentStmt.setString(3, oldClassNum.getSchool().getCd());
+
+	                studentStmt.executeUpdate();
+
+	                connection.commit();
+
+//	            count = statement.executeUpdate();
+	            count = 1;
+
+
+	            count = statement.executeUpdate();
+	            connection.setAutoCommit(false);
+
+
 
 	        }
 
-	        connection.setAutoCommit(false);
-
-	        // クラス番号を更新
-
-	        statement = connection.prepareStatement(
-
-	            "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?"
-
-	        );
-
-	        statement.setString(1, newClassNum);
-
-	        statement.setString(2, oldClassNum.getClass_num());
-
-	        statement.setString(3, oldClassNum.getSchool().getCd());
-
-	        count = statement.executeUpdate();
-
-	        // studentテーブルのクラス番号も更新
-
-	        studentStmt = connection.prepareStatement(
-
-	            "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
-
-	        );
-
-	        studentStmt.setString(1, newClassNum);
-
-	        studentStmt.setString(2, oldClassNum.getClass_num());
-
-	        studentStmt.setString(3, oldClassNum.getSchool().getCd());
-
-	        studentStmt.executeUpdate();
-
-	        connection.commit();
-
 	    } catch (Exception e) {
 
-	        connection.rollback();
 
 	        throw e;
 
 	    } finally {
 
-	        if (statement != null) try { statement.close(); } catch (SQLException e) {}
+	        if (statement != null) try { statement.close(); } catch (SQLException e) { throw e; }
 
-	        if (studentStmt != null) try { studentStmt.close(); } catch (SQLException e) {}
-
-	        if (connection != null) try { connection.setAutoCommit(true); connection.close(); } catch (SQLException e) {}
+	        if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
 
 	    }
 
 	    return count > 0;
 
 	}
-
-
-
-
-
-
 
 	public boolean updateStudentClassNumOnly(ClassNum oldClassNum, String newClassNum) throws Exception {
 
