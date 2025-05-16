@@ -7,9 +7,6 @@ public class TestListSubject {
 	private int num;
 	private int point;
 
-	private String classNum;        // ← 追加
-	private Student student;        // ← 追加（Studentクラスは既に存在すると仮定）
-
 	// --- Getter / Setter ---
 	public String getSubjectName() {
 		return subjectName;
@@ -37,19 +34,5 @@ public class TestListSubject {
 	}
 	public void setPoint(int point) {
 		this.point = point;
-	}
-
-	public String getClassNum() {
-		return classNum;
-	}
-	public void setClassNum(String classNum) {
-		this.classNum = classNum;
-	}
-
-	public Student getStudent() {
-		return student;
-	}
-	public void setStudent(Student student) {
-		this.student = student;
 	}
 }
