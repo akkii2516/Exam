@@ -29,7 +29,6 @@ public class TestRegistExecuteAction extends Action {
         String[] pointStrs = req.getParameterValues("pointList");
         String subject_cd = req.getParameter("subject");
         String class_num = req.getParameter("classNum");
-        System.out.println(class_num);
         int count = Integer.parseInt(req.getParameter("count"));
 
         // エラーメッセージ格納用

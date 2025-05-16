@@ -1,67 +1,48 @@
 package scoremanager.main;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bean.Student;
-import bean.Teacher;
+import bean.TestListStudent;
 import dao.StudentDao;
+import dao.TestListStudentDao;
 import tool.Action;
 
 public class TestListStudentExecuteAction extends Action {
-    @Override
-    public void execute(HttpServletRequest req, HttpServletResponse res) throws Exception {
-        // セッションから教員情報を取得
-        Teacher teacher = (Teacher) req.getSession().getAttribute("user");
 
-        // リクエストパラメータを取得
-        String entYearStr = req.getParameter("f1");
-        String classNum = req.getParameter("f2");
-        String isAttendStr = req.getParameter("f3");
-        String studentId = req.getParameter("studentId"); // 学生番号（任意）
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        // 入学年度
-        int entYear = 0;
-        if (entYearStr != null && !entYearStr.isEmpty()) {
-            try {
-                entYear = Integer.parseInt(entYearStr);
-            } catch (NumberFormatException e) {
-                req.setAttribute("error", "入学年度が無効です。");
-                req.getRequestDispatcher("error.jsp").forward(req, res);
-                return;
-            }
-        }
+		// パラメータ取得
+		String entYear = request.getParameter("entYear");
+		String classNum = request.getParameter("classNum");
+		String studentNo = request.getParameter("studentNo");
 
-        // 在学フラグの変換（nullの場合はtrueとする）
-        boolean isAttend = "1".equals(isAttendStr) || isAttendStr == null;
+		// 入力チェック（全てのパラメータが揃っていなければエラー）
+		if (entYear == null || classNum == null || studentNo == null ||
+			entYear.isEmpty() || classNum.isEmpty() || studentNo.isEmpty()) {
+			request.setAttribute("message", "すべての検索条件を指定してください。");
+			return;
+		}
 
-        // 学生情報の検索
-        StudentDao sDao = new StudentDao();
-        List<Student> students = sDao.filter(teacher.getSchool(), entYear, classNum, isAttend);
+		// 学生情報の取得
+		StudentDao studentDao = new StudentDao();
+		Student student = studentDao.get(studentNo);
 
-        // 学生番号による絞り込み（空でなければ）
-        if (studentId != null && !studentId.trim().isEmpty()) {
-            students = students.stream()
-                    .filter(s -> s.getNo().equals(studentId))
-                    .collect(Collectors.toList());
-        }
+		if (student == null) {
+			request.setAttribute("message", "指定された学生は存在しません。");
+			return;
+		}
 
-        // 学生リストが空の場合メッセージ表示
-        if (students.isEmpty()) {
-            req.setAttribute("message", "該当する学生は見つかりませんでした。");
-        }
+		// テスト一覧の取得
+		TestListStudentDao testListStudentDao = new TestListStudentDao();
+		List<TestListStudent> testList = testListStudentDao.filter(student);
 
-        // 学生リストと検索条件をリクエストにセット
-        req.setAttribute("students", students);
-        req.setAttribute("f1", entYearStr);
-        req.setAttribute("f2", classNum);
-        req.setAttribute("f3", isAttendStr);
-        req.setAttribute("studentId", studentId);
-
-
-        // 結果表示用JSPへフォワード
-        req.getRequestDispatcher("test_list_student.jsp").forward(req, res);    }
+		// リクエスト属性に設定
+		request.setAttribute("student", student);
+		request.setAttribute("testList", testList);
+	}
 }
