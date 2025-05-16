@@ -346,14 +346,14 @@ public class ClassNumDao extends Dao {
 	                studentStmt.executeUpdate();
 
 	                connection.commit();
-<<<<<<< HEAD
+
 //	            count = statement.executeUpdate();
 	            count = 1;
 
-=======
+
 	            count = statement.executeUpdate();
 	            connection.setAutoCommit(false);
->>>>>>> branch 'master' of https://github.com/akkii2516/Exam.git
+
 
 
 	        }
