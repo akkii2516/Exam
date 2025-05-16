@@ -32,27 +32,27 @@ public class ClassUpdateExecuteAction extends Action {
 
         ClassNum duplicate = classNumDao.get(newClassNumStr, teacher.getSchool());
 
-//        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
-//
-//            errors.put("f1", "既に使用されているクラス名です");
-//
-//            session.setAttribute("errors", errors);
-//
-//            // フォーム再表示用データ
-//
-//            ClassNum classNum = new ClassNum();
-//
-//            classNum.setClass_num(oldClassNumStr);
-//
-//            classNum.setSchool(teacher.getSchool());
-//
-//            req.setAttribute("classNum", classNum);
-//
-//            req.getRequestDispatcher("class_update.jsp").forward(req, res);
-//
-//            return;
-//
-//        }
+        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
+
+            errors.put("f1", "既に使用されているクラス名です");
+
+            session.setAttribute("errors", errors);
+
+            // フォーム再表示用データ
+
+            ClassNum classNum = new ClassNum();
+
+            classNum.setClass_num(oldClassNumStr);
+
+            classNum.setSchool(teacher.getSchool());
+
+            req.setAttribute("classNum", classNum);
+
+            req.getRequestDispatcher("class_update.jsp").forward(req, res);
+
+            return;
+
+        }
 
         // 更新処理
 
@@ -62,16 +62,13 @@ public class ClassUpdateExecuteAction extends Action {
 
         oldClassNum.setSchool(teacher.getSchool());
 
-        System.out.println(oldClassNum);
-        System.out.println(newClassNumStr);
         boolean success = classNumDao.update(oldClassNum, newClassNumStr);
-
 
         if (!success) {
 
-            errors.put("f2", "更新に失敗しました");
+//            errors.put("f2", "更新に失敗しました");
 
-            session.setAttribute("errors", errors);
+//            session.setAttribute("errors", errors);
 
             req.setAttribute("classNum", oldClassNum);
 
@@ -80,6 +77,10 @@ public class ClassUpdateExecuteAction extends Action {
             return;
 
         }
+
+        // 成功時はエラー情報を削除
+
+        session.removeAttribute("errors");
 
         req.getRequestDispatcher("class_update_done.jsp").forward(req, res);
 
