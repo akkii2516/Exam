@@ -32,27 +32,27 @@ public class ClassUpdateExecuteAction extends Action {
 
         ClassNum duplicate = classNumDao.get(newClassNumStr, teacher.getSchool());
 
-        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
-
-            errors.put("f1", "既に使用されているクラス名です");
-
-            session.setAttribute("errors", errors);
-
-            // フォーム再表示用データ
-
-            ClassNum classNum = new ClassNum();
-
-            classNum.setClass_num(oldClassNumStr);
-
-            classNum.setSchool(teacher.getSchool());
-
-            req.setAttribute("classNum", classNum);
-
-            req.getRequestDispatcher("class_update.jsp").forward(req, res);
-
-            return;
-
-        }
+//        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
+//
+//            errors.put("f1", "既に使用されているクラス名です");
+//
+//            session.setAttribute("errors", errors);
+//
+//            // フォーム再表示用データ
+//
+//            ClassNum classNum = new ClassNum();
+//
+//            classNum.setClass_num(oldClassNumStr);
+//
+//            classNum.setSchool(teacher.getSchool());
+//
+//            req.setAttribute("classNum", classNum);
+//
+//            req.getRequestDispatcher("class_update.jsp").forward(req, res);
+//
+//            return;
+//
+//        }
 
         // 更新処理
 
@@ -62,7 +62,10 @@ public class ClassUpdateExecuteAction extends Action {
 
         oldClassNum.setSchool(teacher.getSchool());
 
+        System.out.println(oldClassNum);
+        System.out.println(newClassNumStr);
         boolean success = classNumDao.update(oldClassNum, newClassNumStr);
+
 
         if (!success) {
 

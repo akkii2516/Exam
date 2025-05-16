@@ -324,7 +324,8 @@ public class ClassNumDao extends Dao {
 
 
 	    int count = 0;
-
+	    System.out.println(oldClassNum.getSchool().getCd());
+	    System.out.println(oldClassNum.getClass_num());
 	    try {
 
 	        // 対象のクラス番号が存在するか確認
@@ -345,13 +346,15 @@ public class ClassNumDao extends Dao {
 	                studentStmt.executeUpdate();
 
 	                connection.commit();
-	            count = statement.executeUpdate();
+//	            count = statement.executeUpdate();
+	            count = 1;
 
 
 
 	        }
 
 	    } catch (Exception e) {
+
 
 	        throw e;
 
