@@ -85,7 +85,7 @@
       </form>
 
       <c:choose>
-        <c:when test="${not empty tests}">
+        <c:when test="${not empty test_list}">
             <table class="table table-hover">
               <thead>
                 <tr>
@@ -98,7 +98,7 @@
                 </tr>
               </thead>
               <tbody>
-                <c:forEach var="test" items="${tests}">
+                <c:forEach var="test" items="${test_list}">
                   <tr>
                     <td>${test.student.entYear}</td>
                     <td>${test.classNum}</td>
