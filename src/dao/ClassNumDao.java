@@ -385,6 +385,7 @@ public class ClassNumDao extends Dao {
 
 
 
+	//メモ 101から201に変更するときにできないからそれ月曜にやろうと思う 05/16
 	public boolean updateStudentClassNumOnly(ClassNum oldClassNum, String newClassNum) throws Exception {
 
 	    Connection connection = getConnection();
