@@ -10,7 +10,7 @@ import java.util.List;
 import bean.School;
 import bean.Student;
 import bean.Subject;
-import bean.TestListSubject;
+import bean.TestListStudent;
 
 public class TestListSubjectDao extends Dao {
 	//検索をする
@@ -20,11 +20,11 @@ public class TestListSubjectDao extends Dao {
 		    "JOIN student s ON t.student_no = s.no " +
 		    "WHERE s.ent_year=? AND t.class_num=? AND t.subject_cd=? AND t.school_cd=?";
 
-	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
-	    List<TestListSubject> testList = new ArrayList<>();
+	private List<TestListStudent> postFilter(ResultSet rSet) throws Exception {
+	    List<TestListStudent> testList = new ArrayList<>();
 	    try {
 	        while (rSet.next()) {
-	            TestListSubject test = new TestListSubject();
+	            TestListStudent test = new TestListStudent();
 
 	            // Studentオブジェクト作成・セット
 	            Student student = new Student();
@@ -45,8 +45,8 @@ public class TestListSubjectDao extends Dao {
 	}
 
 
-	public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
-		List<TestListSubject> list = new ArrayList<>();
+	public List<TestListStudent> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
+		List<TestListStudent> list = new ArrayList<>();
 		Connection connection = getConnection();
 		PreparedStatement statement = null;
 		ResultSet rSet = null;

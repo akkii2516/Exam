@@ -11,7 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import bean.Subject;
 import bean.Teacher;
-import bean.TestListSubject;
+import bean.TestListStudent;
 import dao.SubjectDao;
 import dao.TestListSubjectDao;
 import tool.Action;
@@ -39,7 +39,7 @@ public class TestListSubjectExecuteAction extends Action {
         	int entyearstr = Integer.parseInt(entYearStr);//entYearStrをint型に変更
         	Subject subject = subjectDao.get(subjectcd, teacher.getSchool());
         	//引数の条件で検索
-        	List<TestListSubject> test_list = testlistsubjectDao.filter(entyearstr, classNum, subject, teacher.getSchool());
+        	List<TestListStudent> test_list = testlistsubjectDao.filter(entyearstr, classNum, subject, teacher.getSchool());
 
         	// 検索結果をリクエストに設定
         	req.setAttribute("test_list", test_list);
