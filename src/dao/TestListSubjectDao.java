@@ -32,8 +32,6 @@ public class TestListSubjectDao extends Dao {
 	            student.setName(rSet.getString("name")); // 結合している場合
 	            student.setEntYear(rSet.getInt("ent_year"));
 
-	            test.setStudent(student);
-	            test.setClassNum(rSet.getString("class_num"));
 	            test.setSubjectCd(rSet.getString("subject_cd"));
 	            test.setPoint(rSet.getInt("point"));
 	            test.setNum(rSet.getInt("no")); // 回数が「no」であると仮定

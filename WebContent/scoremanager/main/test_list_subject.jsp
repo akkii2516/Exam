@@ -80,12 +80,17 @@
             <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
           </div>
         </div>
-
-        <p style="color:#33FFFF;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
       </form>
 
       <c:choose>
         <c:when test="${not empty test_list}">
+        <c:forEach var="test" items="${test_list}" varStatus="status">
+  			<c:if test="${status.first}">
+    			<div class="mb-3 text-start">
+      				科目：${test.subject.name}
+    			</div>
+  			</c:if>
+		</c:forEach>
             <table class="table table-hover">
               <thead>
                 <tr>
