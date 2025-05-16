@@ -329,7 +329,7 @@ public class ClassNumDao extends Dao {
 
 	        // 対象のクラス番号が存在するか確認
 
-	        ClassNum existing = get(oldClassNum.getClass_num(), oldClassNum.getSchool());
+	        ClassNum existing = get(newClassNum, oldClassNum.getSchool());
 
 	        if (existing != null) {
 
@@ -346,7 +346,7 @@ public class ClassNumDao extends Dao {
 
 	                connection.commit();
 	            count = statement.executeUpdate();
-
+	            connection.setAutoCommit(false);
 
 
 	        }
@@ -366,36 +366,64 @@ public class ClassNumDao extends Dao {
 	    return count > 0;
 
 	}
+
 	public boolean updateStudentClassNumOnly(ClassNum oldClassNum, String newClassNum) throws Exception {
+
 	    Connection connection = getConnection();
+
 	    PreparedStatement studentStmt = null;
+
 	    int count = 0;
 
 	    try {
-	        // 旧クラスが存在するかを確認（なくても処理していいならこのチェックは省略可）
-	        ClassNum existing = get(oldClassNum.getClass_num(), oldClassNum.getSchool());
-	        if (existing != null) {
-	            // studentテーブルのclass_numを更新
+
+	        // 旧クラスが存在するかを確認（オプション）
+
+	        ClassNum existingOld = get(oldClassNum.getClass_num(), oldClassNum.getSchool());
+
+	        // 新しいクラス番号がすでに存在するか確認
+
+	        ClassNum existingNew = get(newClassNum, oldClassNum.getSchool());
+
+	        if (existingOld != null && existingNew != null) {
+
+	            // 両方存在している場合のみ student テーブルを更新
+
 	            studentStmt = connection.prepareStatement(
+
 	                "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+
 	            );
+
 	            studentStmt.setString(1, newClassNum);
+
 	            studentStmt.setString(2, oldClassNum.getClass_num());
+
 	            studentStmt.setString(3, oldClassNum.getSchool().getCd());
 
 	            count = studentStmt.executeUpdate();
 
-	            connection.commit(); // 明示的にコミット（auto-commitがfalseの場合）
+	            connection.commit(); // 明示的にコミット（auto-commitがオフの場合）
+
 	        }
+
 	    } catch (Exception e) {
+
 	        throw e;
+
 	    } finally {
+
 	        if (studentStmt != null) try { studentStmt.close(); } catch (SQLException e) { throw e; }
+
 	        if (connection != null) try { connection.close(); } catch (SQLException e) { throw e; }
+
 	    }
 
 	    return count > 0;
+
 	}
+
+
 
 
 
