@@ -197,55 +197,91 @@ public class ClassNumDao extends Dao {
 	public boolean save(ClassNum classNum) throws Exception {
 
 	    Connection connection = getConnection();
+
 	    PreparedStatement statement = null;
+
 	    int count = 0;
 
 	    try {
+
 	        // 既存のクラス番号を取得
+
 	        ClassNum old = get(classNum.getClass_num(), classNum.getSchool());
 
 	        if (old == null) {
+
 	            // クラスが存在しない場合、INSERT文を実行
+
 	            statement = connection.prepareStatement(
+
 	                    "INSERT INTO class_num(school_cd, class_num) VALUES(?, ?)");
+
 	            statement.setString(1, classNum.getSchool().getCd());
+
 	            statement.setString(2, classNum.getClass_num());
 
 	            count = statement.executeUpdate();
+
 	        } else {
+
 	            // クラスが既に存在する場合、UPDATE文を実行
+
 	            statement = connection.prepareStatement(
+
 	                    "UPDATE class_num SET class_num = ? WHERE class_num = ? AND school_cd = ?");
+
 	            statement.setString(1, classNum.getClass_num());
+
 	            statement.setString(2, classNum.getClass_num());
+
 	            statement.setString(3, classNum.getSchool().getCd());
 
 	            count = statement.executeUpdate();
+
 	        }
 
 	    } catch (Exception e) {
+
 	        throw e;
 
 	    } finally {
+
 	        if (statement != null) {
+
 	            try {
+
 	                statement.close();
+
 	            } catch (SQLException sqle) {
+
 	                throw sqle;
+
 	            }
+
 	        }
+
 	        if (connection != null) {
+
 	            try {
+
 	                connection.close();
+
 	            } catch (SQLException sqle) {
+
 	                throw sqle;
+
 	            }
+
 	        }
+
 	    }
 
 	    // 実行件数が1件以上あれば成功
+
 	    return count > 0;
+
 	}
+
 	public boolean save(ClassNum classNum,String newClassNum) throws Exception {
 
 		/**
@@ -303,6 +339,7 @@ public class ClassNumDao extends Dao {
 			return count > 0;
 
 		}
+
 	public boolean update(ClassNum oldClassNum, String newClassNum) throws Exception {
 
 	    Connection connection = getConnection();
@@ -324,19 +361,30 @@ public class ClassNumDao extends Dao {
 	        if (existingNew != null) {
 
 	        	// studentテーブルのclass_numだけ更新
+
 	            studentStmt = connection.prepareStatement(
+
 	                "UPDATE student SET class_num = ? WHERE class_num = ? AND school_cd = ?"
+
 	            );
+
 	            studentStmt.setString(1, newClassNum);
+
 	            studentStmt.setString(2, oldClassNum.getClass_num());
+
 	            studentStmt.setString(3, oldClassNum.getSchool().getCd());
 
 	            studentCount = studentStmt.executeUpdate();
+
+
 	            System.out.println(studentCount);
+
+
+	            System.out.println(studentCount);
+
 	            connection.commit();
 
 	            return true;
-
 
 
 	        }
@@ -397,4 +445,8 @@ public class ClassNumDao extends Dao {
 
 	}
 
+<<<<<<< HEAD
 	}
+=======
+	}
+>>>>>>> branch 'master' of https://github.com/akkii2516/Exam.git
