@@ -57,6 +57,9 @@
             <label class="form-label d-block invisible">検索</label>
             <button class="btn btn-secondary" type="submit" style="background-color: #6c757d; color: white;">検索</button>
           </div>
+            <div class="mt-2 text-warning" style = "margin-left:15px">
+    			${errors.get("error1")}
+  			</div>
         </form>
 
         <!-- 水平線 -->
@@ -89,6 +92,9 @@
         <div class="col-12 mt-2">
           <p style="color:#33FFFF;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
         </div>
+            <div class="mt-2 text-warning" style = "margin-left:15px">
+    			${errors.get("error2")}
+  			</div>
 
       <!-- ▼検索結果表示▼ -->
       <!--<c:choose>

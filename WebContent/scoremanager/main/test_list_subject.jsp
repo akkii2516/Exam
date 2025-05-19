@@ -10,9 +10,8 @@
       <h2 class="h3 mb-3 fw-normal bg-secondary bg-opacity-10 py-2 px-4">成績参照</h2>
 
       <!-- 検索フォーム -->
-      <form action = "TestListSubjectExecute.action" method = get>
+      <form action="TestListSubjectExecute.action" method="get">
         <div class="row border mx-3 mb-3 py-2 align-items-center rounded" id="filter">
-
           <!-- 科目情報 -->
           <div class="col-2" style="margin-left:15px">
             <label class="form-label">科目情報</label>
@@ -22,7 +21,7 @@
           <div class="col-2">
             <label class="form-label" for="student-f1-select" style="margin-left:-15px">入学年度</label>
             <select class="form-select" style="margin-left:-15px" id="student-f1-select" name="f1">
-              <option value="0">--------</option>
+              <option value="0">${entYearStr }</option>
               <c:forEach var="year" items="${f1}">
                 <option value="${year}" <c:if test="${year == selectedF1}">selected</c:if>>${year}</option>
               </c:forEach>
@@ -33,7 +32,7 @@
           <div class="col-2">
             <label class="form-label" for="student-f2-select" style="margin-left:-15px">クラス</label>
             <select class="form-select" style="margin-left:-15px" id="student-f2-select" name="f2">
-              <option value="0">--------</option>
+              <option value="0">${classNum }</option>
               <c:forEach var="classNum" items="${f2}">
                 <option value="${classNum}" <c:if test="${classNum == selectedF2}">selected</c:if>>${classNum}</option>
               </c:forEach>
@@ -44,7 +43,7 @@
           <div class="col-4">
             <label class="form-label" style="margin-left:-15px" for="student-f3-select">科目</label>
             <select class="form-select" style="margin-left:-15px" id="student-f3-select" name="f3">
-              <option value="0">--------</option>
+              <option value="0">${subjects.name }</option>
               <c:forEach var="subject" items="${f3}">
                 <option value="${subject.cd}" <c:if test="${subject.cd == selectedF3}">selected</c:if>>${subject.name}</option>
               </c:forEach>
@@ -82,48 +81,47 @@
         </div>
       </form>
 
+      <c:if test="${not empty subjects}">
+        <div>科目：${subjects.name}</div>
+      </c:if>
+
       <c:choose>
         <c:when test="${not empty test_list}">
-        <c:forEach var="test" items="${test_list}" varStatus="status">
-  			<c:if test="${not empty selectedSubject}">
-  				<div>科目：${selectedSubject.name}</div>
-			</c:if>
-		</c:forEach>
-            <table class="table table-hover">
-              <thead>
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>入学年度</th>
+                <th>クラス</th>
+                <th>学生番号</th>
+                <th>氏名</th>
+                <th>1回</th>
+                <th>2回</th>
+              </tr>
+            </thead>
+            <tbody>
+              <c:forEach var="test" items="${test_list}">
                 <tr>
-                  <th>入学年度</th>
-                  <th>クラス</th>
-                  <th>学生番号</th>
-                  <th>氏名</th>
-                  <th>1回</th>
-                  <th>2回</th>
+                  <td>${test.entYear}</td>
+                  <td>${test.classNum}</td>
+                  <td>${test.studentNo}</td>
+                  <td>${test.studentName}</td>
+<td>
+            ${test.getPoint(1)}
+</td>
+
+<td>
+            ${test.getPoint(2)}
+</td>
+
+
                 </tr>
-              </thead>
-              <tbody>
-                <c:forEach var="test" items="${test_list}">
-                  <tr>
-                    <td>${test.entYear}</td>
-                    <td>${test.classNum}</td>
-                    <td>${test.studentNo}</td>
-                    <td>${test.studentName}</td>
-
-                    <td>
-                      <input type="hidden" name="studentNoList" value="${test.studentNo}" />
-                      <input type="hidden" name="count" value="${selectedF4}" />
-                      <input type="hidden" name="subject" value="${selectedF3}" />
-                      <input type="number" name="pointList" value="${test.points[1]}" min="0">
-					  <input type="number" name="pointList" value="${test.points[2]}" min="0">
-
-                      <c:if test="${not empty errors[test.student.no]}">
-                        <div class="mt-2 text-warning">${errors[test.student.no]}</div>
-                      </c:if>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </tbody>
-            </table>
+              </c:forEach>
+            </tbody>
+          </table>
         </c:when>
+        <c:otherwise>
+          <p class="ms-4 text-danger">データが見つかりませんでした。</p>
+        </c:otherwise>
       </c:choose>
     </section>
   </c:param>

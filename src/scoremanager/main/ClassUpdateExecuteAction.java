@@ -30,29 +30,29 @@ public class ClassUpdateExecuteAction extends Action {
 
         // 新しいクラス名が他に存在していないか確認（自分以外で）
 
-        ClassNum duplicate = classNumDao.get(newClassNumStr, teacher.getSchool());
-
-        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
-
-            errors.put("f1", "既に使用されているクラス名です");
-
-            session.setAttribute("errors", errors);
-
-            // フォーム再表示用データ
-
-            ClassNum classNum = new ClassNum();
-
-            classNum.setClass_num(oldClassNumStr);
-
-            classNum.setSchool(teacher.getSchool());
-
-            req.setAttribute("classNum", classNum);
-
-            req.getRequestDispatcher("class_update.jsp").forward(req, res);
-
-            return;
-
-        }
+//        ClassNum duplicate = classNumDao.get(newClassNumStr, teacher.getSchool());
+//
+//        if (duplicate != null && !newClassNumStr.equals(oldClassNumStr)) {
+//
+//            errors.put("f1", "既に使用されているクラス名です");
+//
+//            session.setAttribute("errors", errors);
+//
+//            // フォーム再表示用データ
+//
+//            ClassNum classNum = new ClassNum();
+//
+//            classNum.setClass_num(oldClassNumStr);
+//
+//            classNum.setSchool(teacher.getSchool());
+//
+//            req.setAttribute("classNum", classNum);
+//
+//            req.getRequestDispatcher("class_update.jsp").forward(req, res);
+//
+//            return;
+//
+//        }
 
         // 更新処理
 
