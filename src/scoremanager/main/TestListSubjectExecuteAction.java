@@ -52,23 +52,28 @@ public class TestListSubjectExecuteAction extends Action {
         //クラス一覧
         List<String> cNumlist = cNumDao.filter(teacher.getSchool());
 
-        if (!entYearStr.equals(0) || !classNum.equals(0) || !subjectcd.equals(0)) {
-        	//入学年度、クラス、科目すべてが0出ない場合（入力されている場合）
-        	int entyearstr = Integer.parseInt(entYearStr);//entYearStrをint型に変更
-        	Subject subjects = subjectDao.get(subjectcd, teacher.getSchool());
-        	//引数の条件で検索
-        	List<TestListSubject> test_list = testlistsubjectDao.filter(entyearstr, classNum, subjects, teacher.getSchool());
+     // 全ての入力がされているかチェック
+        if (!entYearStr.equals("0") && !classNum.equals("0") && !subjectcd.equals("0")) {
+            // 入学年度、クラス、科目すべてが入力されている場合
+            int entyearstr = Integer.parseInt(entYearStr); // 入学年度をint型に変換
+            Subject subjects = subjectDao.get(subjectcd, teacher.getSchool());
+            List<TestListSubject> test_list = testlistsubjectDao.filter(entyearstr, classNum, subjects, teacher.getSchool());
 
-        	// 検索結果をリクエストに設定
-        	req.setAttribute("subjects", subjects);
-        	req.setAttribute("subjectcd", subjectcd);
-        	req.setAttribute("test_list", test_list);
-        	if (test_list == null || test_list.isEmpty()) {
-        	    errors.put("error2", "学生情報が存在しませんでした");
-        	}
+            req.setAttribute("subjects", subjects);
+            req.setAttribute("subjectcd", subjectcd);
+            req.setAttribute("test_list", test_list);
+            if (test_list == null || test_list.isEmpty()) {
+                errors.put("error2", "学生情報が存在しませんでした");
+            }
         } else {
-        	errors.put("error1", "入学年度とクラスと科目を選択してください");
+            // 一つでも未選択の項目がある場合
+            errors.put("error1", "入学年度とクラスと科目を選択してください");
+            req.setAttribute("errors", errors);
+            req.getRequestDispatcher("test_list.jsp").forward(req, res);
+            System.out.println("error1");
+            return;
         }
+
 
         // セレクトボックスの表示用データセット
         req.setAttribute("f1", entYearList);
@@ -77,6 +82,8 @@ public class TestListSubjectExecuteAction extends Action {
 
         req.setAttribute("entYearStr", entYearStr);
         req.setAttribute("classNum", classNum);
+        req.setAttribute("errors", errors);
+
 
 
         // 結果表示用JSPへフォワード
