@@ -375,13 +375,13 @@ public class ClassNumDao extends Dao {
 	            studentStmt.setString(3, oldClassNum.getSchool().getCd());
 
 	            studentCount = studentStmt.executeUpdate();
-<<<<<<< HEAD
+
 
 	            System.out.println(studentCount);
 
-=======
+
 	            System.out.println(studentCount);
->>>>>>> branch 'master' of https://github.com/akkii2516/Exam.git
+
 	            connection.commit();
 
 	            return true;
