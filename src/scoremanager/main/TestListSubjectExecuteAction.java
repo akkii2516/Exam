@@ -1,6 +1,7 @@
 //2025-04-25
 package scoremanager.main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class TestListSubjectExecuteAction extends Action {
         TestListSubjectDao testlistsubjectDao = new TestListSubjectDao();
         //エラー格納用のボックス作成
         Map<String, String> errors = new HashMap<>();
+        //表示させる一覧のリスト
+        List<TestListSubject> tests = new ArrayList<>();
 
         if (!entYearStr.equals(0) || !classNum.equals(0) || !subjectcd.equals(0)) {
         	//入学年度、クラス、科目すべてが0出ない場合（入力されている場合）

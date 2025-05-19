@@ -16,27 +16,33 @@ public class TestListSubjectDao extends Dao {
 	private String baseSql = "select student.ent_year, student.no, student.name, student.class_num, a.no as no1, a.point as point1, b.no as no2, b.point as point2";
 
 	private List<TestListSubject> postFilter(ResultSet rSet) throws Exception {
-
-		// リストを初期化
 		List<TestListSubject> list = new ArrayList<>();
 		try {
-			// リザルトセットを全権走査
 			while (rSet.next()) {
-				// 科目別リストインスタンスを初期化
 				TestListSubject tls = new TestListSubject();
-				// 科目別リストインスタンスに検索結果をセット
 				tls.setEntYear(rSet.getInt("ent_year"));
 				tls.setStudentNo(rSet.getString("no"));
 				tls.setStudentName(rSet.getString("name"));
 				tls.setClassNum(rSet.getString("class_num"));
-				tls.putPoint(rSet.getInt("no1"), rSet.getInt("point1"));
-				if (rSet.getInt("no2") != 0) {
-					tls.putPoint(rSet.getInt("no2"), rSet.getInt("point2"));
+
+				// 1回目の点数セット
+				int no1 = rSet.getInt("no1");
+				if (!rSet.wasNull()) {
+					int point1 = rSet.getInt("point1");
+					tls.putPoint(no1, point1);
+				} else {
+					tls.putPoint(1, -1);
+				}
+
+				// 2回目の点数セット
+				int no2 = rSet.getInt("no2");
+				if (!rSet.wasNull()) {
+					int point2 = rSet.getInt("point2");
+					tls.putPoint(no2, point2);
 				} else {
 					tls.putPoint(2, -1);
 				}
 
-				// リストに追加
 				list.add(tls);
 			}
 		} catch (SQLException | NullPointerException e) {
@@ -45,6 +51,7 @@ public class TestListSubjectDao extends Dao {
 
 		return list;
 	}
+
 
 	public List<TestListSubject> filter(int entYear, String classNum, Subject subject, School school) throws Exception {
 

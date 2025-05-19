@@ -444,9 +444,4 @@ public class ClassNumDao extends Dao {
 	    return count > 0;
 
 	}
-
-<<<<<<< HEAD
-	}
-=======
-	}
->>>>>>> branch 'master' of https://github.com/akkii2516/Exam.git
+}
