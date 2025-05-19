@@ -332,7 +332,7 @@ public class ClassNumDao extends Dao {
 	            studentStmt.setString(3, oldClassNum.getSchool().getCd());
 
 	            studentCount = studentStmt.executeUpdate();
-
+	            System.out.println(studentCount);
 	            connection.commit();
 
 	            return true;
