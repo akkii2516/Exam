@@ -21,7 +21,7 @@
           <div class="col-2">
             <label class="form-label" for="student-f1-select" style="margin-left:-15px">入学年度</label>
             <select class="form-select" style="margin-left:-15px" id="student-f1-select" name="f1">
-              <option value="0">--------</option>
+              <option value="0">${entYearStr }</option>
               <c:forEach var="year" items="${f1}">
                 <option value="${year}" <c:if test="${year == selectedF1}">selected</c:if>>${year}</option>
               </c:forEach>
@@ -32,7 +32,7 @@
           <div class="col-2">
             <label class="form-label" for="student-f2-select" style="margin-left:-15px">クラス</label>
             <select class="form-select" style="margin-left:-15px" id="student-f2-select" name="f2">
-              <option value="0">--------</option>
+              <option value="0">${classNum }</option>
               <c:forEach var="classNum" items="${f2}">
                 <option value="${classNum}" <c:if test="${classNum == selectedF2}">selected</c:if>>${classNum}</option>
               </c:forEach>
@@ -43,7 +43,7 @@
           <div class="col-4">
             <label class="form-label" style="margin-left:-15px" for="student-f3-select">科目</label>
             <select class="form-select" style="margin-left:-15px" id="student-f3-select" name="f3">
-              <option value="0">--------</option>
+              <option value="0">${subjects.name }</option>
               <c:forEach var="subject" items="${f3}">
                 <option value="${subject.cd}" <c:if test="${subject.cd == selectedF3}">selected</c:if>>${subject.name}</option>
               </c:forEach>
@@ -81,8 +81,8 @@
         </div>
       </form>
 
-      <c:if test="${not empty selectedSubject}">
-        <div class="ms-4 mb-2">科目：${selectedSubject.name}</div>
+      <c:if test="${not empty subjects}">
+        <div>科目：${subjects.name}</div>
       </c:if>
 
       <c:choose>
