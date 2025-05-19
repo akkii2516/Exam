@@ -69,16 +69,13 @@
             <label class="form-label" style="margin-left:15px">学生情報</label>
           </div>
 
-          <!-- 学生番号 -->
-          <div class="col-4" style="margin-top:-10px">
-            <label class="form-label" for="student-no-select">学生番号</label>
-            <select class="form-select" id="student-no-select" name="studentNo">
-              <option value="0">--------</option>
-              <c:forEach var="student" items="${students}">
-                <option value="${student.no}" <c:if test="${student.no == selectedStudentNo}">selected</c:if>>${student.no}</option>
-              </c:forEach>
-            </select>
-          </div>
+		<!-- 学生番号 -->
+		<div class="col-4" style="margin-top:-10px">
+		  <label class="form-label" for="student-no-input">学生番号</label>
+		  <input type="text" class="form-control" id="student-no-input" name="studentNo" placeholder="学生番号を入力してください">
+		</div>
+
+
 
           <!-- 検索ボタン -->
           <div class="col-2 d-flex justify-content-end" style="margin-left: -10px;">
