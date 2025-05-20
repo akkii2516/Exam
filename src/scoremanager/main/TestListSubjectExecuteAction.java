@@ -68,6 +68,13 @@ public class TestListSubjectExecuteAction extends Action {
         } else {
             // 一つでも未選択の項目がある場合
             errors.put("error1", "入学年度とクラスと科目を選択してください");
+            // セレクトボックスの表示用データセット
+            req.setAttribute("f1", entYearList);
+            req.setAttribute("f2", cNumlist);
+            req.setAttribute("f3", subjectList);
+
+            req.setAttribute("entYearStr", entYearStr);
+            req.setAttribute("classNum", classNum);
             req.setAttribute("errors", errors);
             req.getRequestDispatcher("test_list.jsp").forward(req, res);
             System.out.println("error1");
