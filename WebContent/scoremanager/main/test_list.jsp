@@ -92,9 +92,6 @@
         <div class="col-12 mt-2">
           <p style="color:#33FFFF;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
         </div>
-            <div class="mt-2 text-warning" style = "margin-left:15px">
-    			${errors.get("error2")}
-  			</div>
 
       <!-- ▼検索結果表示▼ -->
       <!--<c:choose>

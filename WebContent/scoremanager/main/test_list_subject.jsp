@@ -81,7 +81,13 @@
         </div>
       </form>
 
-      <c:if test="${not empty subjects}">
+      <c:if test="${empty test_list}">
+	  	<div class="mt-2">
+	  		${errors.get("error2")}
+  		</div>
+      </c:if>
+
+      <c:if test="${not empty test_list}">
         <div>科目：${subjects.name}</div>
       </c:if>
 
@@ -119,9 +125,6 @@
             </tbody>
           </table>
         </c:when>
-        <c:otherwise>
-          <p class="ms-4 text-danger">データが見つかりませんでした。</p>
-        </c:otherwise>
       </c:choose>
     </section>
   </c:param>
