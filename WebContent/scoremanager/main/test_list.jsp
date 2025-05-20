@@ -75,7 +75,7 @@
 		<!-- 学生番号 -->
 		<div class="col-4" style="margin-top:-10px">
 		  <label class="form-label" for="student-no-input">学生番号</label>
-		  <input type="text" class="form-control" id="student-no-input" name="studentNo" placeholder="学生番号を入力してください">
+		  <input type="text" class="form-control" id="student-no-input" name="studentNo" placeholder="学生番号を入力してください" required >
 		</div>
 
 
@@ -92,51 +92,6 @@
         <div class="col-12 mt-2">
           <p style="color:#33FFFF;">科目情報を選択または学生情報を入力して検索ボタンをクリックしてください</p>
         </div>
-
-      <!-- ▼検索結果表示▼ -->
-      <!--<c:choose>
-        <c:when test="${not empty tests}">
-          <form action="TestRegistExecute.action" method="post">
-            <table class="table table-hover">
-              <thead>
-                <tr>
-                  <th>入学年度</th>
-                  <th>クラス</th>
-                  <th>学生番号</th>
-                  <th>氏名</th>
-                  <th>点数</th>
-                </tr>
-              </thead>
-              <tbody>
-                <c:forEach var="test" items="${tests}">
-                  <tr>
-                    <td>${test.student.entYear}</td>
-                    <td>${test.classNum}</td>
-                    <td>${test.student.no}</td>
-                    <td>${test.student.name}</td>
-                    <td>
-                      <input type="hidden" name="studentNoList" value="${test.student.no}" />
-                      <input type="hidden" name="count" value="${selectedF4}" />
-                      <input type="hidden" name="subject" value="${selectedF3}" />
-                      <input type="number" name="pointList" value="${test.point}" min="0">
-                      <c:if test="${not empty errors[test.student.no]}">
-                        <div class="mt-2 text-warning">${errors[test.student.no]}</div>
-                      </c:if>
-                    </td>
-                  </tr>
-                </c:forEach>
-              </tbody>
-            </table>
-            <input type="hidden" name="classNum" value="${selectedF2}" />
-            <div class="text-start">
-              <button type="submit" class="btn btn-secondary">登録して終了</button>
-            </div>
-          </form>
-        </c:when>
-        <c:otherwise>
-          <p>検索結果がありません。</p>
-        </c:otherwise>
-      </c:choose>-->
 
     </section>
   </c:param>

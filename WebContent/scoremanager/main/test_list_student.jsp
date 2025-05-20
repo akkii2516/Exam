@@ -57,7 +57,7 @@
           <!-- 検索ボタン -->
           <div class="col-2 d-flex justify-content-end" style="margin-left: -50px;">
             <label class="form-label d-block invisible">検索</label>
-            <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+            <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
           </div>
           <hr class="mx-3 mb-4" style="margin-top:5px" />
 
@@ -76,23 +76,28 @@
           <!-- 検索ボタン -->
           <div class="col-2 d-flex justify-content-end" style="margin-left: -30px;">
             <label class="form-label d-block invisible">検索</label>
-            <button class="btn btn-secondary btn-sm" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
+            <button class="btn btn-secondary" id="filter-button" style="background-color: #6c757d; color: white;">検索</button>
           </div>
         </div>
       </form>
 		<div>
 		  <small>氏名： ${student.name}(${student.no})</small>
 		</div>
-
+		<c:if test ="${empty testList}">
+		    <!-- testListがnull または 空 のときに実行 -->
+		    <div>
+		    <label>成績情報が存在しませんでした。</label>
+		    </div>
+		</c:if>
 
 <c:choose>
   <c:when test="${not empty testList}">
     <table class="table table-hover" style="width:100%;">
       <tr>
         <th width="50%" style="font-weight:bold; font-size:1em;">科目名</th>
-        <th width="16.66%" style="font-weight:normal; font-size:1em;">科目コード</th>
-        <th width="16.66%" style="font-weight:normal; font-size:1em;">回数</th>
-        <th width="16.66%" style="font-weight:normal; font-size:1em;">点数</th>
+        <th width="16.66%" style="font-weight:bold; font-size:1em;">科目コード</th>
+        <th width="16.66%" style="font-weight:bold; font-size:1em;">回数</th>
+        <th width="16.66%" style="font-weight:bold; font-size:1em;">点数</th>
       </tr>
       <c:forEach var="test" items="${testList}">
         <tr>
