@@ -77,7 +77,7 @@
 
 <c:if test="${not empty tests}">
   <div class="mb-3 text-start">
-  科目：${tests[0].subject.name}（${selectedF4}回）
+  科目：${subject_name.name}（${selectedF4}回）
   </div>
 </c:if>
 

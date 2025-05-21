@@ -60,7 +60,10 @@ public class TestRegistAction extends Action {
         String f3 = req.getParameter("f3"); // 科目コード
         String f4 = req.getParameter("f4"); // 回数
 
+        Subject subject_name = subjectDao.get(f3, teacher.getSchool());
+
         // セレクトボックスの表示用データセット
+        req.setAttribute("subject_name", subject_name);
         req.setAttribute("f1", entYearList);
         req.setAttribute("f2", cNumlist);
         req.setAttribute("f3", subjectList);
