@@ -87,6 +87,8 @@
           </div>
         </form>
       </div>
+      <input type="hidden" name="f" value="${sj}" />
+      <input type="hidden" name="f" value="${st}" />
 
               <!-- メッセージ -->
         <div class="col-12 mt-2">
