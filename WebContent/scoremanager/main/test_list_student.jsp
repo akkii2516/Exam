@@ -83,7 +83,7 @@
           </div>
         </form>
       </div>
-		  <small>氏名： ${student.name}(${student.no})</small>
+		  <div><small>氏名： ${student.name}(${student.no})</small></div>
 
 		<c:if test ="${empty testList}">
 		    <!-- testListがnull または 空 のときに実行 -->
