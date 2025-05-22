@@ -23,9 +23,9 @@
 					</div>
 					<div class="mb-3">
 							<label class="form-label" for="student-name-select">氏名</label>
-							<input class="form-control" autocomplete="off"
+							<input maxlength="30" class="form-control" autocomplete="off"
 								id="id-input" maxlength="10" name="name"
-								style="width: 800px;" type="text" value="${name }" required />
+								style="width: 800px;" type="text" value="${name }" placeholder="氏名を入力してください" required />
 					</div>
 					<div class="col-4">
 						<label class="form-label" for="student-class_num-select">クラス</label>
