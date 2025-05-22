@@ -19,7 +19,7 @@
 
 					<div class="mb-3">
 						<label for="subject-name" class="form-label">科目名</label>
-						<input type="text" class="form-control" id="name" name="name" value="${subject.name}" placeholder="科目名を入力してください" style="width: 800px;" required>
+						<input type="text" maxlength="20" class="form-control" id="name" name="name" value="${subject.name}" placeholder="科目名を入力してください" style="width: 800px;" required>
 					</div>
 
 

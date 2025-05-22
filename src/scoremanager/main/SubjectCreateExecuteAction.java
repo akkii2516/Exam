@@ -51,6 +51,8 @@ public class SubjectCreateExecuteAction extends Action {
             session.setAttribute("errors", errors);
             session.setAttribute("subject", subject);
             session.setAttribute("subject_list", list);
+            session.setAttribute("cd", cd);
+            session.setAttribute("name", name);
             session.setAttribute("errorMessage", "入力内容に誤りがあります");
             res.sendRedirect("subject_create.jsp");
             return;
@@ -60,6 +62,8 @@ public class SubjectCreateExecuteAction extends Action {
         boolean result = dao.save(subject);
 
         if (result) {
+        	session.removeAttribute("cd");
+        	session.removeAttribute("name");
             session.removeAttribute("errors");
             session.setAttribute("successMessage", "科目を登録しました。");
             res.sendRedirect("subject_create_done.jsp");
