@@ -108,7 +108,8 @@
 <input type="hidden" name="studentNoList" value="${test.student.no}" />
 <input type="hidden" name="count" value="${selectedF4}" />
 <input type="hidden" name="subject" value="${selectedF3}" />
-<input type="number" name="pointList" value="${test.point}" min="0">
+<input type="number" name="pointList" <c:if test="${not empty test.point }">value="${test.point}" </c:if>
+<c:if test="${ empty test.point }">value="" </c:if> min="0">
 <c:if test="${not empty errors[test.student.no]}">
   <div class="mt-2 text-warning">${errors[test.student.no]}</div>
 </c:if>

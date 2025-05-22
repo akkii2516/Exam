@@ -17,6 +17,8 @@ public class StudentCreateExecuteAction extends Action {
         HttpSession session = req.getSession();
         Teacher teacher = (Teacher) session.getAttribute("user");  // セッションから教師情報を取得
 
+        session.removeAttribute("errors");
+
         // フォームからの入力データを取得
         String no = req.getParameter("no");  // 学生番号
         String name = req.getParameter("name");  // 氏名
@@ -31,12 +33,17 @@ public class StudentCreateExecuteAction extends Action {
         // 入学年度が未選択の場合
         if (entYear == 0) {
             errors.put("1", "入学年度を選択してください");
+            session.setAttribute("no", no);
+            session.setAttribute("name", name);
             session.setAttribute("errors", errors);  // セッションにエラーを保存
             res.sendRedirect("StudentCreate.action");  // 登録フォームにリダイレクト
         } else {
             // 学生番号の重複チェック
             if (studentDao.get(no) != null) {
                 errors.put("2", "学生番号が重複しています");
+                session.setAttribute("ent_year", entYear);
+                session.setAttribute("no", no);
+                session.setAttribute("name", name);
                 session.setAttribute("errors", errors);  // セッションにエラーを保存
                 res.sendRedirect("StudentCreate.action");  // 登録フォームにリダイレクト
             } else {

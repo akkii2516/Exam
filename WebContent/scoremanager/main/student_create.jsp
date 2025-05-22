@@ -24,13 +24,13 @@
 
 					<div class="mb-3">
 						<label for="student-no" class="form-label">学生番号</label>
-						<input type="text" class="form-control" id="student-no" name="no" value="${no}" placeholder="学生番号を入力してください" style="width: 800px;" required>
+						<input type="text" maxlength="10" class="form-control" id="student-no" name="no" value="${no}" <c:if test="${empty no}">placeholder="学生番号を入力してください"</c:if> style="width: 800px;" required>
 						<div class="mt-2 text-warning">${errors.get("2") }</div>
 					</div>
 
 					<div class="mb-3">
 						<label for="student-name" class="form-label">氏名</label>
-						<input type="text" class="form-control" id="student-name" name="name" value="${name}" placeholder="氏名を入力してください" style="width: 800px;" required>
+						<input type="text" maxlength="30" class="form-control" id="student-name" name="name" value="${name}" <c:if test="${empty name}">placeholder="氏名を入力してください"</c:if> style="width: 800px;" required>
 					</div>
 
 					<div class="mb-3">
@@ -49,6 +49,10 @@
 					<div class="col-4" style="margin-top:10px">
 						<a href="StudentList.action">戻る</a>
 					</div>
+					<% session.removeAttribute("errors"); %>
+					<% session.removeAttribute("ent_year"); %>
+					<% session.removeAttribute("no"); %>
+					<% session.removeAttribute("name"); %>
 				</div>
 			</form>
 		</section>

@@ -75,7 +75,7 @@
 		<!-- 学生番号 -->
 		<div class="col-4" style="margin-top:-10px">
 		  <label class="form-label" for="student-no-input">学生番号</label>
-		  <input type="text" class="form-control" id="student-no-input" name="studentNo" placeholder="学生番号を入力してください" required >
+		  <input type="text" maxlength="10" class="form-control" id="student-no-input" name="studentNo" placeholder="学生番号を入力してください" required >
 		</div>
 
 
