@@ -21,6 +21,8 @@
 <thead class="table-light">
 <tr>
 <th>クラス</th>
+<th>操作</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
