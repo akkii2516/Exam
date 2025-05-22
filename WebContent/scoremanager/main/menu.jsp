@@ -35,11 +35,11 @@
 				</div>
 				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
 					style="height: 10rem; background-color: #ddb;">
-					<a href="ClassList.action">クラス管理</a>
+					<a href="ClassList.action">クラス<br>管理</a>
 				</div>
 				<div class="col d-flex align-items-center justify-content-center mx-2 rounded shadow"
 					style="height: 10rem; background-color: #87ceeb;">
-					<a href="TeacherList.action">ユーザー管理</a>
+					<a href="TeacherList.action">ユーザー<br>管理</a>
 				</div>
 			</div>
 		</section>
