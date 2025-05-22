@@ -444,4 +444,57 @@ public class ClassNumDao extends Dao {
 	    return count > 0;
 
 	}
+	//削除できるといいな
+	public boolean delete(String class_num, School school) throws Exception {
+	    Connection connection = getConnection();
+	    PreparedStatement checkStmt = null;
+	    PreparedStatement deleteStmt = null;
+	    ResultSet rs = null;
+
+	    try {
+	        System.out.println("[DEBUG] 削除処理開始: class_num=" + class_num + ", school_cd=" + school.getCd());
+
+	        // 学生がいるか確認
+	        checkStmt = connection.prepareStatement(
+	            "SELECT COUNT(*) FROM student WHERE class_num = ? AND school_cd = ?"
+	        );
+	        checkStmt.setString(1, class_num);
+	        checkStmt.setString(2, school.getCd());
+
+	        rs = checkStmt.executeQuery();
+	        if (rs.next()) {
+	            int studentCount = rs.getInt(1);
+
+	            System.out.println("学生数: " + studentCount);
+	            if (studentCount > 0) {
+
+	                System.out.println("学生が存在しています");
+	                return false;
+	            }
+	        }
+
+	        // 学生がいないので削除実行
+	        deleteStmt = connection.prepareStatement(
+	            "DELETE FROM class_num WHERE class_num = ? AND school_cd = ?"
+	        );
+	        deleteStmt.setString(1, class_num);
+	        deleteStmt.setString(2, school.getCd());
+
+	        int count = deleteStmt.executeUpdate();
+
+	        return count > 0;
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        throw e;
+
+	    } finally {
+	        if (rs != null) try { rs.close(); } catch (Exception e) {}
+	        if (checkStmt != null) try { checkStmt.close(); } catch (Exception e) {}
+	        if (deleteStmt != null) try { deleteStmt.close(); } catch (Exception e) {}
+	        if (connection != null) try { connection.close(); } catch (Exception e) {}
+	    }
+	}
+
+
 }
